@@ -6,9 +6,10 @@ import { ShoppingCart, Menu, X } from 'lucide-react';
 
 interface HeaderProps {
   cart: any[];
+  onToggleCart: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ cart }) => {
+const Header: React.FC<HeaderProps> = ({ cart, onToggleCart }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
@@ -30,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({ cart }) => {
               NS
             </div>
             <Badge variant="destructive" className="absolute -top-2 -right-2 text-xs px-1.5">
-              21+
+              18+
             </Badge>
           </div>
           <span className="text-2xl font-black text-cyber animate-neon-pulse">
@@ -58,6 +59,7 @@ const Header: React.FC<HeaderProps> = ({ cart }) => {
             variant="outline"
             size="sm"
             className="cyber-border relative"
+            onClick={onToggleCart}
           >
             <ShoppingCart className="w-4 h-4 mr-2" />
             Panier
