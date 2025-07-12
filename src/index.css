@@ -109,6 +109,23 @@
   .cyber-border:hover::before {
     opacity: 1;
   }
+
+  /* Performance optimizations for mobile */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Réduire les animations sur mobile */
+  @media (max-width: 768px) {
+    .animate-float {
+      animation: none;
+    }
+    
+    .retro-gradient {
+      animation: none;
+      background: linear-gradient(135deg, var(--neon-red), var(--retro-gold));
+    }
+  }
 }
 
 @keyframes retroShift {
@@ -116,35 +133,9 @@
   50% { background-position: 100% 50%; }
 }
 
-@keyframes neonPulse {
-  0%, 100% { 
-    text-shadow: 0 0 5px var(--neon-red), 0 0 10px var(--neon-red), 0 0 15px var(--neon-red);
-  }
-  50% { 
-    text-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red), 0 0 30px var(--neon-red);
-  }
-}
-
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 10px var(--neon-red); }
-  50% { box-shadow: 0 0 20px var(--neon-red), 0 0 30px var(--electric-red); }
-}
-
-.animate-neon-pulse {
-  animation: neonPulse 2s ease-in-out infinite;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-glow {
-  animation: glow 2s ease-in-out infinite;
+  50% { transform: translateY(-5px); }
 }
 
 .text-cyber {
@@ -154,29 +145,11 @@
   background-clip: text;
 }
 
-.hologram-effect {
-  position: relative;
-  overflow: hidden;
+/* Optimisations de performance */
+.will-change-transform {
+  will-change: transform;
 }
 
-.hologram-effect::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(from 0deg, transparent, var(--neon-red), transparent);
-  opacity: 0;
-  animation: holoRotate 3s linear infinite;
-  transition: opacity 0.5s ease;
-}
-
-.hologram-effect:hover::before {
-  opacity: 0.1;
-}
-
-@keyframes holoRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.gpu-acceleration {
+  transform: translateZ(0);
 }

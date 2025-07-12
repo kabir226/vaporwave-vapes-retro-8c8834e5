@@ -11,58 +11,58 @@ interface AgeVerificationModalProps {
 
 const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onConfirm, onDeny }) => {
   return (
-    <div className="fixed inset-0 bg-black/95 backdrop-blur-xl flex items-center justify-center z-[9999] p-4">
-      <div className="absolute inset-0 bg-gradient-to-br from-red-900/20 via-black to-yellow-900/20" />
+    <div className="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
+      <div className="absolute inset-0 bg-gradient-to-br from-red-900/10 via-black to-yellow-900/10" />
       
-      <Card className="relative max-w-md w-full bg-glass border-primary cyber-border animate-glow">
+      <Card className="relative max-w-md w-full bg-card/90 border-primary backdrop-blur-md">
         <CardHeader className="text-center pb-4">
           <div className="flex justify-center mb-4">
             <div className="relative">
-              <Shield className="w-16 h-16 text-primary animate-neon-pulse" />
-              <div className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
-                21+
+              <Shield className="w-12 h-12 text-primary" />
+              <div className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                18+
               </div>
             </div>
           </div>
           
-          <CardTitle className="text-2xl font-black text-cyber">
+          <CardTitle className="text-xl font-black text-primary">
             VÉRIFICATION D'ÂGE
           </CardTitle>
         </CardHeader>
         
-        <CardContent className="space-y-6">
-          <div className="text-center space-y-4">
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Ce site contient des produits destinés uniquement aux adultes de <strong className="text-primary">21 ans et plus</strong>. 
-              Les produits vendus peuvent contenir de la nicotine, une substance hautement addictive.
+        <CardContent className="space-y-4">
+          <div className="text-center space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Ce site contient des produits destinés uniquement aux adultes de <strong className="text-primary">18 ans et plus</strong>. 
+              Les produits vendus peuvent contenir de la nicotine.
             </p>
             
-            <div className="bg-destructive/20 border border-destructive/50 rounded-lg p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <AlertTriangle className="w-5 h-5 text-destructive" />
-                <span className="text-lg font-bold text-destructive">AVEZ-VOUS 21 ANS OU PLUS ?</span>
+            <div className="bg-destructive/20 border border-destructive/50 rounded-lg p-3">
+              <div className="flex items-center gap-2 mb-1">
+                <AlertTriangle className="w-4 h-4 text-destructive" />
+                <span className="text-sm font-bold text-destructive">AVEZ-VOUS 18 ANS OU PLUS ?</span>
               </div>
             </div>
           </div>
           
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <Button 
               onClick={onConfirm}
-              className="flex-1 retro-gradient text-black font-bold py-3 hover:scale-105 transition-transform"
+              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-2"
             >
-              OUI, J'AI 21 ANS+
+              OUI, J'AI 18 ANS+
             </Button>
             <Button 
               onClick={onDeny}
               variant="outline"
-              className="flex-1 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground py-3"
+              className="flex-1 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground py-2"
             >
               NON
             </Button>
           </div>
           
-          <p className="text-xs text-muted-foreground text-center italic">
-            Conforme à la législation Tobacco 21 - La vente de produits du tabac aux mineurs est strictement interdite
+          <p className="text-xs text-muted-foreground text-center">
+            Vente interdite aux mineurs - Produits pouvant contenir de la nicotine
           </p>
         </CardContent>
       </Card>
