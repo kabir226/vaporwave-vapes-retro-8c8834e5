@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { AlertTriangle } from 'lucide-react';
@@ -11,18 +10,30 @@ import Footer from '@/components/Footer';
 import QuickActions from '@/components/QuickActions';
 import CartSummary from '@/components/CartSummary';
 import HeroSection from '@/components/HeroSection';
+import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
   const [cart, setCart] = useState([]);
   const [isAgeVerified, setIsAgeVerified] = useState(false);
-  const [showAgeModal, setShowAgeModal] = useState(true);
+  const [showAgeModal, setShowAgeModal] = useState(false);
   const [showCart, setShowCart] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
+    // Vérification plus stricte de l'âge
     const verified = localStorage.getItem('ageVerified');
-    if (verified === 'true') {
+    const verificationDate = localStorage.getItem('ageVerificationDate');
+    const today = new Date().toDateString();
+    
+    if (verified === 'true' && verificationDate === today) {
       setIsAgeVerified(true);
       setShowAgeModal(false);
+    } else {
+      // Réinitialiser si c'est un nouveau jour
+      localStorage.removeItem('ageVerified');
+      localStorage.removeItem('ageVerificationDate');
+      setIsAgeVerified(false);
+      setShowAgeModal(true);
     }
   }, []);
 
@@ -34,7 +45,9 @@ const Index = () => {
       price: 39.99,
       icon: "💨",
       category: "vapes",
-      features: ["Batterie 2000mAh", "Design élégant", "Vapeur dense"]
+      features: ["Batterie 2000mAh", "Design élégant", "Vapeur dense"],
+      stock: 15,
+      rating: 4.8
     },
     {
       id: 2,
@@ -43,7 +56,9 @@ const Index = () => {
       price: 12.99,
       icon: "💧",
       category: "eliquids",
-      features: ["Saveurs naturelles", "Sans diacétyle", "Qualité premium"]
+      features: ["Saveurs naturelles", "Sans diacétyle", "Qualité premium"],
+      stock: 28,
+      rating: 4.9
     },
     {
       id: 3,
@@ -52,7 +67,9 @@ const Index = () => {
       price: 16.99,
       icon: "🍬",
       category: "gums",
-      features: ["Libération contrôlée", "Discrets", "Effet progressif"]
+      features: ["Libération contrôlée", "Discrets", "Effet progressif"],
+      stock: 22,
+      rating: 4.7
     },
     {
       id: 4,
@@ -61,7 +78,10 @@ const Index = () => {
       price: 59.99,
       icon: "📦",
       category: "packs",
-      features: ["Kit complet", "Guide inclus", "Prix avantageux"]
+      features: ["Kit complet", "Guide inclus", "Prix avantageux"],
+      stock: 8,
+      rating: 5.0,
+      isPopular: true
     }
   ];
 
@@ -87,10 +107,18 @@ const Index = () => {
     setCart(prev => {
       const existing = prev.find(item => item.id === product.id);
       if (existing) {
+        toast({
+          title: "Produit ajouté",
+          description: `${product.name} - Quantité mise à jour`,
+        });
         return prev.map(item => 
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
+      toast({
+        title: "Produit ajouté au panier",
+        description: `${product.name} a été ajouté à votre panier`,
+      });
       return [...prev, { ...product, quantity: 1 }];
     });
   };
@@ -98,6 +126,10 @@ const Index = () => {
   const updateQuantity = (id, quantity) => {
     if (quantity === 0) {
       setCart(prev => prev.filter(item => item.id !== id));
+      toast({
+        title: "Produit retiré",
+        description: "Le produit a été retiré de votre panier",
+      });
     } else {
       setCart(prev => prev.map(item => 
         item.id === id ? { ...item, quantity } : item
@@ -107,19 +139,29 @@ const Index = () => {
 
   const removeItem = (id) => {
     setCart(prev => prev.filter(item => item.id !== id));
+    toast({
+      title: "Produit retiré",
+      description: "Le produit a été retiré de votre panier",
+    });
   };
 
   const confirmAge = () => {
+    const today = new Date().toDateString();
     localStorage.setItem('ageVerified', 'true');
+    localStorage.setItem('ageVerificationDate', today);
     setIsAgeVerified(true);
     setShowAgeModal(false);
+    toast({
+      title: "Bienvenue sur No-Smoking",
+      description: "Découvrez notre collection premium",
+    });
   };
 
   const denyAge = () => {
     window.location.href = 'https://www.google.com';
   };
 
-  if (!isAgeVerified && showAgeModal) {
+  if (!isAgeVerified || showAgeModal) {
     return <AgeVerificationModal onConfirm={confirmAge} onDeny={denyAge} />;
   }
 
@@ -129,20 +171,19 @@ const Index = () => {
       
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
 
-      {/* Hero Section avec média inspiré de Nike/Apple */}
       <HeroSection 
         onDiscoverProducts={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
         onToggleCart={() => setShowCart(true)}
         cartItemsCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
       />
 
-      {/* Cart Modal */}
+      {/* Cart Modal amélioré */}
       {showCart && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="relative">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="relative animate-scale-in">
             <button
               onClick={() => setShowCart(false)}
-              className="absolute -top-2 -right-2 z-10 bg-background border rounded-full w-8 h-8 flex items-center justify-center hover:bg-muted"
+              className="absolute -top-2 -right-2 z-10 bg-background border rounded-full w-8 h-8 flex items-center justify-center hover:bg-muted transition-colors shadow-lg"
             >
               ✕
             </button>
@@ -155,19 +196,22 @@ const Index = () => {
         </div>
       )}
 
-      {/* Products Section */}
-      <section id="products" className="py-16 px-4 relative">
+      {/* Products Section améliorée */}
+      <section id="products" className="py-20 px-4 relative">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black mb-4 text-cyber">
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="mb-4 border-primary text-primary">
+              Collection Premium
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-black mb-6 text-cyber">
               NOS PRODUITS
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Une gamme soigneusement sélectionnée pour vous accompagner
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Une gamme soigneusement sélectionnée pour vous accompagner dans votre transition
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {products.map((product, index) => (
               <ProductCard 
                 key={product.id} 
@@ -177,28 +221,66 @@ const Index = () => {
               />
             ))}
           </div>
+          
+          {/* CTA Section */}
+          <div className="text-center mt-16">
+            <p className="text-lg text-muted-foreground mb-6">
+              Vous ne trouvez pas ce que vous cherchez ?
+            </p>
+            <button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full font-bold transition-all hover:scale-105">
+              Voir toute la collection
+            </button>
+          </div>
         </div>
       </section>
 
-      {/* Quick Actions */}
       <QuickActions />
 
-      {/* Testimonials Section */}
-      <section className="py-16 px-4 bg-card/20">
+      {/* Testimonials Section améliorée */}
+      <section className="py-20 px-4 bg-card/20 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-black mb-4 text-cyber">
-              AVIS CLIENTS
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="mb-4 border-secondary text-secondary">
+              Avis clients
+            </Badge>
+            <h2 className="text-4xl font-black mb-4 text-cyber">
+              ILS NOUS FONT CONFIANCE
             </h2>
+            <p className="text-lg text-muted-foreground">
+              Plus de 10,000 clients satisfaits
+            </p>
           </div>
           <TestimonialCarousel testimonials={testimonials} />
         </div>
       </section>
 
-      {/* Age Warning Banner */}
+      {/* Trust indicators */}
+      <section className="py-16 px-4 border-t border-border">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div className="space-y-2">
+              <div className="text-3xl">🚚</div>
+              <h3 className="font-bold">Livraison Express</h3>
+              <p className="text-sm text-muted-foreground">24-48h partout en France</p>
+            </div>
+            <div className="space-y-2">
+              <div className="text-3xl">🔒</div>
+              <h3 className="font-bold">Paiement Sécurisé</h3>
+              <p className="text-sm text-muted-foreground">SSL & cryptage bancaire</p>
+            </div>
+            <div className="space-y-2">
+              <div className="text-3xl">💎</div>
+              <h3 className="font-bold">Qualité Premium</h3>
+              <p className="text-sm text-muted-foreground">Produits certifiés</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Age Warning Banner fixe */}
       <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-40">
-        <Badge variant="destructive" className="px-3 py-1 text-xs">
-          <AlertTriangle className="w-3 h-3 mr-1" />
+        <Badge variant="destructive" className="px-4 py-2 text-sm shadow-lg animate-pulse">
+          <AlertTriangle className="w-4 h-4 mr-2" />
           Vente interdite aux moins de 18 ans
         </Badge>
       </div>
