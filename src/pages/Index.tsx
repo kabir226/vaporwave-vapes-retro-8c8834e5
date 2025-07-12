@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { AlertTriangle } from 'lucide-react';
 import AgeVerificationModal from '@/components/AgeVerificationModal';
 import ProductCard from '@/components/ProductCard';
@@ -11,6 +10,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import QuickActions from '@/components/QuickActions';
 import CartSummary from '@/components/CartSummary';
+import HeroSection from '@/components/HeroSection';
 
 const Index = () => {
   const [cart, setCart] = useState([]);
@@ -129,55 +129,23 @@ const Index = () => {
       
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
 
-      {/* Hero Section - Simplifié pour mobile */}
-      <section className="relative min-h-[80vh] flex items-center justify-center px-4 pt-20">
-        <div className="relative z-10 text-center max-w-4xl mx-auto">
-          <Badge variant="outline" className="mb-4 border-primary text-primary">
-            🔞 RÉSERVÉ AUX PLUS DE 18 ANS
-          </Badge>
-          
-          <h1 className="text-4xl md:text-7xl font-black mb-6 text-cyber">
-            NO-SMOKING
-          </h1>
-          
-          <p className="text-lg md:text-xl mb-8 text-muted-foreground max-w-2xl mx-auto">
-            Vapes, E-liquides & Gums Premium
-            <br />
-            <span className="text-retro-gold">Une alternative moderne pour une vie sans fumée</span>
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-8 py-3"
-              onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              DÉCOUVRIR LES PRODUITS
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3"
-              onClick={() => setShowCart(true)}
-            >
-              VOIR LE PANIER ({cart.reduce((sum, item) => sum + item.quantity, 0)})
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section avec média inspiré de Nike/Apple */}
+      <HeroSection 
+        onDiscoverProducts={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
+        onToggleCart={() => setShowCart(true)}
+        cartItemsCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
+      />
 
       {/* Cart Modal */}
       {showCart && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="relative">
-            <Button
-              variant="ghost"
-              size="sm"
+            <button
               onClick={() => setShowCart(false)}
-              className="absolute -top-2 -right-2 z-10 bg-background border"
+              className="absolute -top-2 -right-2 z-10 bg-background border rounded-full w-8 h-8 flex items-center justify-center hover:bg-muted"
             >
               ✕
-            </Button>
+            </button>
             <CartSummary 
               cart={cart} 
               onUpdateQuantity={updateQuantity}

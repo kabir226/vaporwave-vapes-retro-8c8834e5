@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Menu, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import Logo from './Logo';
 
 interface HeaderProps {
   cart: any[];
@@ -11,45 +13,52 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ cart, onToggleCart }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
   
   const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   const navItems = [
-    { href: '#vapes', label: 'Vapes' },
-    { href: '#eliquids', label: 'E-liquides' },
-    { href: '#gums', label: 'Gums' },
-    { href: '#contact', label: 'Contact' }
+    { href: '/', label: 'Accueil' },
+    { href: '/shop', label: 'Boutique' },
+    { href: '/about', label: 'À propos' },
+    { href: '/contact', label: 'Contact' }
   ];
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-border">
       <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-4">
+        <Link to="/" className="flex items-center gap-3 group">
           <div className="relative">
-            <div className="w-12 h-12 retro-gradient rounded-full flex items-center justify-center font-black text-black animate-glow">
-              NS
-            </div>
+            <Logo className="w-10 h-10 group-hover:scale-110 transition-transform" />
             <Badge variant="destructive" className="absolute -top-2 -right-2 text-xs px-1.5">
               18+
             </Badge>
           </div>
-          <span className="text-2xl font-black text-cyber animate-neon-pulse">
+          <span className="text-2xl font-black text-cyber">
             NO-SMOKING
           </span>
-        </div>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
           {navItems.map((item) => (
-            <a 
+            <Link 
               key={item.href}
-              href={item.href}
-              className="text-muted-foreground hover:text-primary transition-colors font-medium relative group"
+              to={item.href}
+              className={`font-medium relative group transition-colors ${
+                isActive(item.href) 
+                  ? 'text-primary' 
+                  : 'text-muted-foreground hover:text-primary'
+              }`}
             >
               {item.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
-            </a>
+              <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all ${
+                isActive(item.href) ? 'w-full' : 'w-0 group-hover:w-full'
+              }`} />
+            </Link>
           ))}
         </nav>
 
@@ -87,14 +96,18 @@ const Header: React.FC<HeaderProps> = ({ cart, onToggleCart }) => {
         <div className="md:hidden bg-background/95 backdrop-blur-xl border-t border-border">
           <nav className="px-4 py-4 space-y-2">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.href}
-                href={item.href}
-                className="block py-2 px-4 text-muted-foreground hover:text-primary hover:bg-muted rounded-lg transition-colors"
+                to={item.href}
+                className={`block py-2 px-4 rounded-lg transition-colors ${
+                  isActive(item.href)
+                    ? 'text-primary bg-primary/10'
+                    : 'text-muted-foreground hover:text-primary hover:bg-muted'
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>
