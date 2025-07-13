@@ -13,6 +13,10 @@ interface Product {
   icon: string;
   category: string;
   features: string[];
+  stock?: number;
+  rating?: number;
+  isPopular?: boolean;
+  inStock?: boolean;
 }
 
 interface ProductCardProps {
@@ -28,6 +32,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
       style={{ animationDelay: `${delay}s` }}
     >
       <CardContent className="p-6 relative z-10">
+        {/* Popular Badge */}
+        {product.isPopular && (
+          <Badge className="absolute top-4 right-4 bg-retro-gold text-black font-bold animate-pulse">
+            POPULAIRE
+          </Badge>
+        )}
+
         {/* Product Icon */}
         <div className="text-center mb-6">
           <div className="text-6xl mb-4 animate-float group-hover:scale-110 transition-transform duration-300">
@@ -58,6 +69,25 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
             ))}
           </div>
 
+          {/* Rating */}
+          {product.rating && (
+            <div className="flex justify-center items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className={`w-4 h-4 ${
+                    i < Math.floor(product.rating!) 
+                      ? 'text-yellow-400 fill-current' 
+                      : 'text-gray-300'
+                  }`}
+                />
+              ))}
+              <span className="text-sm text-muted-foreground ml-1">
+                {product.rating}
+              </span>
+            </div>
+          )}
+
           {/* Price */}
           <div className="text-center">
             <div className="text-3xl font-black text-primary animate-neon-pulse">
@@ -65,13 +95,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
             </div>
           </div>
 
-          {/* Add to Cart Button */}
+          {/* Add to Cart Button avec animation */}
           <Button
             onClick={() => onAddToCart(product)}
-            className="w-full retro-gradient text-black font-bold py-3 hover:scale-105 transition-transform duration-300 group-hover:shadow-lg"
+            className="w-full retro-gradient text-black font-bold py-3 hover:scale-105 active:scale-95 transition-all duration-300 group-hover:shadow-lg transform hover:animate-bounce"
+            disabled={!product.inStock}
           >
-            <ShoppingCart className="w-4 h-4 mr-2" />
-            AJOUTER AU PANIER
+            <ShoppingCart className="w-4 h-4 mr-2 animate-pulse" />
+            {product.inStock ? 'AJOUTER AU PANIER' : 'RUPTURE DE STOCK'}
           </Button>
         </div>
       </CardContent>

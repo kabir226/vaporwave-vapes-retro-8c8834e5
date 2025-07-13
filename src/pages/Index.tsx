@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, Search, ShoppingCart, Star } from 'lucide-react';
 import AgeVerificationModal from '@/components/AgeVerificationModal';
 import ProductCard from '@/components/ProductCard';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
@@ -10,6 +11,8 @@ import Footer from '@/components/Footer';
 import QuickActions from '@/components/QuickActions';
 import CartSummary from '@/components/CartSummary';
 import HeroSection from '@/components/HeroSection';
+import SearchBar from '@/components/SearchBar';
+import StockIndicator from '@/components/StockIndicator';
 import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
@@ -17,6 +20,8 @@ const Index = () => {
   const [isAgeVerified, setIsAgeVerified] = useState(false);
   const [showAgeModal, setShowAgeModal] = useState(false);
   const [showCart, setShowCart] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -47,7 +52,8 @@ const Index = () => {
       category: "vapes",
       features: ["Batterie 2000mAh", "Design élégant", "Vapeur dense"],
       stock: 15,
-      rating: 4.8
+      rating: 4.8,
+      inStock: true
     },
     {
       id: 2,
@@ -58,7 +64,8 @@ const Index = () => {
       category: "eliquids",
       features: ["Saveurs naturelles", "Sans diacétyle", "Qualité premium"],
       stock: 28,
-      rating: 4.9
+      rating: 4.9,
+      inStock: true
     },
     {
       id: 3,
@@ -69,7 +76,8 @@ const Index = () => {
       category: "gums",
       features: ["Libération contrôlée", "Discrets", "Effet progressif"],
       stock: 22,
-      rating: 4.7
+      rating: 4.7,
+      inStock: true
     },
     {
       id: 4,
@@ -81,7 +89,8 @@ const Index = () => {
       features: ["Kit complet", "Guide inclus", "Prix avantageux"],
       stock: 8,
       rating: 5.0,
-      isPopular: true
+      isPopular: true,
+      inStock: true
     }
   ];
 
@@ -102,6 +111,20 @@ const Index = () => {
       rating: 5
     }
   ];
+
+  // Filtrage des produits
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      setFilteredProducts(products);
+    } else {
+      const filtered = products.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+    }
+  }, [searchQuery]);
 
   const addToCart = (product) => {
     setCart(prev => {
@@ -151,10 +174,7 @@ const Index = () => {
     localStorage.setItem('ageVerificationDate', today);
     setIsAgeVerified(true);
     setShowAgeModal(false);
-    toast({
-      title: "Bienvenue sur No-Smoking",
-      description: "Découvrez notre collection premium",
-    });
+    // Retirer la notification de bienvenue automatique
   };
 
   const denyAge = () => {
@@ -196,6 +216,13 @@ const Index = () => {
         </div>
       )}
 
+      {/* Search Section */}
+      <section className="py-8 px-4">
+        <div className="max-w-2xl mx-auto">
+          <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+        </div>
+      </section>
+
       {/* Products Section améliorée */}
       <section id="products" className="py-20 px-4 relative">
         <div className="max-w-7xl mx-auto">
@@ -212,22 +239,38 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.map((product, index) => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                onAddToCart={addToCart}
-                delay={index * 0.1}
-              />
+            {filteredProducts.map((product, index) => (
+              <div key={product.id} className="group">
+                <ProductCard 
+                  product={product} 
+                  onAddToCart={addToCart}
+                  delay={index * 0.1}
+                />
+                <div className="mt-2 flex justify-between items-center">
+                  <StockIndicator stock={product.stock} inStock={product.inStock} />
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                    <span className="text-sm text-muted-foreground">{product.rating}</span>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
+          
+          {filteredProducts.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-lg text-muted-foreground">
+                Aucun produit trouvé pour "{searchQuery}"
+              </p>
+            </div>
+          )}
           
           {/* CTA Section */}
           <div className="text-center mt-16">
             <p className="text-lg text-muted-foreground mb-6">
               Vous ne trouvez pas ce que vous cherchez ?
             </p>
-            <button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full font-bold transition-all hover:scale-105">
+            <button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full font-bold transition-all hover:scale-105 animate-pulse">
               Voir toute la collection
             </button>
           </div>
@@ -258,17 +301,17 @@ const Index = () => {
       <section className="py-16 px-4 border-t border-border">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="space-y-2">
+            <div className="space-y-2 animate-fade-in">
               <div className="text-3xl">🚚</div>
               <h3 className="font-bold">Livraison Express</h3>
               <p className="text-sm text-muted-foreground">24-48h partout en France</p>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }}>
               <div className="text-3xl">🔒</div>
               <h3 className="font-bold">Paiement Sécurisé</h3>
               <p className="text-sm text-muted-foreground">SSL & cryptage bancaire</p>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.2s' }}>
               <div className="text-3xl">💎</div>
               <h3 className="font-bold">Qualité Premium</h3>
               <p className="text-sm text-muted-foreground">Produits certifiés</p>

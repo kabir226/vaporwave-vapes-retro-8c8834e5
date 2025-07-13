@@ -123,9 +123,22 @@
     animation: slideUp 0.4s ease-out;
   }
 
+  .animate-neon-pulse {
+    animation: neonPulse 2s ease-in-out infinite alternate;
+  }
+
+  .animate-glow {
+    animation: glow 3s ease-in-out infinite alternate;
+  }
+
   /* Performance optimizations for mobile */
   .animate-float {
     animation: float 6s ease-in-out infinite;
+  }
+
+  /* Animation pour les boutons */
+  .animate-cart-bounce {
+    animation: cartBounce 0.6s ease-in-out;
   }
 
   /* Réduire les animations sur mobile */
@@ -164,6 +177,22 @@
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-5px); }
+}
+
+@keyframes neonPulse {
+  from { text-shadow: 0 0 5px var(--neon-red), 0 0 10px var(--neon-red); }
+  to { text-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red), 0 0 30px var(--neon-red); }
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 5px var(--retro-gold); }
+  to { box-shadow: 0 0 15px var(--retro-gold), 0 0 25px var(--retro-gold); }
+}
+
+@keyframes cartBounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
 }
 
 .text-cyber {

@@ -9,16 +9,14 @@ const Footer: React.FC = () => {
     'Mentions légales',
     'Conditions générales',
     'Politique de confidentialité',
-    'Conformité Tobacco 21',
+    'Conformité Tobacco 18',
     'Contact'
   ];
 
   const warnings = [
-    "La vente de produits du tabac est strictement interdite aux personnes de moins de 21 ans",
+    "La vape est strictement interdite aux personnes de moins de 18 ans",
     "Nos produits contiennent de la nicotine, une substance hautement addictive",
-    "L'utilisation par les non-fumeurs n'est pas recommandée",
-    "Les femmes enceintes ou allaitantes doivent éviter toute consommation de nicotine",
-    "Consultez un professionnel de santé avant utilisation si vous avez des problèmes médicaux"
+    "Ne vapotez pas si vous ne fumez pas"
   ];
 
   return (
@@ -54,7 +52,7 @@ const Footer: React.FC = () => {
             </div>
             
             <p className="text-sm mb-4 text-foreground">
-              Conforme à la législation Tobacco 21 :
+              Conforme à la législation française :
             </p>
             
             <ul className="space-y-2">
@@ -89,7 +87,7 @@ const Footer: React.FC = () => {
             © 2025 No-Smoking. Tous droits réservés.
             <br />
             <span className="text-xs">
-              Site réservé aux personnes majeures de 21 ans et plus • Vente interdite aux mineurs
+              Site réservé aux personnes majeures de 18 ans et plus • Vente interdite aux mineurs
             </span>
           </p>
         </div>
@@ -99,7 +97,7 @@ const Footer: React.FC = () => {
           <div className="flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-4 py-2">
             <Shield className="w-5 h-5 text-primary" />
             <span className="text-xs font-semibold text-primary">
-              CONFORME TOBACCO 21
+              CONFORME LÉGISLATION 18+
             </span>
           </div>
         </div>
