@@ -1,13 +1,22 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Star, Quote, User } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface Testimonial {
   content: string;
   author: string;
   rating: number;
+  location?: string;
+  verified?: boolean;
 }
 
 interface TestimonialCarouselProps {
@@ -15,81 +24,77 @@ interface TestimonialCarouselProps {
 }
 
 const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testimonials }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [testimonials.length]);
-
-  const goToPrevious = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
-  const goToNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-  };
-
   return (
-    <div className="relative max-w-4xl mx-auto">
-      <Card className="bg-glass border-primary cyber-border min-h-[300px]">
-        <CardContent className="p-8 flex flex-col justify-center text-center">
-          <Quote className="w-12 h-12 text-primary mx-auto mb-6 animate-pulse" />
-          
-          <blockquote className="text-lg md:text-xl font-medium mb-6 text-foreground leading-relaxed">
-            "{testimonials[currentIndex].content}"
-          </blockquote>
-          
-          <div className="flex justify-center mb-4">
-            {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-              <Star key={i} className="w-5 h-5 text-retro-gold fill-current" />
-            ))}
-          </div>
-          
-          <cite className="text-primary font-semibold">
-            {testimonials[currentIndex].author}
-          </cite>
-        </CardContent>
-      </Card>
-
-      {/* Navigation */}
-      <div className="flex justify-center gap-4 mt-6">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={goToPrevious}
-          className="cyber-border"
-        >
-          <ChevronLeft className="w-4 h-4" />
-        </Button>
-        
-        <div className="flex gap-2 items-center">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`w-3 h-3 rounded-full transition-all ${
-                index === currentIndex 
-                  ? 'bg-primary animate-pulse' 
-                  : 'bg-muted-foreground/50 hover:bg-muted-foreground'
-              }`}
-            />
-          ))}
+    <section className="py-20 px-4 bg-card/20 backdrop-blur-sm">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-16">
+          <Badge variant="outline" className="mb-4 border-secondary text-secondary">
+            Témoignages clients
+          </Badge>
+          <h2 className="text-4xl font-black mb-4 text-cyber">
+            ILS NOUS FONT CONFIANCE
+          </h2>
+          <p className="text-lg text-muted-foreground">
+            Plus de 10,000 clients satisfaits à travers la France
+          </p>
         </div>
         
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={goToNext}
-          className="cyber-border"
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
         >
-          <ChevronRight className="w-4 h-4" />
-        </Button>
+          <CarouselContent>
+            {testimonials.map((testimonial, index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <Card className="bg-glass border-primary/20 hover:border-primary transition-all duration-300 h-full">
+                  <CardContent className="p-6 flex flex-col h-full">
+                    <div className="flex items-center justify-between mb-4">
+                      <Quote className="w-8 h-8 text-primary opacity-50" />
+                      {testimonial.verified && (
+                        <Badge variant="outline" className="text-xs border-green-500 text-green-500">
+                          ✓ Vérifié
+                        </Badge>
+                      )}
+                    </div>
+                    
+                    <blockquote className="text-foreground mb-6 flex-grow leading-relaxed">
+                      "{testimonial.content}"
+                    </blockquote>
+                    
+                    <div className="flex justify-center mb-4">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 text-retro-gold fill-current" />
+                      ))}
+                    </div>
+                    
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+                        <User className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <cite className="text-primary font-semibold text-sm block">
+                          {testimonial.author}
+                        </cite>
+                        {testimonial.location && (
+                          <span className="text-xs text-muted-foreground">
+                            {testimonial.location}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="hidden md:flex" />
+          <CarouselNext className="hidden md:flex" />
+        </Carousel>
       </div>
-    </div>
+    </section>
   );
 };
 

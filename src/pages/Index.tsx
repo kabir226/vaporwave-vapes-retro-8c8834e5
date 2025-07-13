@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { AlertTriangle, Search, ShoppingCart, Star } from 'lucide-react';
+import { AlertTriangle, Star } from 'lucide-react';
 import AgeVerificationModal from '@/components/AgeVerificationModal';
 import ProductCard from '@/components/ProductCard';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
@@ -13,6 +12,10 @@ import CartSummary from '@/components/CartSummary';
 import HeroSection from '@/components/HeroSection';
 import SearchBar from '@/components/SearchBar';
 import StockIndicator from '@/components/StockIndicator';
+import CategoryCarousel from '@/components/CategoryCarousel';
+import TrendingProducts from '@/components/TrendingProducts';
+import ProductFilters from '@/components/ProductFilters';
+import CartAnimation from '@/components/CartAnimation';
 import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
@@ -22,6 +25,9 @@ const Index = () => {
   const [showCart, setShowCart] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filters, setFilters] = useState({ category: 'all', priceRange: 'all', sortBy: 'popular' });
+  const [showCartAnimation, setShowCartAnimation] = useState(false);
+  const [lastAddedProduct, setLastAddedProduct] = useState(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -94,56 +100,198 @@ const Index = () => {
     }
   ];
 
-  const testimonials = [
+  const categories = [
     {
-      content: "Excellente qualité et livraison rapide. Le service client est très réactif.",
-      author: "Marc L., Paris",
-      rating: 5
+      id: 1,
+      name: "Vapes Premium",
+      description: "Découvrez notre gamme de vapes haut de gamme avec des performances exceptionnelles.",
+      image: "💨",
+      count: 24,
+      featured: true
     },
     {
-      content: "Les gums m'ont vraiment aidé à réduire ma consommation. Très satisfaite.",
-      author: "Sophie D., Lyon", 
-      rating: 5
+      id: 2,
+      name: "E-Liquides",
+      description: "Large sélection de saveurs premium créées par nos maîtres artisans.",
+      image: "💧",
+      count: 156
     },
     {
-      content: "Produits de qualité avec un design soigné. Je recommande.",
-      author: "Thomas P., Bordeaux",
-      rating: 5
+      id: 3,
+      name: "Kits Débutants",
+      description: "Kits complets parfaits pour commencer votre transition en douceur.",
+      image: "📦",
+      count: 12
+    },
+    {
+      id: 4,
+      name: "Gums Nicotinés",
+      description: "Alternative discrète et pratique pour gérer votre consommation.",
+      image: "🍬",
+      count: 18
+    },
+    {
+      id: 5,
+      name: "Accessoires",
+      description: "Tous les accessoires pour optimiser votre expérience vape.",
+      image: "🔧",
+      count: 89
     }
   ];
 
-  // Filtrage des produits
+  const trendingProducts = [
+    {
+      id: 101,
+      name: "Vapouriz Premium Blackcurrant E-Liquid 10ml",
+      description: "Saveur cassis intense avec finition premium. Ratio PG/VG optimisé.",
+      price: 2.50,
+      originalPrice: 3.99,
+      image: "💜",
+      rating: 4.8,
+      reviews: 124,
+      badge: "OFFRE -37%",
+      inStock: true
+    },
+    {
+      id: 102,
+      name: "Bar Juice 5000 Triple Mango 10ml",
+      description: "Triple concentration de mangue tropicale pour une explosion de saveurs.",
+      price: 3.99,
+      image: "🥭",
+      rating: 4.9,
+      reviews: 89,
+      inStock: true
+    },
+    {
+      id: 103,
+      name: "Pod Kit Starter Premium",
+      description: "Kit de démarrage complet avec 2 pods et chargeur rapide inclus.",
+      price: 24.99,
+      originalPrice: 29.99,
+      image: "📱",
+      rating: 4.7,
+      reviews: 203,
+      badge: "NOUVEAU",
+      inStock: true
+    },
+    {
+      id: 104,
+      name: "Mix & Match 4 E-Liquides",
+      description: "Choisissez 4 e-liquides parmi notre sélection premium à prix avantageux.",
+      price: 10.00,
+      originalPrice: 15.96,
+      image: "🌈",
+      rating: 4.6,
+      reviews: 67,
+      badge: "PACK",
+      inStock: true
+    }
+  ];
+
+  const testimonials = [
+    {
+      content: "Service client exceptionnel et livraison ultra rapide. Les produits sont de qualité premium, je recommande vivement !",
+      author: "Marc Lebreton",
+      rating: 5,
+      location: "Paris",
+      verified: true
+    },
+    {
+      content: "Les gums m'ont vraiment aidé à réduire ma consommation progressivement. Approche bienveillante et efficace.",
+      author: "Sophie Dubois", 
+      rating: 5,
+      location: "Lyon",
+      verified: true
+    },
+    {
+      content: "Excellent choix de produits avec un design soigné. L'équipe connaît vraiment son domaine.",
+      author: "Thomas Petit",
+      rating: 5,
+      location: "Bordeaux",
+      verified: true
+    },
+    {
+      content: "Transition réussie grâce à leurs conseils personnalisés. Site sécurisé et fiable, parfait !",
+      author: "Marie Curie",
+      rating: 5,
+      location: "Marseille",
+      verified: true
+    }
+  ];
+
   useEffect(() => {
-    if (searchQuery.trim() === '') {
-      setFilteredProducts(products);
-    } else {
-      const filtered = products.filter(product =>
+    let filtered = products;
+
+    // Filtrage par recherche
+    if (searchQuery.trim() !== '') {
+      filtered = filtered.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.category.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      setFilteredProducts(filtered);
     }
-  }, [searchQuery]);
+
+    // Filtrage par catégorie
+    if (filters.category !== 'all') {
+      filtered = filtered.filter(product => product.category === filters.category);
+    }
+
+    // Filtrage par prix
+    if (filters.priceRange !== 'all') {
+      const [min, max] = filters.priceRange.split('-').map(p => p === '+' ? Infinity : parseFloat(p));
+      filtered = filtered.filter(product => {
+        if (max === undefined) return product.price >= min;
+        return product.price >= min && product.price <= max;
+      });
+    }
+
+    // Tri
+    switch (filters.sortBy) {
+      case 'price-low':
+        filtered.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        filtered.sort((a, b) => b.price - a.price);
+        break;
+      case 'rating':
+        filtered.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'newest':
+        filtered.sort((a, b) => b.id - a.id);
+        break;
+      default: // popular
+        filtered.sort((a, b) => (b.isPopular ? 1 : 0) - (a.isPopular ? 1 : 0));
+    }
+
+    setFilteredProducts(filtered);
+  }, [searchQuery, filters]);
 
   const addToCart = (product) => {
-    setCart(prev => {
-      const existing = prev.find(item => item.id === product.id);
-      if (existing) {
-        toast({
-          title: "Produit ajouté",
-          description: `${product.name} - Quantité mise à jour`,
-        });
-        return prev.map(item => 
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-      toast({
-        title: "Produit ajouté au panier",
-        description: `${product.name} a été ajouté à votre panier`,
+    setLastAddedProduct(product);
+    setShowCartAnimation(true);
+    
+    setTimeout(() => {
+      setCart(prev => {
+        const existing = prev.find(item => item.id === product.id);
+        if (existing) {
+          return prev.map(item => 
+            item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          );
+        }
+        return [...prev, { ...product, quantity: 1 }];
       });
-      return [...prev, { ...product, quantity: 1 }];
-    });
+    }, 800);
+  };
+
+  const handleCartAnimationComplete = () => {
+    setShowCartAnimation(false);
+    if (lastAddedProduct) {
+      toast({
+        title: "✨ Produit ajouté !",
+        description: `${lastAddedProduct.name} est maintenant dans votre panier`,
+        duration: 3000,
+      });
+    }
   };
 
   const updateQuantity = (id, quantity) => {
@@ -197,7 +345,14 @@ const Index = () => {
         cartItemsCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
       />
 
-      {/* Cart Modal amélioré */}
+      {/* Cart Animation */}
+      <CartAnimation 
+        isVisible={showCartAnimation}
+        onComplete={handleCartAnimationComplete}
+        productName={lastAddedProduct?.name || ''}
+      />
+
+      {/* Cart Modal */}
       {showCart && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
           <div className="relative animate-scale-in">
@@ -216,6 +371,18 @@ const Index = () => {
         </div>
       )}
 
+      {/* Category Carousel */}
+      <CategoryCarousel 
+        categories={categories}
+        title="SHOP BY CATEGORY"
+      />
+
+      {/* Trending Products */}
+      <TrendingProducts 
+        products={trendingProducts}
+        onAddToCart={addToCart}
+      />
+
       {/* Search Section */}
       <section className="py-8 px-4">
         <div className="max-w-2xl mx-auto">
@@ -223,7 +390,17 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Products Section améliorée */}
+      {/* Filters */}
+      <section className="px-4">
+        <div className="max-w-7xl mx-auto">
+          <ProductFilters 
+            onFilterChange={setFilters}
+            productCount={products.length}
+          />
+        </div>
+      </section>
+
+      {/* Products Section */}
       <section id="products" className="py-20 px-4 relative">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -279,23 +456,8 @@ const Index = () => {
 
       <QuickActions />
 
-      {/* Testimonials Section améliorée */}
-      <section className="py-20 px-4 bg-card/20 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <Badge variant="outline" className="mb-4 border-secondary text-secondary">
-              Avis clients
-            </Badge>
-            <h2 className="text-4xl font-black mb-4 text-cyber">
-              ILS NOUS FONT CONFIANCE
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Plus de 10,000 clients satisfaits
-            </p>
-          </div>
-          <TestimonialCarousel testimonials={testimonials} />
-        </div>
-      </section>
+      {/* Testimonials Section */}
+      <TestimonialCarousel testimonials={testimonials} />
 
       {/* Trust indicators */}
       <section className="py-16 px-4 border-t border-border">
@@ -320,7 +482,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Age Warning Banner fixe */}
+      {/* Age Warning Banner */}
       <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-40">
         <Badge variant="destructive" className="px-4 py-2 text-sm shadow-lg animate-pulse">
           <AlertTriangle className="w-4 h-4 mr-2" />
