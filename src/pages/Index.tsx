@@ -219,7 +219,7 @@ const Index = () => {
       {/* Search Section */}
       <section className="py-8 px-4">
         <div className="max-w-2xl mx-auto">
-          <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+          <SearchBar onSearch={setSearchQuery} />
         </div>
       </section>
 
@@ -247,7 +247,7 @@ const Index = () => {
                   delay={index * 0.1}
                 />
                 <div className="mt-2 flex justify-between items-center">
-                  <StockIndicator stock={product.stock} inStock={product.inStock} />
+                  <StockIndicator stock={product.stock} />
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 text-yellow-400 fill-current" />
                     <span className="text-sm text-muted-foreground">{product.rating}</span>

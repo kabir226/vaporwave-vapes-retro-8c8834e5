@@ -20,6 +20,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
     onSearch(query);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuery = e.target.value;
+    setQuery(newQuery);
+    onSearch(newQuery); // Real-time search
+  };
+
   const handleClear = () => {
     setQuery('');
     onSearch('');
@@ -32,7 +38,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         <Input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={handleInputChange}
           placeholder={placeholder}
           className="pl-10 pr-10 bg-card/50 border-border focus:border-primary"
         />
