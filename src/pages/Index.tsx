@@ -55,6 +55,8 @@ const Index = () => {
       
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
 
+      <AgeWarningBanner />
+
       <HeroSection 
         onDiscoverProducts={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
         onToggleCart={() => setShowCart(true)}
@@ -111,8 +113,6 @@ const Index = () => {
       <TestimonialCarousel testimonials={testimonials} />
 
       <TrustIndicators />
-
-      <AgeWarningBanner />
 
       <Footer />
     </div>
