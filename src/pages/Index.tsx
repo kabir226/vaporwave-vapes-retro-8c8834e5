@@ -54,8 +54,10 @@ const Index = () => {
       <ParticleBackground />
       
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
+      
+      <AgeWarningBanner />
 
-      <HeroSection 
+      <HeroSection
         onDiscoverProducts={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
         onToggleCart={() => setShowCart(true)}
         cartItemsCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
@@ -111,8 +113,6 @@ const Index = () => {
       <TestimonialCarousel testimonials={testimonials} />
 
       <TrustIndicators />
-
-      <AgeWarningBanner />
 
       <Footer />
     </div>
