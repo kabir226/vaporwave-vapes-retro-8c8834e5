@@ -1,6 +1,13 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface CategorySectionProps {
   categories: Array<{
@@ -20,7 +27,54 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
           ACHETER SNUS PAR CATÉGORIE
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Mobile Carousel */}
+        <div className="md:hidden">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent>
+              {categories.slice(0, 3).map((category) => (
+                <CarouselItem key={category.id}>
+                  <Card 
+                    className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-2 hover:border-primary"
+                  >
+                    <CardContent className="p-0">
+                      <div className="relative aspect-[4/3] bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
+                        <span className="text-6xl opacity-50 group-hover:scale-110 transition-transform">
+                          {category.image}
+                        </span>
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
+                          <p className="text-sm text-muted-foreground mb-2">
+                            {category.description.split(' ').slice(0, 4).join(' ')}...
+                          </p>
+                          <h3 className="text-xl font-bold text-foreground mb-3">
+                            {category.name}
+                          </h3>
+                          <Button 
+                            variant="outline" 
+                            className="bg-background hover:bg-primary hover:text-primary-foreground border-2"
+                          >
+                            ACHETER MAINTENANT
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
+
+        {/* Desktop Grid */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.slice(0, 3).map((category) => (
             <Card 
               key={category.id} 
