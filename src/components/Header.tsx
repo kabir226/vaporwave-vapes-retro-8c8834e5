@@ -27,8 +27,8 @@ const Header: React.FC<HeaderProps> = ({ cart, onToggleCart }) => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+    <header className="sticky top-0 w-full z-50 bg-background/95 backdrop-blur-xl border-b border-border">
+      <div className="max-w-7xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
           <div className="relative">

@@ -1,21 +1,23 @@
 
 import React, { useState } from 'react';
 import AgeVerificationModal from '@/components/AgeVerificationModal';
-import ProductsSection from '@/components/ProductsSection';
-import TestimonialCarousel from '@/components/TestimonialCarousel';
 import ParticleBackground from '@/components/ParticleBackground';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import QuickActions from '@/components/QuickActions';
 import CartModal from '@/components/CartModal';
 import HeroSection from '@/components/HeroSection';
-import SearchBar from '@/components/SearchBar';
-import CategoryCarousel from '@/components/CategoryCarousel';
-import TrendingProducts from '@/components/TrendingProducts';
-import ProductFilters from '@/components/ProductFilters';
 import CartAnimation from '@/components/CartAnimation';
-import TrustIndicators from '@/components/TrustIndicators';
 import AgeWarningBanner from '@/components/AgeWarningBanner';
+import TrustBanner from '@/components/TrustBanner';
+import PromotionalBanner from '@/components/PromotionalBanner';
+import BenefitsSection from '@/components/BenefitsSection';
+import CategorySection from '@/components/CategorySection';
+import BestSellersSection from '@/components/BestSellersSection';
+import SearchBar from '@/components/SearchBar';
+import ProductFilters from '@/components/ProductFilters';
+import ProductsSection from '@/components/ProductsSection';
+import TestimonialCarousel from '@/components/TestimonialCarousel';
+import TrustIndicators from '@/components/TrustIndicators';
 
 import { useCart } from '@/hooks/useCart';
 import { useAgeVerification } from '@/hooks/useAgeVerification';
@@ -53,16 +55,67 @@ const Index = () => {
     <div className="min-h-screen bg-background text-foreground">
       <ParticleBackground />
       
+      {/* Trust Banner - Very Top */}
+      <TrustBanner />
+      
+      {/* Header */}
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
 
+      {/* Promotional Banner */}
+      <PromotionalBanner />
+
+      {/* Age Warning Banner */}
       <AgeWarningBanner />
 
+      {/* Hero Section - Large Image + Content */}
       <HeroSection 
         onDiscoverProducts={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
         onToggleCart={() => setShowCart(true)}
         cartItemsCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
       />
 
+      {/* Benefits Section */}
+      <BenefitsSection />
+
+      {/* Category Section - Shop by Category */}
+      <CategorySection categories={categories} />
+
+      {/* Best Sellers Section */}
+      <BestSellersSection 
+        products={trendingProducts}
+        onAddToCart={handleAddToCart}
+      />
+
+      {/* Search & Filters */}
+      <section className="py-8 px-4" id="products">
+        <div className="max-w-2xl mx-auto mb-6">
+          <SearchBar onSearch={setSearchQuery} />
+        </div>
+        <div className="max-w-7xl mx-auto">
+          <ProductFilters 
+            onFilterChange={setFilters}
+            productCount={products.length}
+          />
+        </div>
+      </section>
+
+      {/* All Products */}
+      <ProductsSection 
+        filteredProducts={filteredProducts}
+        searchQuery={searchQuery}
+        onAddToCart={handleAddToCart}
+      />
+
+      {/* Testimonials */}
+      <TestimonialCarousel testimonials={testimonials} />
+
+      {/* Trust Indicators */}
+      <TrustIndicators />
+
+      {/* Footer */}
+      <Footer />
+
+      {/* Modals & Animations */}
       <CartAnimation 
         isVisible={showCartAnimation}
         onComplete={handleCartAnimationComplete}
@@ -76,45 +129,6 @@ const Index = () => {
         onUpdateQuantity={updateQuantity}
         onRemoveItem={removeItem}
       />
-
-      <CategoryCarousel 
-        categories={categories}
-        title="SHOP BY CATEGORY"
-      />
-
-      <TrendingProducts 
-        products={trendingProducts}
-        onAddToCart={handleAddToCart}
-      />
-
-      <section className="py-8 px-4">
-        <div className="max-w-2xl mx-auto">
-          <SearchBar onSearch={setSearchQuery} />
-        </div>
-      </section>
-
-      <section className="px-4">
-        <div className="max-w-7xl mx-auto">
-          <ProductFilters 
-            onFilterChange={setFilters}
-            productCount={products.length}
-          />
-        </div>
-      </section>
-
-      <ProductsSection 
-        filteredProducts={filteredProducts}
-        searchQuery={searchQuery}
-        onAddToCart={handleAddToCart}
-      />
-
-      <QuickActions />
-
-      <TestimonialCarousel testimonials={testimonials} />
-
-      <TrustIndicators />
-
-      <Footer />
     </div>
   );
 };
