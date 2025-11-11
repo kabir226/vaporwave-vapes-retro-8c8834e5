@@ -10,7 +10,6 @@ import CartAnimation from '@/components/CartAnimation';
 import AgeWarningBanner from '@/components/AgeWarningBanner';
 import TrustBanner from '@/components/TrustBanner';
 import PromotionalBanner from '@/components/PromotionalBanner';
-import BenefitsSection from '@/components/BenefitsSection';
 import CategorySection from '@/components/CategorySection';
 import BestSellersSection from '@/components/BestSellersSection';
 import WhySwitchSection from '@/components/WhySwitchSection';
@@ -75,9 +74,6 @@ const Index = () => {
         onToggleCart={() => setShowCart(true)}
         cartItemsCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
       />
-
-      {/* Benefits Section */}
-      <BenefitsSection />
 
       {/* Category Section - Shop by Category */}
       <CategorySection categories={categories} />
