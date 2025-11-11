@@ -15,19 +15,19 @@ const WhySwitchSection: React.FC = () => {
 
   const benefits: Benefit[] = [
     {
-      icon: <Leaf className="w-5 h-5 text-foreground" />,
+      icon: <Leaf className="w-5 h-5 md:w-6 md:h-6 text-primary" />,
       title: 'Safer Alternative',
       previewTitle: 'Safer Alternative',
       previewDescription: 'Nicotine pouches offer a safer alternative to traditional smoking. With no combustion, no tar, and no smoke, you can enjoy nicotine without exposing yourself to the harmful chemicals found in cigarettes. Your lungs will thank you for making the switch to a cleaner option.'
     },
     {
-      icon: <Lock className="w-5 h-5 text-foreground" />,
+      icon: <Lock className="w-5 h-5 md:w-6 md:h-6 text-primary" />,
       title: 'Discreet',
       previewTitle: 'Subtle and hidden',
       previewDescription: 'With nicotine pouches, you can use nicotine discreetly, wherever you are, even in places where smoking isn\'t allowed, like on a plane or at work. The pouches are small, invisible, and discreet, allowing you to satisfy your cravings privately, without drawing attention.'
     },
     {
-      icon: <Heart className="w-5 h-5 text-foreground" />,
+      icon: <Heart className="w-5 h-5 md:w-6 md:h-6 text-primary" />,
       title: 'Smokeless',
       previewTitle: 'Smokeless',
       previewDescription: 'Enjoy nicotine without any smoke, odor, or ash. Nicotine pouches are completely smokeless, making them perfect for use anywhere, anytime. No need to step outside or worry about disturbing others with smoke or smell. It\'s a clean, modern way to consume nicotine.'
@@ -54,36 +54,80 @@ const WhySwitchSection: React.FC = () => {
           </div>
 
           <div className="relative bg-gradient-to-br from-muted via-muted to-card rounded-2xl overflow-hidden aspect-[4/3] mb-8">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 p-8">
-                {benefits.map((benefit, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedBenefit(benefit)}
-                    className="flex flex-col items-center text-center group cursor-pointer"
-                  >
-                    <div className="relative">
-                      {/* Sound wave animations */}
-                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0s' }} />
-                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.4s' }} />
-                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.8s' }} />
-                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.2s' }} />
-                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.6s' }} />
-                      
-                      {/* Icon circle */}
-                      <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full bg-background border-2 border-primary flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
-                        {benefit.icon}
-                      </div>
-                    </div>
-                    
-                    {/* Benefit title */}
-                    <p className="mt-3 font-semibold text-sm md:text-base text-foreground">
-                      {benefit.title}
-                    </p>
-                  </button>
-                ))}
+            {/* Safer Alternative - Top Left */}
+            <button
+              onClick={() => setSelectedBenefit(benefits[0])}
+              className="absolute top-8 left-8 md:top-16 md:left-16 flex flex-col items-center text-center group cursor-pointer"
+            >
+              <div className="relative">
+                {/* Sound wave animations */}
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0s' }} />
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.4s' }} />
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.8s' }} />
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.2s' }} />
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.6s' }} />
+                
+                {/* Icon circle */}
+                <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full bg-white flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                  {benefits[0].icon}
+                </div>
               </div>
-            </div>
+              
+              {/* Benefit title */}
+              <p className="mt-2 font-bold text-xs md:text-sm text-white drop-shadow-lg">
+                {benefits[0].title}
+              </p>
+            </button>
+
+            {/* Discreet - Top Right */}
+            <button
+              onClick={() => setSelectedBenefit(benefits[1])}
+              className="absolute top-8 right-8 md:top-16 md:right-16 flex flex-col items-center text-center group cursor-pointer"
+            >
+              <div className="relative">
+                {/* Sound wave animations */}
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0s' }} />
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.4s' }} />
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.8s' }} />
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.2s' }} />
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.6s' }} />
+                
+                {/* Icon circle */}
+                <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full bg-white flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                  {benefits[1].icon}
+                </div>
+              </div>
+              
+              {/* Benefit title */}
+              <p className="mt-2 font-bold text-xs md:text-sm text-white drop-shadow-lg">
+                {benefits[1].title}
+              </p>
+            </button>
+
+            {/* Smokeless - Bottom Right */}
+            <button
+              onClick={() => setSelectedBenefit(benefits[2])}
+              className="absolute bottom-8 right-8 md:bottom-16 md:right-16 flex flex-col items-center text-center group cursor-pointer"
+            >
+              <div className="relative">
+                {/* Sound wave animations */}
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0s' }} />
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.4s' }} />
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.8s' }} />
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.2s' }} />
+                <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.6s' }} />
+                
+                {/* Icon circle */}
+                <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full bg-white flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                  {benefits[2].icon}
+                </div>
+              </div>
+              
+              {/* Benefit title */}
+              <p className="mt-2 font-bold text-xs md:text-sm text-white drop-shadow-lg">
+                {benefits[2].title}
+              </p>
+            </button>
           </div>
         </div>
       </section>
