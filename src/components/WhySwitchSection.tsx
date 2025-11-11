@@ -1,10 +1,8 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { PlayCircle, Leaf, Lock, Heart } from 'lucide-react';
-
 const WhySwitchSection: React.FC = () => {
-  return (
-    <section className="w-full py-16 px-4 bg-background">
+  return <section className="w-full py-16 px-4 bg-background">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
           Why make the switch from smoking products?
@@ -15,10 +13,7 @@ const WhySwitchSection: React.FC = () => {
         </p>
 
         <div className="flex justify-center mb-12">
-          <Button 
-            variant="ghost" 
-            className="gap-2 text-foreground hover:text-primary"
-          >
+          <Button variant="ghost" className="gap-2 text-foreground hover:text-primary">
             <PlayCircle className="w-6 h-6" />
             <span className="underline">See how to use</span>
           </Button>
@@ -52,13 +47,9 @@ const WhySwitchSection: React.FC = () => {
         </div>
 
         <div className="text-center">
-          <h3 className="text-4xl md:text-5xl font-bold mb-2">
-            MEGA CANS 200+ POUCHES
-          </h3>
+          
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default WhySwitchSection;
