@@ -67,36 +67,36 @@ const BenefitsComparisonSection: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-6 md:gap-8 mb-12">
-            {benefits.map((benefit, index) => {
-              const Icon = benefit.icon;
-              return (
-                <button
-                  key={index}
-                  onClick={() => setSelectedBenefit(benefit)}
-                  className="flex flex-col items-center justify-center group cursor-pointer"
-                >
-                  <div className="relative mb-3">
-                    {/* Sound wave animations */}
-                    <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0s' }} />
-                    <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.4s' }} />
-                    <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.8s' }} />
-                    <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.2s' }} />
-                    <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.6s' }} />
-                    
-                    {/* Icon circle */}
-                    <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full bg-background flex items-center justify-center shadow-lg transition-transform group-hover:scale-110 border-2 border-primary/20">
-                      <Icon className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+          {/* Benefits row with rounded background */}
+          <div className="mb-12 flex justify-center">
+            <div className="inline-flex items-center gap-4 md:gap-6 px-6 md:px-8 py-6 bg-muted/50 rounded-full">
+              {benefits.map((benefit, index) => {
+                const Icon = benefit.icon;
+                return (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedBenefit(benefit)}
+                    className="group cursor-pointer"
+                  >
+                    <div className="relative">
+                      {/* Sound wave animations */}
+                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0s' }} />
+                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.4s' }} />
+                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.8s' }} />
+                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.2s' }} />
+                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.6s' }} />
+                      
+                      {/* Icon circle with conditional border */}
+                      <div className={`relative w-12 h-12 md:w-16 md:h-16 rounded-full bg-background flex items-center justify-center shadow-md transition-all group-hover:scale-110 ${
+                        index === 0 ? 'ring-3 ring-primary ring-offset-2 ring-offset-muted/50' : ''
+                      }`}>
+                        <Icon className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
+                      </div>
                     </div>
-                  </div>
-                  
-                  {/* Benefit label */}
-                  <span className="text-xs md:text-sm text-center font-medium text-foreground">
-                    {benefit.label}
-                  </span>
-                </button>
-              );
-            })}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <div className="text-center max-w-4xl mx-auto">
