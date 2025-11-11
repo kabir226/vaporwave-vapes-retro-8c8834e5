@@ -33,12 +33,7 @@ const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl h-16 md:h-20 flex items-center justify-between py-0 px-0 mx-0 my-0">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="relative">
-            <Logo className="w-10 h-10 group-hover:scale-110 transition-transform" />
-            <Badge variant="destructive" className="absolute -top-2 -right-2 text-xs px-1.5">
-              18+
-            </Badge>
-          </div>
+          
           <span className="text-2xl font-black text-cyber">
             NO-SMOKING
           </span>
