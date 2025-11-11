@@ -34,29 +34,30 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
               align: "start",
               loop: true,
             }}
-            className="w-full"
+            className="w-full max-w-[85%] mx-auto"
           >
-            <CarouselContent>
+            <CarouselContent className="-ml-2">
               {categories.slice(0, 3).map((category) => (
-                <CarouselItem key={category.id}>
+                <CarouselItem key={category.id} className="pl-2">
                   <Card 
                     className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-2 hover:border-primary"
                   >
                     <CardContent className="p-0">
                       <div className="relative aspect-[4/3] bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
-                        <span className="text-6xl opacity-50 group-hover:scale-110 transition-transform">
+                        <span className="text-4xl opacity-50 group-hover:scale-110 transition-transform">
                           {category.image}
                         </span>
                         <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
-                          <p className="text-sm text-muted-foreground mb-2">
+                        <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                          <p className="text-xs text-muted-foreground mb-1">
                             {category.description.split(' ').slice(0, 4).join(' ')}...
                           </p>
-                          <h3 className="text-xl font-bold text-foreground mb-3">
+                          <h3 className="text-lg font-bold text-foreground mb-2">
                             {category.name}
                           </h3>
                           <Button 
                             variant="outline" 
+                            size="sm"
                             className="bg-background hover:bg-primary hover:text-primary-foreground border-2"
                           >
                             ACHETER MAINTENANT
@@ -68,8 +69,8 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+            <CarouselPrevious className="left-0" />
+            <CarouselNext className="right-0" />
           </Carousel>
         </div>
 
