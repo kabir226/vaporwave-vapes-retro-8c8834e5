@@ -13,11 +13,13 @@ import PromotionalBanner from '@/components/PromotionalBanner';
 import BenefitsSection from '@/components/BenefitsSection';
 import CategorySection from '@/components/CategorySection';
 import BestSellersSection from '@/components/BestSellersSection';
-import SearchBar from '@/components/SearchBar';
-import ProductFilters from '@/components/ProductFilters';
-import ProductsSection from '@/components/ProductsSection';
-import TestimonialCarousel from '@/components/TestimonialCarousel';
-import TrustIndicators from '@/components/TrustIndicators';
+import WhySwitchSection from '@/components/WhySwitchSection';
+import BenefitsComparisonSection from '@/components/BenefitsComparisonSection';
+import NewInStockSection from '@/components/NewInStockSection';
+import CustomerChangeSection from '@/components/CustomerChangeSection';
+import HowToUseSection from '@/components/HowToUseSection';
+import MixMatchSection from '@/components/MixMatchSection';
+import BuySNUSSection from '@/components/BuySNUSSection';
 
 import { useCart } from '@/hooks/useCart';
 import { useAgeVerification } from '@/hooks/useAgeVerification';
@@ -86,31 +88,26 @@ const Index = () => {
         onAddToCart={handleAddToCart}
       />
 
-      {/* Search & Filters */}
-      <section className="py-8 px-4" id="products">
-        <div className="max-w-2xl mx-auto mb-6">
-          <SearchBar onSearch={setSearchQuery} />
-        </div>
-        <div className="max-w-7xl mx-auto">
-          <ProductFilters 
-            onFilterChange={setFilters}
-            productCount={products.length}
-          />
-        </div>
-      </section>
+      {/* Why Switch Section */}
+      <WhySwitchSection />
 
-      {/* All Products */}
-      <ProductsSection 
-        filteredProducts={filteredProducts}
-        searchQuery={searchQuery}
-        onAddToCart={handleAddToCart}
-      />
+      {/* Benefits Comparison Section */}
+      <BenefitsComparisonSection />
 
-      {/* Testimonials */}
-      <TestimonialCarousel testimonials={testimonials} />
+      {/* New In Stock Section */}
+      <NewInStockSection />
 
-      {/* Trust Indicators */}
-      <TrustIndicators />
+      {/* Customer Change Section */}
+      <CustomerChangeSection />
+
+      {/* How To Use Section */}
+      <HowToUseSection />
+
+      {/* Mix & Match Section */}
+      <MixMatchSection />
+
+      {/* Buy SNUS Section */}
+      <BuySNUSSection />
 
       {/* Footer */}
       <Footer />
