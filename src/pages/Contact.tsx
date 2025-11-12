@@ -1,19 +1,15 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 const Contact = () => {
-  const navigate = useNavigate();
   const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,34 +17,13 @@ const Contact = () => {
     message: ''
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
-    try {
-      // Utiliser 'name' comme email et 'email' comme password
-      const { error } = await supabase.auth.signInWithPassword({
-        email: formData.name,
-        password: formData.email,
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: "Connexion réussie",
-        description: "Bienvenue dans l'administration",
-      });
-
-      navigate('/admin');
-    } catch (error: any) {
-      toast({
-        title: "Erreur de connexion",
-        description: error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
+    toast({
+      title: "Message envoyé",
+      description: "Nous vous répondrons dans les plus brefs délais.",
+    });
+    setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -177,9 +152,9 @@ const Contact = () => {
                     />
                   </div>
                   
-                  <Button type="submit" className="w-full py-3 text-base font-semibold" disabled={loading}>
+                  <Button type="submit" className="w-full py-3 text-base font-semibold">
                     <Send className="w-4 h-4 mr-2" />
-                    {loading ? "Connexion..." : "Envoyer le message"}
+                    Envoyer le message
                   </Button>
                 </form>
               </CardContent>
