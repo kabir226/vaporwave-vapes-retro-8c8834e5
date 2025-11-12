@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -8,45 +7,37 @@ import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import CartSummary from '@/components/CartSummary';
 import { Filter, Grid, List } from 'lucide-react';
+import { useProducts } from '@/hooks/useProducts';
+import { useCategories } from '@/hooks/useCategories';
 
 const Shop = () => {
+  const { products: dbProducts, loading } = useProducts();
+  const { categories: dbCategories } = useCategories();
   const [cart, setCart] = useState([]);
   const [showCart, setShowCart] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
 
+  // Transformer les catégories pour inclure le comptage
   const categories = [
-    { id: 'all', name: 'Tous les produits', count: 12 },
-    { id: 'vapes', name: 'Vapes', count: 4 },
-    { id: 'eliquids', name: 'E-liquides', count: 6 },
-    { id: 'gums', name: 'Gums', count: 2 },
+    { id: 'all', name: 'Tous les produits', count: dbProducts.length },
+    ...dbCategories.map(cat => ({
+      id: cat.id,
+      name: cat.name,
+      count: dbProducts.filter(p => p.category_id === cat.id).length
+    }))
   ];
 
-  const products = [
-    {
-      id: 1,
-      name: "VAPE PREMIUM EDITION",
-      description: "Design élégant avec performance exceptionnelle",
-      price: 39.99,
-      icon: "💨",
-      category: "vapes",
-      features: ["Batterie 2000mAh", "Design premium", "Vapeur dense"]
-    },
-    {
-      id: 2,
-      name: "E-LIQUIDE ARTISANAL",
-      description: "Saveurs créées par nos maîtres parfumeurs",
-      price: 12.99,
-      icon: "💧",
-      category: "eliquids",
-      features: ["Saveurs naturelles", "Sans diacétyle", "Qualité premium"]
-    },
-    // Ajoutez plus de produits ici
-  ];
+  // Transformer les produits pour la compatibilité avec ProductCard
+  const products = dbProducts.map(p => ({
+    ...p,
+    icon: p.images?.[0] || '📦',
+    category: p.category_id || '',
+  }));
 
   const filteredProducts = selectedCategory === 'all' 
     ? products 
-    : products.filter(p => p.category === selectedCategory);
+    : products.filter(p => p.category_id === selectedCategory);
 
   const addToCart = (product) => {
     setCart(prev => {
@@ -144,20 +135,30 @@ const Shop = () => {
             </div>
 
             {/* Products */}
-            <div className={`grid gap-6 ${
-              viewMode === 'grid' 
-                ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' 
-                : 'grid-cols-1'
-            }`}>
-              {filteredProducts.map((product, index) => (
-                <ProductCard 
-                  key={product.id} 
-                  product={product} 
-                  onAddToCart={addToCart}
-                  delay={index * 0.1}
-                />
-              ))}
-            </div>
+            {loading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Chargement des produits...</p>
+              </div>
+            ) : filteredProducts.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Aucun produit trouvé</p>
+              </div>
+            ) : (
+              <div className={`grid gap-6 ${
+                viewMode === 'grid' 
+                  ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' 
+                  : 'grid-cols-1'
+              }`}>
+                {filteredProducts.map((product, index) => (
+                  <ProductCard 
+                    key={product.id} 
+                    product={product} 
+                    onAddToCart={addToCart}
+                    delay={index * 0.1}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

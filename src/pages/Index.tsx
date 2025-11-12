@@ -20,9 +20,11 @@ import MixMatchSection from '@/components/MixMatchSection';
 import BuySNUSSection from '@/components/BuySNUSSection';
 import { useCart } from '@/hooks/useCart';
 import { useAgeVerification } from '@/hooks/useAgeVerification';
-import { useProductFilter } from '@/hooks/useProductFilter';
-import { products, categories, trendingProducts, testimonials } from '@/data/products';
+import { useProducts } from '@/hooks/useProducts';
+import { useCategories } from '@/hooks/useCategories';
 const Index = () => {
+  const { products, loading: loadingProducts } = useProducts();
+  const { categories, loading: loadingCategories } = useCategories();
   const {
     cart,
     addToCart,
@@ -35,15 +37,16 @@ const Index = () => {
     confirmAge,
     denyAge
   } = useAgeVerification();
-  const {
-    searchQuery,
-    setSearchQuery,
-    filteredProducts,
-    setFilters
-  } = useProductFilter(products);
   const [showCart, setShowCart] = useState(false);
   const [showCartAnimation, setShowCartAnimation] = useState(false);
   const [lastAddedProduct, setLastAddedProduct] = useState(null);
+
+  // Transformer les produits pour la compatibilité
+  const transformedProducts = products.map(p => ({
+    ...p,
+    image: p.images?.[0] || '📦',
+    inStock: p.in_stock,
+  }));
   const handleAddToCart = (product: any) => {
     setLastAddedProduct(product);
     setShowCartAnimation(true);
@@ -78,10 +81,15 @@ const Index = () => {
     })} onToggleCart={() => setShowCart(true)} cartItemsCount={cart.reduce((sum, item) => sum + item.quantity, 0)} />
 
       {/* Category Section - Shop by Category */}
-      <CategorySection categories={categories} />
+      {!loadingCategories && <CategorySection categories={categories.map(c => ({
+        ...c,
+        image: '📦',
+        count: products.filter(p => p.category_id === c.id).length,
+        featured: c.display_order === 1
+      }))} />}
 
       {/* Best Sellers Section */}
-      <BestSellersSection products={trendingProducts} onAddToCart={handleAddToCart} />
+      {!loadingProducts && <BestSellersSection products={transformedProducts.slice(0, 8)} onAddToCart={handleAddToCart} />}
 
       {/* Why Switch Section */}
       <WhySwitchSection />

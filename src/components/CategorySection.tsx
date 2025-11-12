@@ -11,7 +11,7 @@ import {
 
 interface CategorySectionProps {
   categories: Array<{
-    id: number;
+    id: string | number;
     name: string;
     description: string;
     image: string;

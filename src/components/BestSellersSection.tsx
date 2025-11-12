@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Star, ShoppingCart } from 'lucide-react';
 
 interface Product {
-  id: number;
+  id: string | number;
   name: string;
   description: string;
   price: number;
