@@ -10,7 +10,7 @@ interface Product {
   name: string;
   description: string;
   price: number;
-  icon: string;
+  images: string[];
   category: string;
   features: string[];
   stock?: number;
@@ -39,10 +39,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
           </Badge>
         )}
 
-        {/* Product Icon */}
+        {/* Product Image */}
         <div className="text-center mb-6">
-          <div className="text-6xl mb-4 animate-float group-hover:scale-110 transition-transform duration-300">
-            {product.icon}
+          <div className="mb-4 animate-float group-hover:scale-110 transition-transform duration-300 flex justify-center">
+            {product.images && product.images.length > 0 ? (
+              <img 
+                src={product.images[0]} 
+                alt={product.name}
+                className="w-32 h-32 object-contain rounded-lg"
+              />
+            ) : (
+              <div className="w-32 h-32 bg-muted rounded-lg flex items-center justify-center text-4xl">
+                📦
+              </div>
+            )}
           </div>
           <Badge variant="outline" className="border-primary text-primary text-xs">
             {product.category.toUpperCase()}
