@@ -1,15 +1,19 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 const Contact = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,13 +21,33 @@ const Contact = () => {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message envoyé",
-      description: "Nous vous répondrons dans les plus brefs délais.",
-    });
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: formData.name,
+        password: formData.email,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Connexion réussie",
+        description: "Bienvenue dans l'administration",
+      });
+
+      navigate('/admin');
+    } catch (error: any) {
+      toast({
+        title: "Erreur de connexion",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -105,10 +129,10 @@ const Contact = () => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium mb-2">
-                        Email *
+                        Mot de passe *
                       </label>
                       <input
-                        type="email"
+                        type="password"
                         name="email"
                         required
                         value={formData.email}
@@ -152,9 +176,9 @@ const Contact = () => {
                     />
                   </div>
                   
-                  <Button type="submit" className="w-full py-3 text-base font-semibold">
+                  <Button type="submit" className="w-full py-3 text-base font-semibold" disabled={loading}>
                     <Send className="w-4 h-4 mr-2" />
-                    Envoyer le message
+                    {loading ? "Connexion..." : "Se connecter"}
                   </Button>
                 </form>
               </CardContent>
