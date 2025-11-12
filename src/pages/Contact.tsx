@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -9,10 +8,11 @@ import Footer from '@/components/Footer';
 import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-
 const Contact = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -20,72 +20,60 @@ const Contact = () => {
     subject: '',
     message: ''
   });
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const {
+        error
+      } = await supabase.auth.signInWithPassword({
         email: formData.name,
-        password: formData.email,
+        password: formData.email
       });
-
       if (error) throw error;
-
       toast({
         title: "Connexion réussie",
-        description: "Bienvenue dans l'administration",
+        description: "Bienvenue dans l'administration"
       });
-
       navigate('/admin');
     } catch (error: any) {
       toast({
         title: "Erreur de connexion",
         description: error.message,
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
     }
   };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
     }));
   };
-
-  const contactInfo = [
-    {
-      icon: <Phone className="w-5 h-5" />,
-      title: "Téléphone",
-      content: "01 23 45 67 89",
-      subtitle: "Lun-Ven 9h-18h"
-    },
-    {
-      icon: <Mail className="w-5 h-5" />,
-      title: "Email",
-      content: "contact@no-smoking.fr",
-      subtitle: "Réponse sous 24h"
-    },
-    {
-      icon: <MapPin className="w-5 h-5" />,
-      title: "Adresse",
-      content: "123 Rue de la Vape",
-      subtitle: "75001 Paris, France"
-    },
-    {
-      icon: <Clock className="w-5 h-5" />,
-      title: "Horaires",
-      content: "Lun-Ven 9h-18h",
-      subtitle: "Sam 10h-16h"
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
+  const contactInfo = [{
+    icon: <Phone className="w-5 h-5" />,
+    title: "Téléphone",
+    content: "01 23 45 67 89",
+    subtitle: "Lun-Ven 9h-18h"
+  }, {
+    icon: <Mail className="w-5 h-5" />,
+    title: "Email",
+    content: "contact@no-smoking.fr",
+    subtitle: "Réponse sous 24h"
+  }, {
+    icon: <MapPin className="w-5 h-5" />,
+    title: "Adresse",
+    content: "123 Rue de la Vape",
+    subtitle: "75001 Paris, France"
+  }, {
+    icon: <Clock className="w-5 h-5" />,
+    title: "Horaires",
+    content: "Lun-Ven 9h-18h",
+    subtitle: "Sam 10h-16h"
+  }];
+  return <div className="min-h-screen bg-background">
       <Header cart={[]} onToggleCart={() => {}} />
       
       <div className="pt-20 px-4">
@@ -118,27 +106,11 @@ const Contact = () => {
                       <label className="block text-sm font-medium mb-2">
                         Nom complet *
                       </label>
-                      <input
-                        type="text"
-                        name="name"
-                        required
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent"
-                      />
+                      <input type="text" name="name" required value={formData.name} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium mb-2">
-                        Mot de passe *
-                      </label>
-                      <input
-                        type="password"
-                        name="email"
-                        required
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent"
-                      />
+                      <label className="block text-sm font-medium mb-2">mail *</label>
+                      <input type="password" name="email" required value={formData.email} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent" />
                     </div>
                   </div>
                   
@@ -146,13 +118,7 @@ const Contact = () => {
                     <label className="block text-sm font-medium mb-2">
                       Sujet *
                     </label>
-                    <select
-                      name="subject"
-                      required
-                      value={formData.subject}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent"
-                    >
+                    <select name="subject" required value={formData.subject} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent">
                       <option value="">Choisissez un sujet</option>
                       <option value="product">Question produit</option>
                       <option value="order">Commande</option>
@@ -165,15 +131,7 @@ const Contact = () => {
                     <label className="block text-sm font-medium mb-2">
                       Message *
                     </label>
-                    <textarea
-                      name="message"
-                      required
-                      rows={5}
-                      value={formData.message}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
-                      placeholder="Décrivez votre demande..."
-                    />
+                    <textarea name="message" required rows={5} value={formData.message} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent resize-none" placeholder="Décrivez votre demande..." />
                   </div>
                   
                   <Button type="submit" className="w-full py-3 text-base font-semibold" disabled={loading}>
@@ -187,8 +145,7 @@ const Contact = () => {
             {/* Contact Info */}
             <div className="space-y-6">
               <div className="grid gap-4">
-                {contactInfo.map((info, index) => (
-                  <Card key={index} className="p-6">
+                {contactInfo.map((info, index) => <Card key={index} className="p-6">
                     <CardContent className="p-0">
                       <div className="flex items-start gap-4">
                         <div className="text-primary mt-1">
@@ -201,8 +158,7 @@ const Contact = () => {
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
-                ))}
+                  </Card>)}
               </div>
 
               {/* FAQ Quick Links */}
@@ -233,8 +189,6 @@ const Contact = () => {
       </div>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Contact;
