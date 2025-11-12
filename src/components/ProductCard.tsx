@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Product {
   id: string | number;
@@ -17,6 +18,7 @@ interface Product {
   rating?: number;
   isPopular?: boolean;
   inStock?: boolean;
+  slug?: string;
 }
 
 interface ProductCardProps {
@@ -26,10 +28,13 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay = 0 }) => {
+  const navigate = useNavigate();
+
   return (
     <Card 
-      className="group bg-glass border-border hover:border-primary transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 hologram-effect overflow-hidden"
+      className="group bg-glass border-border hover:border-primary transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 hologram-effect overflow-hidden cursor-pointer"
       style={{ animationDelay: `${delay}s` }}
+      onClick={() => product.slug && navigate(`/product/${product.slug}`)}
     >
       <CardContent className="p-6 relative z-10">
         {/* Popular Badge */}
@@ -107,7 +112,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
 
           {/* Add to Cart Button avec animation */}
           <Button
-            onClick={() => onAddToCart(product)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddToCart(product);
+            }}
             className="w-full retro-gradient text-black font-bold py-3 hover:scale-105 active:scale-95 transition-all duration-300 group-hover:shadow-lg transform hover:animate-bounce"
             disabled={!product.inStock}
           >
