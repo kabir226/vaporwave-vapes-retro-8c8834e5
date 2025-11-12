@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Star, ShoppingCart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Product {
   id: string | number;
@@ -15,6 +16,7 @@ interface Product {
   reviews?: number;
   badge?: string;
   inStock?: boolean;
+  slug?: string;
 }
 
 interface BestSellersSectionProps {
@@ -23,6 +25,8 @@ interface BestSellersSectionProps {
 }
 
 const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAddToCart }) => {
+  const navigate = useNavigate();
+
   return (
     <section className="w-full py-12 px-4">
       <div className="max-w-7xl mx-auto">
@@ -34,7 +38,8 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
           {products.map((product) => (
             <Card 
               key={product.id} 
-              className="group hover:shadow-xl transition-all duration-300 overflow-hidden border hover:border-primary"
+              className="group hover:shadow-xl transition-all duration-300 overflow-hidden border hover:border-primary cursor-pointer"
+              onClick={() => product.slug && navigate(`/product/${product.slug}`)}
             >
               <CardContent className="p-4">
                 {/* Product Image */}
@@ -92,7 +97,10 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
 
                   <Button 
                     className="w-full bg-foreground hover:bg-foreground/90 text-background font-semibold"
-                    onClick={() => onAddToCart(product)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onAddToCart(product);
+                    }}
                   >
                     <ShoppingCart className="w-4 h-4 mr-2" />
                     Ajouter

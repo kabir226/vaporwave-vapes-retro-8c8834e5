@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Star, Heart, Eye } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import {
   Carousel,
   CarouselContent,
@@ -23,6 +24,7 @@ interface TrendingProduct {
   reviews: number;
   badge?: string;
   inStock: boolean;
+  slug?: string;
 }
 
 interface TrendingProductsProps {
@@ -31,6 +33,8 @@ interface TrendingProductsProps {
 }
 
 const TrendingProducts: React.FC<TrendingProductsProps> = ({ products, onAddToCart }) => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-16 px-4 bg-card/10">
       <div className="max-w-7xl mx-auto">
@@ -56,7 +60,10 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products, onAddToCa
           <CarouselContent>
             {products.map((product) => (
               <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                <Card className="group bg-glass border-border hover:border-primary transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 overflow-hidden">
+                <Card 
+                  className="group bg-glass border-border hover:border-primary transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 overflow-hidden cursor-pointer"
+                  onClick={() => product.slug && navigate(`/product/${product.slug}`)}
+                >
                   <CardContent className="p-0 relative">
                     {product.badge && (
                       <Badge className="absolute top-4 left-4 z-10 bg-destructive text-destructive-foreground font-bold">
@@ -129,7 +136,10 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products, onAddToCa
                       </div>
                       
                       <Button
-                        onClick={() => onAddToCart(product)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onAddToCart(product);
+                        }}
                         className="w-full retro-gradient text-black font-bold group-hover:shadow-lg transform hover:scale-105 active:scale-95 transition-all duration-300"
                         disabled={!product.inStock}
                       >
