@@ -39,9 +39,17 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
               <CardContent className="p-4">
                 {/* Product Image */}
                 <div className="relative aspect-square bg-muted rounded-lg mb-3 flex items-center justify-center overflow-hidden">
-                  <span className="text-5xl md:text-6xl group-hover:scale-110 transition-transform">
-                    {product.image}
-                  </span>
+                  {typeof product.image === 'string' && product.image.startsWith('http') ? (
+                    <img 
+                      src={product.image} 
+                      alt={product.name}
+                      className="w-full h-full object-contain group-hover:scale-110 transition-transform p-2"
+                    />
+                  ) : (
+                    <span className="text-5xl md:text-6xl group-hover:scale-110 transition-transform">
+                      {product.image || '📦'}
+                    </span>
+                  )}
                   {product.badge && (
                     <Badge className="absolute top-2 left-2 bg-destructive text-destructive-foreground">
                       {product.badge}
