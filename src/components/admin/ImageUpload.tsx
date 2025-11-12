@@ -1,0 +1,246 @@
+import { useState, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { X, Upload, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+
+interface ImageUploadProps {
+  images: string[];
+  onImagesChange: (images: string[]) => void;
+  productId?: string;
+}
+
+const ImageUpload = ({ images, onImagesChange, productId }: ImageUploadProps) => {
+  const { toast } = useToast();
+  const [uploading, setUploading] = useState(false);
+  const [dragActive, setDragActive] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const compressImage = async (file: File): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          let width = img.width;
+          let height = img.height;
+
+          // Redimensionner si l'image est trop grande
+          const maxDimension = 1200;
+          if (width > maxDimension || height > maxDimension) {
+            if (width > height) {
+              height = (height * maxDimension) / width;
+              width = maxDimension;
+            } else {
+              width = (width * maxDimension) / height;
+              height = maxDimension;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx?.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                resolve(blob);
+              } else {
+                reject(new Error("Compression failed"));
+              }
+            },
+            "image/jpeg",
+            0.85
+          );
+        };
+        img.onerror = reject;
+      };
+      reader.onerror = reject;
+    });
+  };
+
+  const uploadImage = async (file: File) => {
+    try {
+      // Compresser l'image
+      const compressedBlob = await compressImage(file);
+      const timestamp = Date.now();
+      const fileName = `${timestamp}-${file.name.replace(/[^a-zA-Z0-9.]/g, "-")}`;
+      const filePath = `${productId || "temp"}/${fileName}`;
+
+      // Upload vers Supabase Storage
+      const { error: uploadError, data } = await supabase.storage
+        .from("product-images")
+        .upload(filePath, compressedBlob, {
+          contentType: "image/jpeg",
+          upsert: false,
+        });
+
+      if (uploadError) throw uploadError;
+
+      // Obtenir l'URL publique
+      const { data: urlData } = supabase.storage
+        .from("product-images")
+        .getPublicUrl(filePath);
+
+      return urlData.publicUrl;
+    } catch (error: any) {
+      console.error("Upload error:", error);
+      throw error;
+    }
+  };
+
+  const handleFiles = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+
+    setUploading(true);
+    try {
+      const uploadPromises = Array.from(files).map((file) => {
+        if (!file.type.startsWith("image/")) {
+          toast({
+            title: "Erreur",
+            description: `${file.name} n'est pas une image`,
+            variant: "destructive",
+          });
+          return null;
+        }
+        return uploadImage(file);
+      });
+
+      const results = await Promise.all(uploadPromises);
+      const newImages = results.filter((url): url is string => url !== null);
+      onImagesChange([...images, ...newImages]);
+
+      toast({
+        title: "Succès",
+        description: `${newImages.length} image(s) uploadée(s)`,
+      });
+    } catch (error: any) {
+      toast({
+        title: "Erreur",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    handleFiles(e.dataTransfer.files);
+  };
+
+  const handleRemoveImage = async (imageUrl: string, index: number) => {
+    try {
+      // Extraire le chemin du fichier depuis l'URL
+      const url = new URL(imageUrl);
+      const pathParts = url.pathname.split("/product-images/");
+      if (pathParts.length > 1) {
+        const filePath = pathParts[1];
+        await supabase.storage.from("product-images").remove([filePath]);
+      }
+
+      const newImages = images.filter((_, i) => i !== index);
+      onImagesChange(newImages);
+
+      toast({
+        title: "Image supprimée",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Erreur",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div
+        className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+          dragActive
+            ? "border-primary bg-primary/5"
+            : "border-border hover:border-primary/50"
+        }`}
+        onDragEnter={handleDrag}
+        onDragLeave={handleDrag}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
+      >
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={(e) => handleFiles(e.target.files)}
+          className="hidden"
+        />
+
+        <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+        <p className="text-sm text-muted-foreground mb-2">
+          Glissez-déposez vos images ici ou
+        </p>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+        >
+          {uploading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Upload en cours...
+            </>
+          ) : (
+            "Sélectionner des images"
+          )}
+        </Button>
+        <p className="text-xs text-muted-foreground mt-2">
+          Images compressées automatiquement
+        </p>
+      </div>
+
+      {images.length > 0 && (
+        <div className="grid grid-cols-3 gap-4">
+          {images.map((imageUrl, index) => (
+            <div key={index} className="relative group">
+              <img
+                src={imageUrl}
+                alt={`Produit ${index + 1}`}
+                className="w-full h-32 object-cover rounded-lg border"
+              />
+              <Button
+                type="button"
+                variant="destructive"
+                size="icon"
+                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                onClick={() => handleRemoveImage(imageUrl, index)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ImageUpload;

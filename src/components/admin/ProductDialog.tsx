@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { Product } from "./ProductList";
+import ImageUpload from "./ImageUpload";
 
 interface ProductDialogProps {
   open: boolean;
@@ -28,6 +29,7 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
     strength: "",
     category_id: "",
     slug: "",
+    images: [] as string[],
   });
 
   useEffect(() => {
@@ -44,6 +46,7 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
         strength: product.strength || "",
         category_id: product.category_id || "",
         slug: product.slug,
+        images: product.images || [],
       });
     } else {
       setFormData({
@@ -54,6 +57,7 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
         strength: "",
         category_id: "",
         slug: "",
+        images: [],
       });
     }
   }, [product]);
@@ -85,6 +89,7 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
         in_stock: parseInt(formData.stock) > 0,
         strength: formData.strength || null,
         category_id: formData.category_id || null,
+        images: formData.images,
       };
 
       if (product) {
@@ -207,6 +212,15 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
               value={formData.slug}
               onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
               placeholder="Généré automatiquement si vide"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Images du produit</Label>
+            <ImageUpload
+              images={formData.images}
+              onImagesChange={(images) => setFormData({ ...formData, images })}
+              productId={product?.id}
             />
           </div>
 
