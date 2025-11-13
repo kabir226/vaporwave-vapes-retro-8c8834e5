@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { PlayCircle, Leaf, Lock, Heart } from 'lucide-react';
 import BenefitPreviewDialog from './BenefitPreviewDialog';
+import whySwitchBg from '@/assets/why-switch-background.jpg';
 
 interface Benefit {
   icon: React.ReactNode;
@@ -53,7 +54,15 @@ const WhySwitchSection: React.FC = () => {
             </Button>
           </div>
 
-          <div className="relative bg-gradient-to-br from-muted via-muted to-card rounded-2xl overflow-hidden aspect-[4/3] mb-8">
+          <div className="relative rounded-2xl overflow-hidden aspect-[4/3] mb-8">
+            {/* Background Image */}
+            <img 
+              src={whySwitchBg} 
+              alt="Why Switch Background" 
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            {/* Dark overlay for better text visibility */}
+            <div className="absolute inset-0 bg-black/40" />
             {/* Safer Alternative - Top Left */}
             <button
               onClick={() => setSelectedBenefit(benefits[0])}
