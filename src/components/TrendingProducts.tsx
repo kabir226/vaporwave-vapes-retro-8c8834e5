@@ -95,7 +95,7 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products, onAddToCa
                         <img 
                           src={product.image} 
                           alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                          className="w-full h-full object-cover scale-125 group-hover:scale-[1.35] transition-transform duration-300"
                         />
                       ) : (
                         <div className="text-6xl animate-float group-hover:scale-110 transition-transform duration-300">

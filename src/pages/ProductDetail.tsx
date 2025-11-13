@@ -152,7 +152,7 @@ const ProductDetail = () => {
               <img 
                 src={mainImage} 
                 alt={product.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover scale-125"
               />
               <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                 <ZoomIn className="w-5 h-5" />
@@ -173,7 +173,7 @@ const ProductDetail = () => {
                     <img 
                       src={image} 
                       alt={`${product.name} ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover scale-125"
                     />
                   </div>
                 ))}
@@ -340,7 +340,7 @@ const ProductDetail = () => {
                         <img 
                           src={relatedProduct.images[0]} 
                           alt={relatedProduct.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                          className="w-full h-full object-cover scale-125 group-hover:scale-[1.35] transition-transform"
                         />
                       ) : (
                         <span className="text-4xl">📦</span>
