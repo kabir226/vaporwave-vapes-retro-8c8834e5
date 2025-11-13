@@ -5,6 +5,9 @@ import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 const HowToUseSection: React.FC = () => {
   const { getSetting } = useHomepageSettings('how_to_use');
   const settings = getSetting('how_to_use');
+  
+  // Get step images from settings
+  const stepImages = (settings?.settings as any)?.step_images || [];
 
   const steps = [
     {
@@ -50,11 +53,19 @@ const HowToUseSection: React.FC = () => {
                 </div>
                 
                 <div className="flex-1">
-                  <div className="border-2 border-foreground rounded-2xl p-6 md:p-8 mb-4 aspect-square flex items-center justify-center bg-card">
-                    <div className="text-center">
-                      <p className="text-4xl md:text-6xl mb-2">📍</p>
-                      <p className="text-sm text-muted-foreground">Step {step.number} illustration</p>
-                    </div>
+                  <div className="border-2 border-foreground rounded-2xl p-6 md:p-8 mb-4 aspect-square flex items-center justify-center bg-card overflow-hidden">
+                    {stepImages[step.number - 1] ? (
+                      <img 
+                        src={stepImages[step.number - 1]} 
+                        alt={`Step ${step.number}`}
+                        className="w-full h-full object-cover rounded-xl"
+                      />
+                    ) : (
+                      <div className="text-center">
+                        <p className="text-4xl md:text-6xl mb-2">📍</p>
+                        <p className="text-sm text-muted-foreground">Step {step.number} illustration</p>
+                      </div>
+                    )}
                   </div>
                   
                   <p className="text-base md:text-lg text-center text-foreground">

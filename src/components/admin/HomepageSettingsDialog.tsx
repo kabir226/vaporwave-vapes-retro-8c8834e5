@@ -21,6 +21,7 @@ interface HomepageSetting {
   button_link?: string;
   is_active: boolean;
   display_order: number;
+  settings?: any;
 }
 
 interface HomepageSettingsDialogProps {
@@ -48,6 +49,8 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
     is_active: true,
     display_order: 0
   });
+  
+  const [stepImages, setStepImages] = useState<string[]>([]);
 
   useEffect(() => {
     if (setting) {
@@ -61,6 +64,12 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
         button_text: setting.button_text || '',
         button_link: setting.button_link || ''
       });
+      
+      // Load step images if section is how_to_use
+      if (setting.section_name === 'how_to_use' && setting.settings) {
+        const settingsData = setting.settings as any;
+        setStepImages(settingsData.step_images || []);
+      }
     } else {
       setFormData({
         section_name: '',
@@ -74,11 +83,18 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
         is_active: true,
         display_order: 0
       });
+      setStepImages([]);
     }
   }, [setting, isOpen]);
 
   const handleSave = async () => {
     try {
+      // Prepare settings data
+      let settingsData = {};
+      if (formData.section_name === 'how_to_use' && stepImages.length > 0) {
+        settingsData = { step_images: stepImages };
+      }
+      
       const dataToSave = {
         section_name: formData.section_name,
         title: formData.title || null,
@@ -89,7 +105,8 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
         button_text: formData.button_text || null,
         button_link: formData.button_link || null,
         is_active: formData.is_active,
-        display_order: formData.display_order
+        display_order: formData.display_order,
+        settings: Object.keys(settingsData).length > 0 ? settingsData : null
       };
 
       if (setting?.id) {
@@ -177,6 +194,20 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
               Une seule image sera utilisée comme fond de la section
             </p>
           </div>
+
+          {formData.section_name === 'how_to_use' && (
+            <div>
+              <Label>Images des étapes (4 max)</Label>
+              <ImageUpload
+                images={stepImages}
+                onImagesChange={setStepImages}
+                productId="homepage/steps"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Uploadez jusqu'à 4 images pour illustrer chaque étape d'utilisation
+              </p>
+            </div>
+          )}
 
           <div>
             <Label htmlFor="video_url">URL de la vidéo (optionnel)</Label>
