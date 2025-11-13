@@ -13,6 +13,7 @@ interface HomepageSetting {
   button_link?: string;
   is_active: boolean;
   display_order: number;
+  settings?: any;
 }
 
 export const useHomepageSettings = (sectionName?: string) => {
