@@ -11,6 +11,7 @@ import { Minus, Plus, ZoomIn } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useCurrencies } from "@/hooks/useCurrencies";
+import CartModal from "@/components/CartModal";
 
 interface Product {
   id: string;
@@ -99,6 +100,22 @@ const ProductDetail = () => {
     localStorage.setItem('cart', JSON.stringify(currentCart));
     setCart(currentCart);
     toast.success(`${quantity} × ${product.name} ajouté au panier`);
+  };
+
+  const handleUpdateQuantity = (id: number | string, newQuantity: number) => {
+    const updatedCart = cart.map((item: any) =>
+      item.id === id ? { ...item, quantity: newQuantity } : item
+    ).filter((item: any) => item.quantity > 0);
+    
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    setCart(updatedCart);
+  };
+
+  const handleRemoveItem = (id: number | string) => {
+    const updatedCart = cart.filter((item: any) => item.id !== id);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    setCart(updatedCart);
+    toast.success('Produit retiré du panier');
   };
 
   if (loading) {
@@ -341,6 +358,7 @@ const ProductDetail = () => {
       </main>
 
       {/* Image Zoom Dialog */}
+      {/* Image Zoom Dialog */}
       <Dialog open={zoomOpen} onOpenChange={setZoomOpen}>
         <DialogContent className="max-w-4xl w-full">
           <img 
@@ -350,6 +368,15 @@ const ProductDetail = () => {
           />
         </DialogContent>
       </Dialog>
+
+      {/* Cart Modal */}
+      <CartModal 
+        isVisible={showCart}
+        cart={cart}
+        onClose={() => setShowCart(false)}
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemoveItem={handleRemoveItem}
+      />
 
       <Footer />
     </div>
