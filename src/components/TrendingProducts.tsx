@@ -90,12 +90,12 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products, onAddToCa
                       </Button>
                     </div>
                     
-                    <div className="h-48 bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
+                    <div className="h-48 bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center overflow-hidden">
                       {typeof product.image === 'string' && product.image.startsWith('http') ? (
                         <img 
                           src={product.image} 
                           alt={product.name}
-                          className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300 p-4"
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                         />
                       ) : (
                         <div className="text-6xl animate-float group-hover:scale-110 transition-transform duration-300">
