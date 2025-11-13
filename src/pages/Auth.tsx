@@ -17,17 +17,34 @@ const Auth = () => {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    // Check if user is already logged in
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        navigate("/admin");
+    // Check if user is already logged in with valid session
+    const checkSession = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      // If there's an error or no session, clear any stale data
+      if (error) {
+        await supabase.auth.signOut();
+        return;
       }
-    });
+      
+      // Only redirect if we have a valid, non-expired session
+      if (session && session.expires_at && session.expires_at * 1000 > Date.now()) {
+        navigate("/admin");
+      } else if (session) {
+        // Session exists but is expired, sign out
+        await supabase.auth.signOut();
+      }
+    };
+    
+    checkSession();
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" && session) {
         navigate("/admin");
+      } else if (event === "SIGNED_OUT") {
+        // Clear any navigation attempts when signed out
+        navigate("/auth");
       }
     });
 
