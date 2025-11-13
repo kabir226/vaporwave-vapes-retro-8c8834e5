@@ -72,6 +72,29 @@ const HomepageSettingsList: React.FC = () => {
     }
   };
 
+  const handleReorder = async (reorderedSettings: HomepageSetting[]) => {
+    try {
+      setSettings(reorderedSettings);
+
+      const updates = reorderedSettings.map((setting) => ({
+        id: setting.id,
+        display_order: setting.display_order,
+      }));
+
+      for (const update of updates) {
+        const { error } = await (supabase as any)
+          .from('homepage_settings')
+          .update({ display_order: update.display_order })
+          .eq('id', update.id);
+
+        if (error) throw error;
+      }
+    } catch (error) {
+      console.error('Error reordering homepage settings:', error);
+      fetchSettings();
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -87,6 +110,7 @@ const HomepageSettingsList: React.FC = () => {
         loading={loading}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onReorder={handleReorder}
       />
 
       <HomepageSettingsDialog
