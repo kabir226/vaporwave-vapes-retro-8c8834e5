@@ -41,12 +41,20 @@ const Index = () => {
   const [showCartAnimation, setShowCartAnimation] = useState(false);
   const [lastAddedProduct, setLastAddedProduct] = useState(null);
 
+  // Trouver la catégorie "Meilleures ventes"
+  const bestSellersCategory = categories.find(c => c.slug === 'best-sellers');
+  
   // Transformer les produits pour la compatibilité
   const transformedProducts = products.map(p => ({
     ...p,
     image: p.images?.[0] || '📦',
     inStock: p.in_stock,
   }));
+
+  // Filtrer les produits de la catégorie "Meilleures ventes"
+  const bestSellersProducts = bestSellersCategory 
+    ? transformedProducts.filter(p => p.category_id === bestSellersCategory.id)
+    : transformedProducts.slice(0, 8);
   const handleAddToCart = (product: any) => {
     setLastAddedProduct(product);
     setShowCartAnimation(true);
@@ -89,7 +97,7 @@ const Index = () => {
       }))} />}
 
       {/* Best Sellers Section */}
-      {!loadingProducts && <BestSellersSection products={transformedProducts.slice(0, 8)} onAddToCart={handleAddToCart} />}
+      {!loadingProducts && !loadingCategories && <BestSellersSection products={bestSellersProducts} onAddToCart={handleAddToCart} />}
 
       {/* Why Switch Section */}
       <WhySwitchSection />
