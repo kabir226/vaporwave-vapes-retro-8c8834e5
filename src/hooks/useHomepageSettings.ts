@@ -38,10 +38,15 @@ export const useHomepageSettings = (sectionName?: string) => {
 
       const { data, error } = await query;
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching homepage settings:', error);
+        setSettings([]);
+        return;
+      }
       setSettings(data || []);
     } catch (error) {
       console.error('Error fetching homepage settings:', error);
+      setSettings([]);
     } finally {
       setLoading(false);
     }
