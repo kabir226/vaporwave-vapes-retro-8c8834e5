@@ -1,7 +1,11 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 
 const HowToUseSection: React.FC = () => {
+  const { getSetting } = useHomepageSettings('how_to_use');
+  const settings = getSetting('how_to_use');
+
   const steps = [
     {
       number: 1,
@@ -29,8 +33,11 @@ const HowToUseSection: React.FC = () => {
     <section className="w-full py-16 px-4 bg-background">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          How to use nicotine pouches
+          {settings?.title || 'How to use nicotine pouches'}
         </h2>
+        {settings?.subtitle && (
+          <p className="text-center text-muted-foreground mb-8">{settings.subtitle}</p>
+        )}
 
         <div className="space-y-8 mb-12">
           {steps.map((step) => (
@@ -61,7 +68,7 @@ const HowToUseSection: React.FC = () => {
 
         <div className="flex justify-center">
           <Button variant="default" size="lg" className="rounded-full">
-            Get started with beginners
+            {settings?.button_text || 'Get started with beginners'}
           </Button>
         </div>
       </div>

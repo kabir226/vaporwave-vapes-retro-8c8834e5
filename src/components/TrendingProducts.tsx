@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Star, Heart, Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCurrencies } from '@/hooks/useCurrencies';
+import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 import {
   Carousel,
   CarouselContent,
@@ -36,6 +37,8 @@ interface TrendingProductsProps {
 const TrendingProducts: React.FC<TrendingProductsProps> = ({ products, onAddToCart }) => {
   const navigate = useNavigate();
   const { getCurrencyByCode } = useCurrencies();
+  const { getSetting } = useHomepageSettings('trending');
+  const settings = getSetting('trending');
 
   return (
     <section className="py-16 px-4 bg-card/10">
@@ -45,10 +48,10 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products, onAddToCa
             Tendances
           </Badge>
           <h2 className="text-4xl md:text-5xl font-black mb-6 text-cyber">
-            PRODUITS TENDANCE
+            {settings?.title || 'PRODUITS TENDANCE'}
           </h2>
           <p className="text-lg text-muted-foreground">
-            Les produits les plus populaires du moment
+            {settings?.subtitle || 'Les produits les plus populaires du moment'}
           </p>
         </div>
         

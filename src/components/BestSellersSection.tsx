@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Star, ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCurrencies } from '@/hooks/useCurrencies';
+import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 
 interface Product {
   id: string | number;
@@ -28,13 +29,18 @@ interface BestSellersSectionProps {
 const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAddToCart }) => {
   const navigate = useNavigate();
   const { getCurrencyByCode } = useCurrencies();
+  const { getSetting } = useHomepageSettings('bestsellers');
+  const settings = getSetting('bestsellers');
 
   return (
     <section className="w-full py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-black text-center text-foreground mb-8">
-          MEILLEURES VENTES
+          {settings?.title || 'MEILLEURES VENTES'}
         </h2>
+        {settings?.subtitle && (
+          <p className="text-center text-muted-foreground mb-6">{settings.subtitle}</p>
+        )}
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {products.map((product) => {

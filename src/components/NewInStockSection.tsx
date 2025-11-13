@@ -1,19 +1,23 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 
 const NewInStockSection: React.FC = () => {
+  const { getSetting } = useHomepageSettings('new_in_stock');
+  const settings = getSetting('new_in_stock');
+
   return (
     <section className="w-full py-16 px-4 bg-background">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-center mb-8">
           <Button variant="default" size="lg" className="rounded-full">
-            Get started
+            {settings?.button_text || 'Get started'}
           </Button>
         </div>
 
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-12">
-          NEW IN STOCK
+          {settings?.title || 'NEW IN STOCK'}
         </h2>
 
         <div className="relative">

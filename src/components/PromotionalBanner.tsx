@@ -1,7 +1,13 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 
 const PromotionalBanner: React.FC = () => {
+  const { getSetting } = useHomepageSettings('promotional_banner');
+  const settings = getSetting('promotional_banner');
+
+  if (!settings) return null;
+
   return (
     <div className="w-full bg-muted/50 border-b border-border py-3 px-4">
       <div className="max-w-7xl mx-auto">
@@ -9,9 +15,16 @@ const PromotionalBanner: React.FC = () => {
           <button className="text-muted-foreground hover:text-foreground transition-colors">
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <p className="text-sm md:text-base font-medium text-foreground text-center">
-            Mix & Match n'importe quelle saveur pour une pochette ! Aucun coût supplémentaire
-          </p>
+          <div className="text-center">
+            {settings.title && (
+              <p className="text-sm md:text-base font-medium text-foreground">
+                {settings.title}
+              </p>
+            )}
+            {settings.subtitle && (
+              <p className="text-xs text-muted-foreground">{settings.subtitle}</p>
+            )}
+          </div>
           <button className="text-muted-foreground hover:text-foreground transition-colors">
             <ChevronRight className="w-5 h-5" />
           </button>

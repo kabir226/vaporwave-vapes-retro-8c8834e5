@@ -8,6 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 
 interface CategorySectionProps {
   categories: Array<{
@@ -20,12 +21,18 @@ interface CategorySectionProps {
 }
 
 const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
+  const { getSetting } = useHomepageSettings('categories');
+  const settings = getSetting('categories');
+
   return (
     <section className="w-full py-12 px-4 bg-muted/30">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-black text-center text-foreground mb-8">
-          ACHETER SNUS PAR CATÉGORIE
+          {settings?.title || 'ACHETER SNUS PAR CATÉGORIE'}
         </h2>
+        {settings?.subtitle && (
+          <p className="text-center text-muted-foreground mb-6">{settings.subtitle}</p>
+        )}
         
         {/* Mobile Carousel */}
         <div className="md:hidden">

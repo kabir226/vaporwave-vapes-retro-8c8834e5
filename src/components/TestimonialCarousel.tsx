@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Star, Quote, User } from 'lucide-react';
+import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 import {
   Carousel,
   CarouselContent,
@@ -24,6 +25,9 @@ interface TestimonialCarouselProps {
 }
 
 const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testimonials }) => {
+  const { getSetting } = useHomepageSettings('testimonials');
+  const settings = getSetting('testimonials');
+
   return (
     <section className="py-20 px-4 bg-card/20 backdrop-blur-sm">
       <div className="max-w-6xl mx-auto">
@@ -32,10 +36,10 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testimonials 
             Témoignages clients
           </Badge>
           <h2 className="text-4xl font-black mb-4 text-cyber">
-            ILS NOUS FONT CONFIANCE
+            {settings?.title || 'ILS NOUS FONT CONFIANCE'}
           </h2>
           <p className="text-lg text-muted-foreground">
-            Plus de 10,000 clients satisfaits à travers la France
+            {settings?.subtitle || 'Plus de 10,000 clients satisfaits à travers la France'}
           </p>
         </div>
         
