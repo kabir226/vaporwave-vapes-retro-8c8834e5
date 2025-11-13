@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useCurrencies } from '@/hooks/useCurrencies';
 
 interface Product {
   id: string | number;
@@ -29,6 +30,10 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay = 0 }) => {
   const navigate = useNavigate();
+  const { getCurrencyByCode } = useCurrencies();
+  
+  const currency = getCurrencyByCode((product as any).currency_code || 'EUR');
+  const currencySymbol = currency?.symbol || '€';
 
   return (
     <Card 
@@ -106,7 +111,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
           {/* Price */}
           <div className="text-center">
             <div className="text-3xl font-black text-primary animate-neon-pulse">
-              {product.price.toFixed(2)}€
+              {product.price.toFixed(2)}{currencySymbol}
             </div>
           </div>
 

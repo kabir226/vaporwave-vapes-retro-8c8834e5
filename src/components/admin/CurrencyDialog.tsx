@@ -61,14 +61,14 @@ const CurrencyDialog = ({ open, currency, onClose }: CurrencyDialogProps) => {
     try {
       // Si is_default est true, retirer le flag des autres devises
       if (formData.is_default) {
-        await supabase
+        await (supabase as any)
           .from("currencies")
           .update({ is_default: false })
           .neq("id", currency?.id || "");
       }
 
       if (currency) {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from("currencies")
           .update(formData)
           .eq("id", currency.id);
@@ -80,7 +80,7 @@ const CurrencyDialog = ({ open, currency, onClose }: CurrencyDialogProps) => {
           description: "La devise a été mise à jour avec succès.",
         });
       } else {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from("currencies")
           .insert([formData]);
 

@@ -73,7 +73,7 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
   };
 
   const fetchCurrencies = async () => {
-    const { data } = await supabase.from("currencies").select("*").order("is_default", { ascending: false });
+    const { data } = await (supabase as any).from("currencies").select("*").order("is_default", { ascending: false });
     setCurrencies(data || []);
   };
 
