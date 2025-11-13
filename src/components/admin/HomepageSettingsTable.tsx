@@ -9,7 +9,24 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Edit, Trash2, Image as ImageIcon, Video } from 'lucide-react';
+import { Edit, Trash2, Image as ImageIcon, Video, GripVertical } from 'lucide-react';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface HomepageSetting {
   id: string;
@@ -75,7 +92,7 @@ const SortableRow: React.FC<SortableRowProps> = ({ setting, onEdit, onDelete }) 
         <div className="flex gap-2">
           {setting.image_url && (
             <Badge variant="secondary">
-              <Image className="w-3 h-3 mr-1" />
+              <ImageIcon className="w-3 h-3 mr-1" />
               Image
             </Badge>
           )}
@@ -118,8 +135,34 @@ const HomepageSettingsTable: React.FC<HomepageSettingsTableProps> = ({
   settings,
   loading,
   onEdit,
-  onDelete
+  onDelete,
+  onReorder,
 }) => {
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = settings.findIndex((s) => s.id === active.id);
+      const newIndex = settings.findIndex((s) => s.id === over.id);
+
+      const reordered = arrayMove(settings, oldIndex, newIndex).map(
+        (setting, index) => ({
+          ...setting,
+          display_order: index + 1,
+        })
+      );
+
+      onReorder(reordered);
+    }
+  };
+
   if (loading) {
     return <div className="text-center py-8">Chargement...</div>;
   }
@@ -133,72 +176,41 @@ const HomepageSettingsTable: React.FC<HomepageSettingsTableProps> = ({
   }
 
   return (
-    <div className="border rounded-lg overflow-hidden">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Ordre</TableHead>
-            <TableHead>Section</TableHead>
-            <TableHead>Titre</TableHead>
-            <TableHead>Médias</TableHead>
-            <TableHead>Statut</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {settings.map((setting) => (
-            <TableRow key={setting.id}>
-              <TableCell>{setting.display_order}</TableCell>
-              <TableCell>
-                <span className="font-mono text-sm">{setting.section_name}</span>
-              </TableCell>
-              <TableCell>
-                <div className="max-w-xs truncate">{setting.title || '-'}</div>
-              </TableCell>
-              <TableCell>
-                <div className="flex gap-2">
-                  {setting.image_url && (
-                    <Badge variant="outline" className="gap-1">
-                      <ImageIcon className="w-3 h-3" />
-                      Image
-                    </Badge>
-                  )}
-                  {setting.video_url && (
-                    <Badge variant="outline" className="gap-1">
-                      <Video className="w-3 h-3" />
-                      Vidéo
-                    </Badge>
-                  )}
-                </div>
-              </TableCell>
-              <TableCell>
-                <Badge variant={setting.is_active ? 'default' : 'secondary'}>
-                  {setting.is_active ? 'Actif' : 'Inactif'}
-                </Badge>
-              </TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => onEdit(setting)}
-                  >
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => onDelete(setting.id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              </TableCell>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <div className="border rounded-lg overflow-hidden">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Ordre</TableHead>
+              <TableHead>Section</TableHead>
+              <TableHead>Titre</TableHead>
+              <TableHead>Médias</TableHead>
+              <TableHead>Statut</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            <SortableContext
+              items={settings.map((s) => s.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              {settings.map((setting) => (
+                <SortableRow
+                  key={setting.id}
+                  setting={setting}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
+              ))}
+            </SortableContext>
+          </TableBody>
+        </Table>
+      </div>
+    </DndContext>
   );
 };
 
