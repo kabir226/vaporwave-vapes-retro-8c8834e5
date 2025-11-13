@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Star, ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useCurrencies } from '@/hooks/useCurrencies';
 
 interface Product {
   id: string | number;
@@ -26,6 +27,7 @@ interface BestSellersSectionProps {
 
 const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAddToCart }) => {
   const navigate = useNavigate();
+  const { getCurrencyByCode } = useCurrencies();
 
   return (
     <section className="w-full py-12 px-4">
@@ -35,7 +37,11 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
         </h2>
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {products.map((product) => (
+          {products.map((product) => {
+            const currency = getCurrencyByCode((product as any).currency_code || 'EUR');
+            const currencySymbol = currency?.symbol || '€';
+            
+            return (
             <Card 
               key={product.id} 
               className="group hover:shadow-xl transition-all duration-300 overflow-hidden border hover:border-primary cursor-pointer"
@@ -86,11 +92,11 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
 
                   <div className="flex items-center gap-2">
                     <span className="text-lg font-bold text-foreground">
-                      €{product.price.toFixed(2)}
+                      {currencySymbol}{product.price.toFixed(2)}
                     </span>
                     {product.originalPrice && (
                       <span className="text-sm text-muted-foreground line-through">
-                        €{product.originalPrice.toFixed(2)}
+                        {currencySymbol}{product.originalPrice.toFixed(2)}
                       </span>
                     )}
                   </div>
@@ -108,7 +114,8 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
                 </div>
               </CardContent>
             </Card>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
