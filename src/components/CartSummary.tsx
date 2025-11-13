@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ShoppingCart, Truck, Shield } from 'lucide-react';
+import { useCurrencies } from '@/hooks/useCurrencies';
 
 interface CartItem {
   id: number;
@@ -20,6 +21,9 @@ interface CartSummaryProps {
 }
 
 const CartSummary: React.FC<CartSummaryProps> = ({ cart, onUpdateQuantity, onRemoveItem }) => {
+  const { defaultCurrency } = useCurrencies();
+  const currencySymbol = defaultCurrency?.symbol || '€';
+  
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   
@@ -84,7 +88,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onUpdateQuantity, onRem
               </div>
             </div>
             <div className="text-right">
-              <p className="font-semibold">{(item.price * item.quantity).toFixed(2)}€</p>
+              <p className="font-semibold">{(item.price * item.quantity).toFixed(2)}{currencySymbol}</p>
             </div>
           </div>
         ))}
@@ -94,7 +98,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onUpdateQuantity, onRem
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span>Sous-total</span>
-            <span>{total.toFixed(2)}€</span>
+            <span>{total.toFixed(2)}{currencySymbol}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="flex items-center gap-1">
@@ -105,13 +109,13 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onUpdateQuantity, onRem
               {freeShipping ? (
                 <Badge variant="secondary" className="text-xs">GRATUITE</Badge>
               ) : (
-                `${shippingCost.toFixed(2)}€`
+                `${shippingCost.toFixed(2)}${currencySymbol}`
               )}
             </span>
           </div>
           {!freeShipping && (
             <p className="text-xs text-muted-foreground">
-              Livraison gratuite dès 50€ ({(50 - total).toFixed(2)}€ restants)
+              Livraison gratuite dès 50{currencySymbol} ({(50 - total).toFixed(2)}{currencySymbol} restants)
             </p>
           )}
         </div>
@@ -120,7 +124,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onUpdateQuantity, onRem
         
         <div className="flex justify-between font-bold">
           <span>Total</span>
-          <span>{finalTotal.toFixed(2)}€</span>
+          <span>{finalTotal.toFixed(2)}{currencySymbol}</span>
         </div>
         
         <div className="space-y-2">

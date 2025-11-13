@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Star, Heart, Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useCurrencies } from '@/hooks/useCurrencies';
 import {
   Carousel,
   CarouselContent,
@@ -34,6 +35,7 @@ interface TrendingProductsProps {
 
 const TrendingProducts: React.FC<TrendingProductsProps> = ({ products, onAddToCart }) => {
   const navigate = useNavigate();
+  const { getCurrencyByCode } = useCurrencies();
 
   return (
     <section className="py-16 px-4 bg-card/10">
@@ -58,7 +60,11 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products, onAddToCa
           className="w-full"
         >
           <CarouselContent>
-            {products.map((product) => (
+            {products.map((product) => {
+              const currency = getCurrencyByCode((product as any).currency_code || 'EUR');
+              const currencySymbol = currency?.symbol || '€';
+              
+              return (
               <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
                 <Card 
                   className="group bg-glass border-border hover:border-primary transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 overflow-hidden cursor-pointer"
@@ -126,11 +132,11 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products, onAddToCa
                       {/* Prix */}
                       <div className="flex items-center gap-2 mb-4">
                         <span className="text-xl font-black text-primary">
-                          {product.price.toFixed(2)}€
+                          {currencySymbol}{product.price.toFixed(2)}
                         </span>
                         {product.originalPrice && (
                           <span className="text-sm text-muted-foreground line-through">
-                            {product.originalPrice.toFixed(2)}€
+                            {currencySymbol}{product.originalPrice.toFixed(2)}
                           </span>
                         )}
                       </div>
@@ -150,7 +156,8 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products, onAddToCa
                   </CardContent>
                 </Card>
               </CarouselItem>
-            ))}
+              );
+            })}
           </CarouselContent>
           <CarouselPrevious className="hidden md:flex" />
           <CarouselNext className="hidden md:flex" />
