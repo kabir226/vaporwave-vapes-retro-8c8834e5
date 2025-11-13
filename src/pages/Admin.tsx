@@ -8,6 +8,7 @@ import { Loader2, LogOut } from "lucide-react";
 import ProductList from "@/components/admin/ProductList";
 import CategoryList from "@/components/admin/CategoryList";
 import CurrencyList from "@/components/admin/CurrencyList";
+import HomepageSettingsList from "@/components/admin/HomepageSettingsList";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -90,6 +91,7 @@ const Admin = () => {
             <TabsTrigger value="products">Produits</TabsTrigger>
             <TabsTrigger value="categories">Catégories</TabsTrigger>
             <TabsTrigger value="currencies">Devises</TabsTrigger>
+            <TabsTrigger value="homepage">Page d'accueil</TabsTrigger>
           </TabsList>
 
           <TabsContent value="products" className="mt-6">
@@ -102,6 +104,10 @@ const Admin = () => {
 
           <TabsContent value="currencies" className="mt-6">
             <CurrencyList />
+          </TabsContent>
+
+          <TabsContent value="homepage" className="mt-6">
+            <HomepageSettingsList />
           </TabsContent>
         </Tabs>
       </main>
