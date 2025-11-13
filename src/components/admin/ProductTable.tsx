@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Edit, Trash2 } from "lucide-react";
 import { Product } from "./ProductList";
+import { useCurrencies } from "@/hooks/useCurrencies";
 
 interface ProductTableProps {
   products: Product[];
@@ -12,6 +13,8 @@ interface ProductTableProps {
 }
 
 const ProductTable = ({ products, loading, onEdit, onDelete }: ProductTableProps) => {
+  const { getCurrencyByCode } = useCurrencies();
+
   if (loading) {
     return <div className="text-center py-8">Chargement...</div>;
   }
@@ -37,7 +40,10 @@ const ProductTable = ({ products, loading, onEdit, onDelete }: ProductTableProps
           {products.map((product) => (
             <TableRow key={product.id}>
               <TableCell className="font-medium">{product.name}</TableCell>
-              <TableCell>{product.price}€</TableCell>
+              <TableCell>
+                {product.price}
+                {getCurrencyByCode((product as any).currency_code || 'EUR')?.symbol || '€'}
+              </TableCell>
               <TableCell>{product.stock}</TableCell>
               <TableCell>
                 <Badge variant={product.in_stock ? "default" : "destructive"}>

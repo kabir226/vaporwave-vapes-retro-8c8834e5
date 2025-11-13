@@ -28,14 +28,14 @@ const CurrencyList = () => {
 
   const fetchCurrencies = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("currencies")
         .select("*")
         .order("is_default", { ascending: false })
         .order("code");
 
       if (error) throw error;
-      setCurrencies(data || []);
+      setCurrencies((data || []) as Currency[]);
     } catch (error: any) {
       toast({
         title: "Erreur",
@@ -58,7 +58,7 @@ const CurrencyList = () => {
     }
 
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("currencies")
         .delete()
         .eq("id", id);
