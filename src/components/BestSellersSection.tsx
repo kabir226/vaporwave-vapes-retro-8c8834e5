@@ -60,7 +60,7 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
                     <img 
                       src={product.image} 
                       alt={product.name}
-                      className="w-full h-full object-contain group-hover:scale-110 transition-transform p-2"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                     />
                   ) : (
                     <span className="text-5xl md:text-6xl group-hover:scale-110 transition-transform">
