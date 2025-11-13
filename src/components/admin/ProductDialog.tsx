@@ -21,6 +21,7 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
+  const [currencies, setCurrencies] = useState<any[]>([]);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -28,12 +29,14 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
     stock: "",
     strength: "",
     category_id: "",
+    currency_code: "EUR",
     slug: "",
     images: [] as string[],
   });
 
   useEffect(() => {
     fetchCategories();
+    fetchCurrencies();
   }, []);
 
   useEffect(() => {
@@ -45,6 +48,7 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
         stock: product.stock.toString(),
         strength: product.strength || "",
         category_id: product.category_id || "",
+        currency_code: (product as any).currency_code || "EUR",
         slug: product.slug,
         images: product.images || [],
       });
@@ -56,6 +60,7 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
         stock: "",
         strength: "",
         category_id: "",
+        currency_code: "EUR",
         slug: "",
         images: [],
       });
@@ -65,6 +70,11 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
   const fetchCategories = async () => {
     const { data } = await supabase.from("categories").select("*");
     setCategories(data || []);
+  };
+
+  const fetchCurrencies = async () => {
+    const { data } = await supabase.from("currencies").select("*").order("is_default", { ascending: false });
+    setCurrencies(data || []);
   };
 
   const generateSlug = (name: string) => {
@@ -89,6 +99,7 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
         in_stock: parseInt(formData.stock) > 0,
         strength: formData.strength || null,
         category_id: formData.category_id || null,
+        currency_code: formData.currency_code,
         images: formData.images,
       };
 
@@ -147,9 +158,9 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="price">Prix (€) *</Label>
+              <Label htmlFor="price">Prix *</Label>
               <Input
                 id="price"
                 type="number"
@@ -158,6 +169,22 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
                 onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                 required
               />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="currency">Devise *</Label>
+              <Select value={formData.currency_code} onValueChange={(value) => setFormData({ ...formData, currency_code: value })}>
+                <SelectTrigger id="currency">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {currencies.map((currency) => (
+                    <SelectItem key={currency.code} value={currency.code}>
+                      {currency.symbol} {currency.code}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">
