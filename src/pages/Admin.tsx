@@ -22,9 +22,12 @@ const Admin = () => {
 
   const checkAuth = async () => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       
-      if (!session) {
+      // Check for expired or missing session
+      if (sessionError || !session || (session.expires_at && session.expires_at * 1000 <= Date.now())) {
+        // Clear expired session
+        await supabase.auth.signOut();
         navigate("/auth");
         return;
       }
@@ -38,6 +41,7 @@ const Admin = () => {
         .single();
 
       if (roleError || !roleData) {
+        console.error("Role check error:", roleError);
         toast({
           title: "Accès refusé",
           description: "Vous n'avez pas les permissions d'administrateur.",
@@ -50,6 +54,7 @@ const Admin = () => {
       setIsAdmin(true);
     } catch (error) {
       console.error("Auth check error:", error);
+      await supabase.auth.signOut();
       navigate("/auth");
     } finally {
       setLoading(false);
