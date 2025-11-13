@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Minus, Plus, ZoomIn } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useCurrencies } from "@/hooks/useCurrencies";
 
 interface Product {
   id: string;
@@ -29,6 +30,7 @@ interface Product {
 const ProductDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { getCurrencyByCode } = useCurrencies();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
@@ -115,6 +117,10 @@ const ProductDetail = () => {
     ? product.images[selectedImage] 
     : '/placeholder.svg';
 
+  const currency = getCurrencyByCode((product as any).currency_code || 'EUR');
+  const currencySymbol = currency?.symbol || '€';
+  const currencyCode = currency?.code || 'EUR';
+
   return (
     <div className="min-h-screen bg-background">
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
@@ -165,7 +171,7 @@ const ProductDetail = () => {
                 {product.strength || 'STANDARD'}
               </Badge>
               <h1 className="text-3xl md:text-4xl font-bold mb-2">{product.name}</h1>
-              <p className="text-2xl font-bold text-primary">£{product.price.toFixed(2)} GBP</p>
+              <p className="text-2xl font-bold text-primary">{currencySymbol}{product.price.toFixed(2)} {currencyCode}</p>
               <p className="text-sm text-muted-foreground mt-1">
                 Shipping calculated at checkout.
               </p>
@@ -301,7 +307,11 @@ const ProductDetail = () => {
           <div className="mt-16">
             <h2 className="text-2xl font-bold mb-6">Frequently bought together</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {relatedProducts.map((relatedProduct) => (
+              {relatedProducts.map((relatedProduct) => {
+                const relatedCurrency = getCurrencyByCode((relatedProduct as any).currency_code || 'EUR');
+                const relatedCurrencySymbol = relatedCurrency?.symbol || '€';
+                
+                return (
                 <Card 
                   key={relatedProduct.id}
                   className="group cursor-pointer hover:shadow-lg transition-shadow"
@@ -320,10 +330,11 @@ const ProductDetail = () => {
                       )}
                     </div>
                     <h3 className="font-semibold text-sm mb-1 line-clamp-2">{relatedProduct.name}</h3>
-                    <p className="font-bold text-primary">£{relatedProduct.price.toFixed(2)} GBP</p>
+                    <p className="font-bold text-primary">{relatedCurrencySymbol}{relatedProduct.price.toFixed(2)}</p>
                   </CardContent>
                 </Card>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
