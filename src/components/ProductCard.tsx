@@ -56,7 +56,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
               <img 
                 src={product.images[0]} 
                 alt={product.name}
-                className="w-32 h-32 object-cover rounded-lg"
+                className="w-32 h-32 object-cover scale-125 rounded-lg"
               />
             ) : (
               <div className="w-32 h-32 bg-muted rounded-lg flex items-center justify-center text-4xl">
