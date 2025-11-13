@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, LogOut } from "lucide-react";
 import ProductList from "@/components/admin/ProductList";
 import CategoryList from "@/components/admin/CategoryList";
+import CurrencyList from "@/components/admin/CurrencyList";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -88,6 +89,7 @@ const Admin = () => {
           <TabsList>
             <TabsTrigger value="products">Produits</TabsTrigger>
             <TabsTrigger value="categories">Catégories</TabsTrigger>
+            <TabsTrigger value="currencies">Devises</TabsTrigger>
           </TabsList>
 
           <TabsContent value="products" className="mt-6">
@@ -96,6 +98,10 @@ const Admin = () => {
 
           <TabsContent value="categories" className="mt-6">
             <CategoryList />
+          </TabsContent>
+
+          <TabsContent value="currencies" className="mt-6">
+            <CurrencyList />
           </TabsContent>
         </Tabs>
       </main>
