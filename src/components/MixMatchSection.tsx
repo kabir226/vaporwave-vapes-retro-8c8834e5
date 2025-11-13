@@ -1,8 +1,14 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
+import { useHomepageSettings } from '@/hooks/useHomepageSettings';
+
 const MixMatchSection: React.FC = () => {
-  return <section className="w-full py-16 px-4 bg-card">
+  const { getSetting } = useHomepageSettings('mix_match');
+  const settings = getSetting('mix_match');
+
+  return (
+    <section className="w-full py-16 px-4 bg-card">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-center mb-8">
           <Button variant="outline" className="rounded-full border-2 border-primary">
@@ -12,17 +18,25 @@ const MixMatchSection: React.FC = () => {
         </div>
 
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-12">
-          MIX & MATCH
+          {settings?.title || 'MIX & MATCH'}
         </h2>
 
         <div className="mb-12 rounded-2xl overflow-hidden">
-          <div className="bg-muted aspect-[4/3] flex items-center justify-center">
-            <p className="text-lg text-muted-foreground">Mixed pouches image placeholder</p>
-          </div>
+          {settings?.image_url ? (
+            <img 
+              src={settings.image_url} 
+              alt={settings.title || 'Mix & Match'} 
+              className="w-full h-full object-cover aspect-[4/3]"
+            />
+          ) : (
+            <div className="bg-muted aspect-[4/3] flex items-center justify-center">
+              <p className="text-lg text-muted-foreground">Mixed pouches image placeholder</p>
+            </div>
+          )}
         </div>
 
         <p className="text-center text-base md:text-lg text-muted-foreground mb-8">
-          Mix and match any five or ten pouches of you choice and save big!
+          {settings?.description || 'Mix and match any five or ten pouches of you choice and save big!'}
         </p>
 
         <div className="space-y-4 mb-12">
@@ -39,6 +53,7 @@ const MixMatchSection: React.FC = () => {
           
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 export default MixMatchSection;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Leaf, Lock, Heart } from 'lucide-react';
 import BenefitPreviewDialog from './BenefitPreviewDialog';
+import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 
 interface Benefit {
   icon: React.ReactNode;
@@ -12,6 +13,8 @@ interface Benefit {
 
 const BenefitsSection: React.FC = () => {
   const [selectedBenefit, setSelectedBenefit] = useState<Benefit | null>(null);
+  const { getSetting } = useHomepageSettings('benefits');
+  const settings = getSetting('benefits');
 
   const benefits: Benefit[] = [
     {
@@ -42,8 +45,16 @@ const BenefitsSection: React.FC = () => {
       <section className="w-full py-8 px-4 relative">
         <div className="max-w-6xl mx-auto">
           <div className="relative rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/9]">
-            {/* Background image placeholder */}
-            <div className="absolute inset-0 bg-gradient-to-br from-muted via-muted to-card" />
+            {/* Background image */}
+            {settings?.image_url ? (
+              <img 
+                src={settings.image_url} 
+                alt={settings.title || 'Benefits'} 
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-muted via-muted to-card" />
+            )}
             
             {/* Benefits positioned on the image */}
             {benefits.map((benefit, index) => (

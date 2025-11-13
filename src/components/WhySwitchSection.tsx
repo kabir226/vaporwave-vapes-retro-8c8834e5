@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { PlayCircle, Leaf, Lock, Heart } from 'lucide-react';
 import BenefitPreviewDialog from './BenefitPreviewDialog';
 import whySwitchBg from '@/assets/why-switch-background.jpg';
+import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 
 interface Benefit {
   icon: React.ReactNode;
@@ -13,6 +14,8 @@ interface Benefit {
 
 const WhySwitchSection: React.FC = () => {
   const [selectedBenefit, setSelectedBenefit] = useState<Benefit | null>(null);
+  const { getSetting } = useHomepageSettings('why_switch');
+  const settings = getSetting('why_switch');
 
   const benefits: Benefit[] = [
     {
@@ -40,11 +43,11 @@ const WhySwitchSection: React.FC = () => {
       <section className="w-full py-16 px-4 bg-background">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
-            Why make the switch from smoking products?
+            {settings?.title || 'Why make the switch from smoking products?'}
           </h2>
           
           <p className="text-center text-base md:text-lg text-foreground mb-8 max-w-3xl mx-auto">
-            Switching to nicotine pouches isn't just a change. It's a commitment to a healthier, safer lifestyle, that yours lungs will appreciate!
+            {settings?.subtitle || "Switching to nicotine pouches isn't just a change. It's a commitment to a healthier, safer lifestyle, that yours lungs will appreciate!"}
           </p>
 
           <div className="flex justify-center mb-12">
@@ -57,7 +60,7 @@ const WhySwitchSection: React.FC = () => {
           <div className="relative rounded-2xl overflow-hidden aspect-[4/3] mb-8">
             {/* Background Image */}
             <img 
-              src={whySwitchBg} 
+              src={settings?.image_url || whySwitchBg} 
               alt="Why Switch Background" 
               className="absolute inset-0 w-full h-full object-cover"
             />
