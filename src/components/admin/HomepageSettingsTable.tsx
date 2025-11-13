@@ -30,7 +30,89 @@ interface HomepageSettingsTableProps {
   loading: boolean;
   onEdit: (setting: HomepageSetting) => void;
   onDelete: (id: string) => void;
+  onReorder: (settings: HomepageSetting[]) => void;
 }
+
+interface SortableRowProps {
+  setting: HomepageSetting;
+  onEdit: (setting: HomepageSetting) => void;
+  onDelete: (id: string) => void;
+}
+
+const SortableRow: React.FC<SortableRowProps> = ({ setting, onEdit, onDelete }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: setting.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <TableRow ref={setNodeRef} style={style}>
+      <TableCell>
+        <div className="flex items-center gap-2">
+          <button
+            className="cursor-grab active:cursor-grabbing touch-none"
+            {...attributes}
+            {...listeners}
+          >
+            <GripVertical className="w-4 h-4 text-muted-foreground" />
+          </button>
+          <span>{setting.display_order}</span>
+        </div>
+      </TableCell>
+      <TableCell className="font-medium">{setting.section_name}</TableCell>
+      <TableCell>{setting.title || '-'}</TableCell>
+      <TableCell>
+        <div className="flex gap-2">
+          {setting.image_url && (
+            <Badge variant="secondary">
+              <Image className="w-3 h-3 mr-1" />
+              Image
+            </Badge>
+          )}
+          {setting.video_url && (
+            <Badge variant="secondary">
+              <Video className="w-3 h-3 mr-1" />
+              Vidéo
+            </Badge>
+          )}
+        </div>
+      </TableCell>
+      <TableCell>
+        <Badge variant={setting.is_active ? 'default' : 'secondary'}>
+          {setting.is_active ? 'Active' : 'Inactive'}
+        </Badge>
+      </TableCell>
+      <TableCell>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onEdit(setting)}
+          >
+            <Edit className="w-4 h-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onDelete(setting.id)}
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
+        </div>
+      </TableCell>
+    </TableRow>
+  );
+};
 
 const HomepageSettingsTable: React.FC<HomepageSettingsTableProps> = ({
   settings,
