@@ -23,8 +23,14 @@ import { useAgeVerification } from '@/hooks/useAgeVerification';
 import { useProducts } from '@/hooks/useProducts';
 import { useCategories } from '@/hooks/useCategories';
 const Index = () => {
-  const { products, loading: loadingProducts } = useProducts();
-  const { categories, loading: loadingCategories } = useCategories();
+  const {
+    products,
+    loading: loadingProducts
+  } = useProducts();
+  const {
+    categories,
+    loading: loadingCategories
+  } = useCategories();
   const {
     cart,
     addToCart,
@@ -43,18 +49,16 @@ const Index = () => {
 
   // Trouver la catégorie "Meilleures ventes"
   const bestSellersCategory = categories.find(c => c.slug === 'best-sellers');
-  
+
   // Transformer les produits pour la compatibilité
   const transformedProducts = products.map(p => ({
     ...p,
     image: p.images?.[0] || '📦',
-    inStock: p.in_stock,
+    inStock: p.in_stock
   }));
 
   // Filtrer les produits de la catégorie "Meilleures ventes"
-  const bestSellersProducts = bestSellersCategory 
-    ? transformedProducts.filter(p => p.category_id === bestSellersCategory.id)
-    : transformedProducts.slice(0, 8);
+  const bestSellersProducts = bestSellersCategory ? transformedProducts.filter(p => p.category_id === bestSellersCategory.id) : transformedProducts.slice(0, 8);
   const handleAddToCart = (product: any) => {
     setLastAddedProduct(product);
     setShowCartAnimation(true);
@@ -72,7 +76,7 @@ const Index = () => {
       <ParticleBackground />
       
       {/* Trust Banner - Very Top */}
-      <TrustBanner />
+      
       
       {/* Header */}
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
@@ -90,11 +94,11 @@ const Index = () => {
 
       {/* Category Section - Shop by Category */}
       {!loadingCategories && <CategorySection categories={categories.map(c => ({
-        ...c,
-        image: '📦',
-        count: products.filter(p => p.category_id === c.id).length,
-        featured: c.display_order === 1
-      }))} />}
+      ...c,
+      image: '📦',
+      count: products.filter(p => p.category_id === c.id).length,
+      featured: c.display_order === 1
+    }))} />}
 
       {/* Best Sellers Section */}
       {!loadingProducts && !loadingCategories && <BestSellersSection products={bestSellersProducts} onAddToCart={handleAddToCart} />}
