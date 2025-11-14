@@ -46,9 +46,7 @@ const Footer: React.FC = () => {
 
         {/* Copyright */}
         <div className="text-center">
-          <p className="text-sm text-muted-foreground">
-            © 2025 No-Smoking. Tous droits réservés.
-            <br />
+          <p className="text-sm text-muted-foreground">© 2025 SNUSPEDIA. Tous droits réservés.Site réservé aux personnes majeures de 18 ans et plus • Vente interdite aux mineurs<br />
             <span className="text-xs">
               Site réservé aux personnes majeures de 18 ans et plus • Vente interdite aux mineurs
             </span>
