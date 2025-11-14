@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({
 
           {/* Center: Logo/Brand Name */}
           <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 group">
-            <Logo />
+            
             <span className="text-xl font-black text-cyber">
               SNUSPEDIA
             </span>
