@@ -2,17 +2,16 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
-
 const CustomerChangeSection: React.FC = () => {
-  const { getSetting, loading } = useHomepageSettings();
+  const {
+    getSetting,
+    loading
+  } = useHomepageSettings();
   const settings = getSetting('customer_change');
-
   if (loading) {
     return null;
   }
-
-  return (
-    <section className="w-full py-16 px-4 bg-card">
+  return <section className="w-full py-16 px-4 bg-card">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl md:text-5xl font-bold text-center mb-4 text-foreground">
           {settings?.title || 'See why our customers made the change'}
@@ -32,30 +31,16 @@ const CustomerChangeSection: React.FC = () => {
           </Button>
         </div>
 
-        {settings?.image_url && (
-          <div className="mb-8 rounded-2xl overflow-hidden">
-            <img 
-              src={settings.image_url} 
-              alt={settings.title || 'Customer testimonials'} 
-              className="w-full aspect-[16/9] object-cover"
-            />
-          </div>
-        )}
+        {settings?.image_url && <div className="mb-8 rounded-2xl overflow-hidden">
+            
+          </div>}
 
         <div className="relative">
           <div className="overflow-hidden">
             <div className="flex gap-4 pb-4">
               <Card className="min-w-[300px] md:min-w-[400px] p-6 bg-background">
                 <div className="mb-4 rounded-lg overflow-hidden aspect-[4/3] bg-muted flex items-center justify-center">
-                  {settings?.image_url ? (
-                    <img 
-                      src={settings.image_url} 
-                      alt="Customer testimonial" 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <p className="text-sm text-muted-foreground">Customer photo</p>
-                  )}
+                  {settings?.image_url ? <img src={settings.image_url} alt="Customer testimonial" className="w-full h-full object-cover" /> : <p className="text-sm text-muted-foreground">Customer photo</p>}
                 </div>
                 <p className="text-sm text-muted-foreground italic mb-4">
                   "Was recommended by a friend to try out snus for the first time, as I have been trying to quit vaping 
@@ -67,8 +52,6 @@ const CustomerChangeSection: React.FC = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default CustomerChangeSection;
