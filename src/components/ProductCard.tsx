@@ -1,9 +1,5 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCurrencies } from '@/hooks/useCurrencies';
 
@@ -37,96 +33,33 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
 
   return (
     <Card 
-      className="group bg-glass border-border hover:border-primary transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 hologram-effect overflow-hidden cursor-pointer"
+      className="group relative overflow-hidden bg-black border border-white/20 hover:border-primary transition-all duration-300 cursor-pointer rounded-2xl"
       style={{ animationDelay: `${delay}s` }}
       onClick={() => product.slug && navigate(`/product/${product.slug}`)}
     >
-      <CardContent className="p-6 relative z-10">
-        {/* Popular Badge */}
-        {product.isPopular && (
-          <Badge className="absolute top-4 right-4 bg-retro-gold text-black font-bold animate-pulse">
-            POPULAIRE
-          </Badge>
-        )}
-
-        {/* Product Image */}
-        <div className="text-center mb-6">
-          <div className="mb-4 animate-float group-hover:scale-110 transition-transform duration-300 overflow-hidden rounded-lg">
-            {product.images && product.images.length > 0 ? (
-              <img 
-                src={product.images[0]} 
-                alt={product.name}
-                className="w-32 h-32 object-cover rounded-lg"
-              />
-            ) : (
-              <div className="w-32 h-32 bg-muted rounded-lg flex items-center justify-center text-4xl">
-                📦
-              </div>
-            )}
-          </div>
-          <Badge variant="outline" className="border-primary text-primary text-xs">
-            {product.category.toUpperCase()}
-          </Badge>
+      <CardContent className="p-4">
+        <div className="relative h-32 mb-3 flex items-center justify-center">
+          {product.images && product.images.length > 0 ? (
+            <img 
+              src={product.images[0]} 
+              alt={product.name}
+              className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300"
+            />
+          ) : (
+            <span className="text-5xl scale-110 group-hover:scale-125 transition-transform duration-300">
+              📦
+            </span>
+          )}
         </div>
-
-        {/* Product Info */}
-        <div className="space-y-4">
-          <h3 className="text-xl font-bold text-center text-primary group-hover:text-retro-gold transition-colors">
+        
+        <div className="text-center space-y-1">
+          <h3 className="text-white text-sm font-bold leading-tight">
             {product.name}
           </h3>
           
-          <p className="text-sm text-muted-foreground text-center leading-relaxed">
-            {product.description}
-          </p>
-
-          {/* Features */}
-          <div className="space-y-2">
-            {product.features.map((feature, index) => (
-              <div key={index} className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Star className="w-3 h-3 text-retro-gold" />
-                <span>{feature}</span>
-              </div>
-            ))}
+          <div className="text-xl font-bold text-red-500">
+            {currencySymbol}{product.price.toFixed(2)}
           </div>
-
-          {/* Rating */}
-          {product.rating && (
-            <div className="flex justify-center items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-4 h-4 ${
-                    i < Math.floor(product.rating!) 
-                      ? 'text-yellow-400 fill-current' 
-                      : 'text-gray-300'
-                  }`}
-                />
-              ))}
-              <span className="text-sm text-muted-foreground ml-1">
-                {product.rating}
-              </span>
-            </div>
-          )}
-
-          {/* Price */}
-          <div className="text-center">
-            <div className="text-3xl font-black text-primary animate-neon-pulse">
-              {product.price.toFixed(2)}{currencySymbol}
-            </div>
-          </div>
-
-          {/* Add to Cart Button avec animation */}
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              onAddToCart(product);
-            }}
-            className="w-full retro-gradient text-black font-bold py-3 hover:scale-105 active:scale-95 transition-all duration-300 group-hover:shadow-lg transform hover:animate-bounce"
-            disabled={!product.inStock}
-          >
-            <ShoppingCart className="w-4 h-4 mr-2 animate-pulse" />
-            {product.inStock ? 'AJOUTER AU PANIER' : 'RUPTURE DE STOCK'}
-          </Button>
         </div>
       </CardContent>
     </Card>
