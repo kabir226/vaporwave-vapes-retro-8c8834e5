@@ -9,15 +9,19 @@ interface Benefit {
   position: string;
   previewTitle: string;
   previewDescription: string;
+  imageUrl?: string;
+  id: string;
 }
 
 const BenefitsSection: React.FC = () => {
   const [selectedBenefit, setSelectedBenefit] = useState<Benefit | null>(null);
-  const { getSetting } = useHomepageSettings('benefits');
-  const settings = getSetting('benefits');
+  const { settings } = useHomepageSettings();
+  
+  const mainSettings = settings.find(s => s.section_name === 'benefits');
 
-  const benefits: Benefit[] = [
+  const defaultBenefits: Benefit[] = [
     {
+      id: 'benefits_safer',
       icon: <Leaf className="w-8 h-8 text-foreground" />,
       title: 'Safer Alternative',
       position: 'top-12 left-8 md:top-20 md:left-16',
@@ -25,6 +29,7 @@ const BenefitsSection: React.FC = () => {
       previewDescription: 'Nicotine pouches offer a safer alternative to traditional smoking. With no combustion, no tar, and no smoke, you can enjoy nicotine without exposing yourself to the harmful chemicals found in cigarettes. Your lungs will thank you for making the switch to a cleaner option.'
     },
     {
+      id: 'benefits_discreet',
       icon: <Lock className="w-8 h-8 text-foreground" />,
       title: 'Discreet',
       position: 'top-12 right-8 md:top-20 md:right-16',
@@ -32,6 +37,7 @@ const BenefitsSection: React.FC = () => {
       previewDescription: 'With nicotine pouches, you can use nicotine discreetly, wherever you are, even in places where smoking isn\'t allowed, like on a plane or at work. The pouches are small, invisible, and discreet, allowing you to satisfy your cravings privately, without drawing attention.'
     },
     {
+      id: 'benefits_smokeless',
       icon: <Heart className="w-8 h-8 text-foreground" />,
       title: 'Smokeless',
       position: 'bottom-12 right-8 md:bottom-20 md:right-16',
@@ -40,16 +46,26 @@ const BenefitsSection: React.FC = () => {
     }
   ];
 
+  const benefits = defaultBenefits.map(benefit => {
+    const setting = settings.find(s => s.section_name === benefit.id);
+    return {
+      ...benefit,
+      previewTitle: setting?.title || benefit.previewTitle,
+      previewDescription: setting?.description || benefit.previewDescription,
+      imageUrl: setting?.image_url
+    };
+  });
+
   return (
     <>
       <section className="w-full py-8 px-4 relative">
         <div className="max-w-6xl mx-auto">
           <div className="relative rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/9]">
             {/* Background image */}
-            {settings?.image_url ? (
+            {mainSettings?.image_url ? (
               <img 
-                src={settings.image_url} 
-                alt={settings.title || 'Benefits'} 
+                src={mainSettings.image_url} 
+                alt={mainSettings.title || 'Benefits'} 
                 className="absolute inset-0 w-full h-full object-cover"
               />
             ) : (
@@ -97,6 +113,7 @@ const BenefitsSection: React.FC = () => {
           onClose={() => setSelectedBenefit(null)}
           title={selectedBenefit.previewTitle}
           description={selectedBenefit.previewDescription}
+          imageUrl={selectedBenefit.imageUrl}
           imagePlaceholder="Lifestyle image placeholder"
         />
       )}
