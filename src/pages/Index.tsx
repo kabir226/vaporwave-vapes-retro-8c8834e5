@@ -113,7 +113,7 @@ const Index = () => {
       <WhySwitchSection />
 
       {/* Benefits Section */}
-      <BenefitsSection />
+      
 
       {/* Benefits Comparison Section */}
       <BenefitsComparisonSection />
