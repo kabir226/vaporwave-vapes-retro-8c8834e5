@@ -33,10 +33,7 @@ export const useHomepageSettings = (sectionName?: string) => {
         .eq('is_active', true)
         .order('display_order', { ascending: true });
 
-      if (sectionName) {
-        query = query.eq('section_name', sectionName);
-      }
-
+      // Ne pas filtrer par section_name pour charger tous les settings
       const { data, error } = await query;
 
       if (error) {
