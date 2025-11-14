@@ -92,11 +92,14 @@ const Admin = () => {
 
       <main className="container mx-auto px-4 py-8">
         <Tabs defaultValue="products">
-          <TabsList>
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
             <TabsTrigger value="products">Produits</TabsTrigger>
             <TabsTrigger value="categories">Catégories</TabsTrigger>
             <TabsTrigger value="currencies">Devises</TabsTrigger>
             <TabsTrigger value="homepage">Page d'accueil</TabsTrigger>
+            <TabsTrigger value="benefits">Benefits</TabsTrigger>
+            <TabsTrigger value="benefits-comparison">Benefits Comparison</TabsTrigger>
+            <TabsTrigger value="why-switch">Why Switch</TabsTrigger>
           </TabsList>
 
           <TabsContent value="products" className="mt-6">
@@ -113,6 +116,18 @@ const Admin = () => {
 
           <TabsContent value="homepage" className="mt-6">
             <HomepageSettingsList />
+          </TabsContent>
+
+          <TabsContent value="benefits" className="mt-6">
+            <HomepageSettingsList sectionPrefix="benefits" />
+          </TabsContent>
+
+          <TabsContent value="benefits-comparison" className="mt-6">
+            <HomepageSettingsList sectionPrefix="benefits_comparison" />
+          </TabsContent>
+
+          <TabsContent value="why-switch" className="mt-6">
+            <HomepageSettingsList sectionPrefix="why_switch" />
           </TabsContent>
         </Tabs>
       </main>

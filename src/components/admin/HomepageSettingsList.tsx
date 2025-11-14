@@ -19,7 +19,11 @@ interface HomepageSetting {
   display_order: number;
 }
 
-const HomepageSettingsList: React.FC = () => {
+interface HomepageSettingsListProps {
+  sectionPrefix?: string;
+}
+
+const HomepageSettingsList: React.FC<HomepageSettingsListProps> = ({ sectionPrefix }) => {
   const [settings, setSettings] = useState<HomepageSetting[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -27,15 +31,24 @@ const HomepageSettingsList: React.FC = () => {
 
   useEffect(() => {
     fetchSettings();
-  }, []);
+  }, [sectionPrefix]);
 
   const fetchSettings = async () => {
     try {
       setLoading(true);
-      const { data, error } = await (supabase as any)
+      let query = (supabase as any)
         .from('homepage_settings')
         .select('*')
         .order('display_order', { ascending: true });
+
+      if (sectionPrefix) {
+        query = query.or(`section_name.eq.${sectionPrefix},section_name.like.${sectionPrefix}_%`);
+      } else {
+        // Pour la page d'accueil générale, exclure les sections benefits, benefits_comparison et why_switch
+        query = query.not('section_name', 'like', 'benefits%').not('section_name', 'like', 'why_switch%');
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
       setSettings(data || []);
@@ -95,10 +108,17 @@ const HomepageSettingsList: React.FC = () => {
     }
   };
 
+  const getSectionTitle = () => {
+    if (sectionPrefix === 'benefits') return 'Benefits - Sections & Previews';
+    if (sectionPrefix === 'benefits_comparison') return 'Benefits Comparison - Sections & Previews';
+    if (sectionPrefix === 'why_switch') return 'Why Switch - Sections & Previews';
+    return 'Paramètres de la page d\'accueil';
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Paramètres de la page d'accueil</h2>
+        <h2 className="text-2xl font-bold">{getSectionTitle()}</h2>
         <Button onClick={handleAdd}>
           <Plus className="w-4 h-4 mr-2" />
           Nouvelle section
