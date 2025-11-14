@@ -56,6 +56,11 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
     { image_url: '', text: '', author: '' },
     { image_url: '', text: '', author: '' }
   ]);
+  const [products, setProducts] = useState<Array<{ image_url: string; name: string; price: string }>>([
+    { image_url: '', name: '', price: '' },
+    { image_url: '', name: '', price: '' },
+    { image_url: '', name: '', price: '' }
+  ]);
 
   useEffect(() => {
     if (setting) {
@@ -85,6 +90,16 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
           { image_url: '', text: '', author: '' }
         ]);
       }
+      
+      // Load products if section is new_in_stock
+      if (setting.section_name === 'new_in_stock' && setting.settings) {
+        const settingsData = setting.settings as any;
+        setProducts(settingsData.products || [
+          { image_url: '', name: '', price: '' },
+          { image_url: '', name: '', price: '' },
+          { image_url: '', name: '', price: '' }
+        ]);
+      }
     } else {
       setFormData({
         section_name: '',
@@ -104,6 +119,11 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
         { image_url: '', text: '', author: '' },
         { image_url: '', text: '', author: '' }
       ]);
+      setProducts([
+        { image_url: '', name: '', price: '' },
+        { image_url: '', name: '', price: '' },
+        { image_url: '', name: '', price: '' }
+      ]);
     }
   }, [setting, isOpen]);
 
@@ -116,6 +136,9 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
       }
       if (formData.section_name === 'customer_change') {
         settingsData = { testimonials };
+      }
+      if (formData.section_name === 'new_in_stock') {
+        settingsData = { products };
       }
       
       const dataToSave = {
@@ -276,6 +299,56 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
                         setTestimonials(updated);
                       }}
                       placeholder="Ex: Hussein F"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {formData.section_name === 'new_in_stock' && (
+            <div className="space-y-6 border rounded-lg p-4 bg-muted/30">
+              <Label className="text-lg font-semibold">Produits nouveaux en stock (3)</Label>
+              {products.map((product, index) => (
+                <div key={index} className="space-y-3 border rounded-lg p-4 bg-background">
+                  <Label className="font-semibold">Produit {index + 1}</Label>
+                  
+                  <div>
+                    <Label>Image du produit</Label>
+                    <ImageUpload
+                      images={product.image_url ? [product.image_url] : []}
+                      onImagesChange={(images) => {
+                        const updated = [...products];
+                        updated[index].image_url = images[0] || '';
+                        setProducts(updated);
+                      }}
+                      productId={`homepage/new-stock-${index}`}
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label>Nom du produit</Label>
+                    <Input
+                      value={product.name}
+                      onChange={(e) => {
+                        const updated = [...products];
+                        updated[index].name = e.target.value;
+                        setProducts(updated);
+                      }}
+                      placeholder="Ex: Pablo Blueberry Peach Ice - 50mg"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label>Prix</Label>
+                    <Input
+                      value={product.price}
+                      onChange={(e) => {
+                        const updated = [...products];
+                        updated[index].price = e.target.value;
+                        setProducts(updated);
+                      }}
+                      placeholder="Ex: £4.99 GBP"
                     />
                   </div>
                 </div>
