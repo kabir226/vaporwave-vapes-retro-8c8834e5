@@ -232,17 +232,20 @@ const ProductDetail = () => {
               >
                 Add to cart
               </Button>
-              <Button 
-                className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90"
-                size="lg"
-                onClick={() => {
-                  handleAddToCart();
-                  navigate('/shop');
-                }}
-                disabled={!product.in_stock}
+              <a 
+                href="https://wa.me/message/VU57PC3IDGREF1" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block"
               >
-                Buy it now
-              </Button>
+                <Button 
+                  className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90"
+                  size="lg"
+                  disabled={!product.in_stock}
+                >
+                  Buy it now
+                </Button>
+              </a>
             </div>
 
             {/* Product Details Accordion */}

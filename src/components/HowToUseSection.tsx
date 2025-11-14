@@ -78,9 +78,15 @@ const HowToUseSection: React.FC = () => {
         </div>
 
         <div className="flex justify-center">
-          <Button variant="default" size="lg" className="rounded-full">
-            {settings?.button_text || 'Get started with beginners'}
-          </Button>
+          <a 
+            href="https://wa.me/message/VU57PC3IDGREF1" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <Button variant="default" size="lg" className="rounded-full">
+              {settings?.button_text || 'Get started with beginners'}
+            </Button>
+          </a>
         </div>
       </div>
     </section>

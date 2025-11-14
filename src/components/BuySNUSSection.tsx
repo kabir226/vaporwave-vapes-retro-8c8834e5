@@ -14,15 +14,23 @@ const BuySNUSSection: React.FC = () => {
             Ready to ditch the harmful effects of smoking?
           </p>
 
-          <p className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto">
+          <p className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto mb-8">
             MKPodPlug's nicotine pouches offer the smoke-free, healthier alternative that lets you live life to the 
             fullest. Reclaim your stamina, protect your lungs, and experience nicotine in a way that won't hold you back.
           </p>
+
+          <div className="flex justify-center">
+            <a 
+              href="https://wa.me/message/VU57PC3IDGREF1" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <Button variant="default" size="lg" className="rounded-full">
+                Acheter Nicotine sans fumée
+              </Button>
+            </a>
+          </div>
         </div>
-
-        
-
-        
       </div>
     </section>;
 };
