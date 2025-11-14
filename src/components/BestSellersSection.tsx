@@ -50,7 +50,7 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
             return (
             <Card 
               key={product.id} 
-              className="group relative overflow-hidden bg-card border border-border hover:border-primary transition-all duration-300 cursor-pointer rounded-2xl"
+              className="group relative overflow-hidden bg-black border border-white/20 hover:border-primary transition-all duration-300 cursor-pointer rounded-2xl"
               onClick={() => product.slug && navigate(`/product/${product.slug}`)}
             >
               <CardContent className="p-6">
@@ -71,11 +71,11 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
 
                 {/* Product Info */}
                 <div className="text-center space-y-2">
-                  <h3 className="text-card-foreground text-lg font-bold leading-tight">
+                  <h3 className="text-white text-lg font-bold leading-tight">
                     {product.name}
                   </h3>
                   
-                  <div className="text-2xl font-bold text-secondary">
+                  <div className="text-2xl font-bold text-[#a3ff00]">
                     {currencySymbol}{product.price.toFixed(2)}
                   </div>
                 </div>
