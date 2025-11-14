@@ -47,7 +47,15 @@ const CustomerChangeSection: React.FC = () => {
             <div className="flex gap-4 pb-4">
               <Card className="min-w-[300px] md:min-w-[400px] p-6 bg-background">
                 <div className="mb-4 rounded-lg overflow-hidden aspect-[4/3] bg-muted flex items-center justify-center">
-                  <p className="text-sm text-muted-foreground">Customer photo</p>
+                  {settings?.image_url ? (
+                    <img 
+                      src={settings.image_url} 
+                      alt="Customer testimonial" 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <p className="text-sm text-muted-foreground">Customer photo</p>
+                  )}
                 </div>
                 <p className="text-sm text-muted-foreground italic mb-4">
                   "Was recommended by a friend to try out snus for the first time, as I have been trying to quit vaping 
