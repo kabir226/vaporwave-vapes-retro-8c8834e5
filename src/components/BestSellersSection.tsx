@@ -50,61 +50,34 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
             return (
             <Card 
               key={product.id} 
-              className="group relative overflow-hidden bg-black border-border hover:border-primary transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 cursor-pointer"
+              className="group relative overflow-hidden bg-black border border-white/20 hover:border-primary transition-all duration-300 cursor-pointer rounded-2xl"
               onClick={() => product.slug && navigate(`/product/${product.slug}`)}
             >
-              <CardContent className="p-0">
+              <CardContent className="p-6">
                 {/* Product Display Area */}
-                <div className="relative h-64 bg-black overflow-hidden flex items-center justify-center">
+                <div className="relative h-48 mb-4 flex items-center justify-center">
                   {typeof product.image === 'string' && product.image.startsWith('http') ? (
                     <img 
                       src={product.image} 
                       alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
-                    <span className="text-7xl group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-7xl group-hover:scale-105 transition-transform duration-300">
                       {product.image || '📦'}
                     </span>
                   )}
                 </div>
 
                 {/* Product Info */}
-                <div className="bg-black p-4 text-center border-t border-border">
-                  <h3 className="text-lg font-bold text-white mb-3 line-clamp-2 min-h-[3rem]">
+                <div className="text-center space-y-2">
+                  <h3 className="text-white text-lg font-bold leading-tight">
                     {product.name}
                   </h3>
                   
-                  {product.rating && (
-                    <div className="flex items-center justify-center gap-1 mb-2">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star 
-                            key={i} 
-                            className={`w-3 h-3 ${i < Math.floor(product.rating!) ? 'fill-primary text-primary' : 'text-muted'}`} 
-                          />
-                        ))}
-                      </div>
-                      {product.reviews && (
-                        <span className="text-xs text-muted-foreground">({product.reviews})</span>
-                      )}
-                    </div>
-                  )}
-
-                  <div className="text-2xl font-bold text-white mb-4">
+                  <div className="text-2xl font-bold text-[#a3ff00]">
                     {currencySymbol}{product.price.toFixed(2)}
                   </div>
-
-                  <Button 
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onAddToCart(product);
-                    }}
-                  >
-                    <ShoppingCart className="w-4 h-4 mr-2" />
-                    Ajouter au panier
-                  </Button>
                 </div>
               </CardContent>
             </Card>
