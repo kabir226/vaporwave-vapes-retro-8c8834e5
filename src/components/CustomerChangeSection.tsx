@@ -14,16 +14,6 @@ const CustomerChangeSection: React.FC = () => {
   return (
     <section className="w-full py-16 px-4 bg-card">
       <div className="max-w-6xl mx-auto">
-        {settings?.image_url && (
-          <div className="mb-8 rounded-2xl overflow-hidden">
-            <img 
-              src={settings.image_url} 
-              alt={settings.title || 'Customer testimonials'} 
-              className="w-full aspect-[16/9] object-cover"
-            />
-          </div>
-        )}
-        
         <h2 className="text-3xl md:text-5xl font-bold text-center mb-4 text-foreground">
           {settings?.title || 'See why our customers made the change'}
         </h2>
@@ -41,6 +31,16 @@ const CustomerChangeSection: React.FC = () => {
             {settings?.button_text || 'See more'}
           </Button>
         </div>
+
+        {settings?.image_url && (
+          <div className="mb-8 rounded-2xl overflow-hidden">
+            <img 
+              src={settings.image_url} 
+              alt={settings.title || 'Customer testimonials'} 
+              className="w-full aspect-[16/9] object-cover"
+            />
+          </div>
+        )}
 
         <div className="relative">
           <div className="overflow-hidden">
