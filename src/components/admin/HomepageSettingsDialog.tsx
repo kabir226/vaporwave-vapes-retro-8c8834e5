@@ -5,9 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import ImageUpload from './ImageUpload';
+import { useCategories } from '@/hooks/useCategories';
 
 interface HomepageSetting {
   id?: string;
@@ -61,11 +63,20 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
     { image_url: '', name: '', price: '' },
     { image_url: '', name: '', price: '' }
   ]);
-  const [categories, setCategories] = useState<Array<{ image_url: string; name: string; description: string; link: string }>>([
-    { image_url: '', name: '', description: '', link: '' },
-    { image_url: '', name: '', description: '', link: '' },
-    { image_url: '', name: '', description: '', link: '' }
+  const [categories, setCategories] = useState<Array<{ 
+    image_url: string; 
+    name: string; 
+    description: string; 
+    link: string;
+    link_type?: 'custom' | 'category';
+    category_id?: string;
+  }>>([
+    { image_url: '', name: '', description: '', link: '', link_type: 'custom' },
+    { image_url: '', name: '', description: '', link: '', link_type: 'custom' },
+    { image_url: '', name: '', description: '', link: '', link_type: 'custom' }
   ]);
+  
+  const { categories: dbCategories } = useCategories();
 
   useEffect(() => {
     if (setting) {
@@ -427,17 +438,69 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
                   </div>
                   
                   <div>
-                    <Label>Lien du bouton</Label>
-                    <Input
-                      value={category.link}
-                      onChange={(e) => {
+                    <Label>Type de lien</Label>
+                    <Select
+                      value={category.link_type || 'custom'}
+                      onValueChange={(value: 'custom' | 'category') => {
                         const updated = [...categories];
-                        updated[index].link = e.target.value;
+                        updated[index].link_type = value;
+                        if (value === 'category') {
+                          updated[index].link = '';
+                        }
                         setCategories(updated);
                       }}
-                      placeholder="Ex: /shop?category=forte ou https://..."
-                    />
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="custom">URL personnalisée</SelectItem>
+                        <SelectItem value="category">Catégorie existante</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
+                  
+                  {category.link_type === 'custom' ? (
+                    <div>
+                      <Label>Lien personnalisé</Label>
+                      <Input
+                        value={category.link}
+                        onChange={(e) => {
+                          const updated = [...categories];
+                          updated[index].link = e.target.value;
+                          setCategories(updated);
+                        }}
+                        placeholder="Ex: /shop?category=forte ou https://..."
+                      />
+                    </div>
+                  ) : (
+                    <div>
+                      <Label>Sélectionner une catégorie</Label>
+                      <Select
+                        value={category.category_id || ''}
+                        onValueChange={(value) => {
+                          const updated = [...categories];
+                          updated[index].category_id = value;
+                          const selectedCat = dbCategories.find(c => c.id === value);
+                          if (selectedCat) {
+                            updated[index].link = `/shop?category=${selectedCat.slug}`;
+                          }
+                          setCategories(updated);
+                        }}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Choisir une catégorie" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {dbCategories.map((cat) => (
+                            <SelectItem key={cat.id} value={cat.id}>
+                              {cat.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
