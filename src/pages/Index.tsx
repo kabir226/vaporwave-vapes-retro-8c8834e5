@@ -62,7 +62,6 @@ const Index = () => {
 
   // Filtrer les produits de la catégorie "Meilleures ventes"
   const bestSellersProducts = bestSellersCategory ? transformedProducts.filter(p => p.category_id === bestSellersCategory.id) : transformedProducts.slice(0, 8);
-
   const handleAddToCart = (product: any) => {
     setLastAddedProduct(product);
     setShowCartAnimation(true);
@@ -80,13 +79,13 @@ const Index = () => {
       <ParticleBackground />
       
       {/* Trust Banner - Very Top */}
-      <TrustBanner />
+      
       
       {/* Header */}
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
 
       {/* Promotional Banner */}
-      <PromotionalBanner />
+      
 
       {/* Age Warning Banner */}
       <AgeWarningBanner />

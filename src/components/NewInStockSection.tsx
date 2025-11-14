@@ -2,13 +2,12 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
-
 const NewInStockSection: React.FC = () => {
-  const { getSetting } = useHomepageSettings('new_in_stock');
+  const {
+    getSetting
+  } = useHomepageSettings('new_in_stock');
   const settings = getSetting('new_in_stock');
-
-  return (
-    <section className="w-full py-16 px-4 bg-background">
+  return <section className="w-full py-16 px-4 bg-background">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-center mb-8">
           <Button variant="default" size="lg" className="rounded-full">
@@ -23,18 +22,10 @@ const NewInStockSection: React.FC = () => {
         <div className="relative">
           <div className="flex items-center justify-center mb-4">
             <div className="bg-muted rounded-2xl overflow-hidden max-w-md w-full aspect-square flex items-center justify-center">
-              {settings?.image_url ? (
-                <img 
-                  src={settings.image_url} 
-                  alt={settings.title || 'New Product'} 
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="text-center p-8">
+              {settings?.image_url ? <img src={settings.image_url} alt={settings.title || 'New Product'} className="w-full h-full object-cover" /> : <div className="text-center p-8">
                   <p className="text-lg text-muted-foreground mb-4">Product Image Placeholder</p>
                   <p className="text-sm text-muted-foreground">Pablo Blueberry Peach Ice - 50mg</p>
-                </div>
-              )}
+                </div>}
             </div>
           </div>
 
@@ -59,21 +50,15 @@ const NewInStockSection: React.FC = () => {
 
           <div className="text-center">
             <div className="flex items-center justify-center gap-2 mb-2">
-              <span className="text-xl font-bold">Excellent 4.9/5</span>
+              
             </div>
             <div className="flex justify-center gap-1 mb-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <span key={star} className="text-2xl text-primary">★</span>
-              ))}
+              {[1, 2, 3, 4, 5].map(star => {})}
             </div>
-            <p className="text-sm text-muted-foreground">
-              based on 1,149 combined reviews on <span className="underline">Google</span> & <span className="underline">Trust Pilot</span>
-            </p>
+            
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default NewInStockSection;

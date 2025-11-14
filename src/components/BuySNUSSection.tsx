@@ -20,9 +20,7 @@ const BuySNUSSection: React.FC = () => {
           </p>
         </div>
 
-        <div className="bg-muted rounded-2xl overflow-hidden aspect-[16/9] mb-12 flex items-center justify-center">
-          <p className="text-lg text-muted-foreground">FAQ Background Image</p>
-        </div>
+        
 
         <div className="text-center">
           <h3 className="text-3xl md:text-4xl font-bold mb-8">
