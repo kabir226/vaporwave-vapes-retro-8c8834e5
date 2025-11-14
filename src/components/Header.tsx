@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { ShoppingCart, Menu, X, Search } from 'lucide-react';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { ShoppingCart, Menu, Search } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from './Logo';
 interface HeaderProps {
@@ -30,13 +30,13 @@ const Header: React.FC<HeaderProps> = ({
     label: 'Contact'
   }];
   const isActive = (path: string) => location.pathname === path;
-  return <header className="sticky top-0 w-full z-50 bg-background/95 backdrop-blur-xl border-b border-border">
-      {/* Top Bar */}
+  return <>
+    <header className="sticky top-0 w-full z-50 bg-background/95 backdrop-blur-xl border-b border-border">
       <div className="container mx-auto px-4">
         <div className="h-16 flex items-center justify-between">
           {/* Left: Menu Button */}
-          <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(true)}>
+            <Menu className="w-5 h-5" />
           </Button>
 
           {/* Center: Logo/Brand Name */}
@@ -60,27 +60,22 @@ const Header: React.FC<HeaderProps> = ({
             </Button>
           </div>
         </div>
-
-        {/* Horizontal Scrolling Navigation */}
-        <ScrollArea className="w-full whitespace-nowrap border-t border-border">
-          <div className="flex items-center h-12 gap-1">
-            {navItems.map(item => <Link key={item.href} to={item.href} className={`inline-flex items-center justify-center px-6 h-full font-medium relative transition-colors ${isActive(item.href) ? 'text-primary' : 'text-muted-foreground hover:text-primary'}`}>
-                {item.label}
-                {isActive(item.href) && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />}
-              </Link>)}
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
       </div>
+    </header>
 
-      {/* Mobile Navigation Menu */}
-      {isMenuOpen && <div className="border-t border-border bg-background/95 backdrop-blur-xl">
-          <nav className="container mx-auto px-4 py-4 space-y-2">
-            {navItems.map(item => <Link key={item.href} to={item.href} className={`block py-2 px-4 rounded-lg transition-colors ${isActive(item.href) ? 'text-primary bg-primary/10' : 'text-muted-foreground hover:text-primary hover:bg-muted'}`} onClick={() => setIsMenuOpen(false)}>
-                {item.label}
-              </Link>)}
-          </nav>
-        </div>}
-    </header>;
+    {/* Sidebar Menu */}
+    <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+      <SheetContent side="left" className="w-80">
+        <SheetHeader>
+          <SheetTitle className="text-left">Menu</SheetTitle>
+        </SheetHeader>
+        <nav className="flex flex-col gap-2 mt-6">
+          {navItems.map(item => <Link key={item.href} to={item.href} className={`block py-3 px-4 rounded-lg text-base font-medium transition-colors ${isActive(item.href) ? 'text-primary bg-primary/10' : 'text-foreground hover:bg-muted'}`} onClick={() => setIsMenuOpen(false)}>
+              {item.label}
+            </Link>)}
+        </nav>
+      </SheetContent>
+    </Sheet>
+  </>;
 };
 export default Header;
