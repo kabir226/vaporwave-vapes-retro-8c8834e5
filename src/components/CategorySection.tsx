@@ -74,14 +74,16 @@ const CategorySection: React.FC = () => {
                           <h3 className="text-lg font-bold text-foreground mb-2">
                             {category.name}
                           </h3>
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            className="bg-background hover:bg-primary hover:text-primary-foreground border-2"
-                            onClick={() => category.link && (window.location.href = category.link)}
-                          >
-                            ACHETER MAINTENANT
-                          </Button>
+                          {category.link && (
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              className="bg-background hover:bg-primary hover:text-primary-foreground border-2"
+                              onClick={() => window.location.href = category.link}
+                            >
+                              ACHETER MAINTENANT
+                            </Button>
+                          )}
                         </div>
                       </div>
                     </CardContent>
@@ -124,13 +126,15 @@ const CategorySection: React.FC = () => {
                     <h3 className="text-xl font-bold text-foreground mb-3">
                       {category.name}
                     </h3>
-                    <Button 
-                      variant="outline" 
-                      className="bg-background hover:bg-primary hover:text-primary-foreground border-2"
-                      onClick={() => category.link && (window.location.href = category.link)}
-                    >
-                      ACHETER MAINTENANT
-                    </Button>
+                    {category.link && (
+                      <Button 
+                        variant="outline" 
+                        className="bg-background hover:bg-primary hover:text-primary-foreground border-2"
+                        onClick={() => window.location.href = category.link}
+                      >
+                        ACHETER MAINTENANT
+                      </Button>
+                    )}
                   </div>
                 </div>
               </CardContent>
