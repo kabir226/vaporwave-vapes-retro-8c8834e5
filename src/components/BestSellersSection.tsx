@@ -53,29 +53,29 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
               className="group relative overflow-hidden bg-black border border-white/20 hover:border-primary transition-all duration-300 cursor-pointer rounded-2xl"
               onClick={() => product.slug && navigate(`/product/${product.slug}`)}
             >
-              <CardContent className="p-6">
+              <CardContent className="p-4">
                 {/* Product Display Area */}
-                <div className="relative h-48 mb-4 flex items-center justify-center">
+                <div className="relative h-32 mb-3 flex items-center justify-center">
                   {typeof product.image === 'string' && product.image.startsWith('http') ? (
                     <img 
                       src={product.image} 
                       alt={product.name}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300"
                     />
                   ) : (
-                    <span className="text-7xl group-hover:scale-105 transition-transform duration-300">
+                    <span className="text-5xl scale-110 group-hover:scale-125 transition-transform duration-300">
                       {product.image || '📦'}
                     </span>
                   )}
                 </div>
 
                 {/* Product Info */}
-                <div className="text-center space-y-2">
-                  <h3 className="text-white text-lg font-bold leading-tight">
+                <div className="text-center space-y-1">
+                  <h3 className="text-white text-sm font-bold leading-tight">
                     {product.name}
                   </h3>
                   
-                  <div className="text-2xl font-bold text-[#a3ff00]">
+                  <div className="text-xl font-bold text-red-500">
                     {currencySymbol}{product.price.toFixed(2)}
                   </div>
                 </div>
