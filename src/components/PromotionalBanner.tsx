@@ -11,6 +11,16 @@ const PromotionalBanner: React.FC = () => {
   return (
     <div className="w-full bg-muted/50 border-b border-border py-3 px-4">
       <div className="max-w-7xl mx-auto">
+        {settings.image_url ? (
+          <div className="rounded-xl overflow-hidden mb-3">
+            <img 
+              src={settings.image_url} 
+              alt={settings.title || 'Promotion'} 
+              className="w-full aspect-[21/9] object-cover"
+            />
+          </div>
+        ) : null}
+        
         <div className="flex items-center justify-center gap-4">
           <button className="text-muted-foreground hover:text-foreground transition-colors">
             <ChevronLeft className="w-5 h-5" />
