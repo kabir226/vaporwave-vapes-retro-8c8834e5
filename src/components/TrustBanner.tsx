@@ -11,6 +11,16 @@ const TrustBanner: React.FC = () => {
   return (
     <div className="w-full bg-card/90 backdrop-blur-sm border-b border-border py-6 px-4">
       <div className="max-w-7xl mx-auto">
+        {settings.image_url && (
+          <div className="mb-6 rounded-2xl overflow-hidden">
+            <img 
+              src={settings.image_url} 
+              alt={settings.title || 'Trust Banner'} 
+              className="w-full aspect-[16/9] md:aspect-[21/9] object-cover"
+            />
+          </div>
+        )}
+        
         <div className="text-center space-y-4">
           {settings.title && (
             <h3 className="text-2xl font-bold text-foreground">{settings.title}</h3>

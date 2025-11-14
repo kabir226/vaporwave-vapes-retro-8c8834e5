@@ -40,6 +40,16 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products, onAddToCa
   return (
     <section className="py-16 px-4 bg-card/10">
       <div className="max-w-7xl mx-auto">
+        {settings?.image_url && (
+          <div className="mb-8 rounded-2xl overflow-hidden">
+            <img 
+              src={settings.image_url} 
+              alt={settings.title || 'Trending'} 
+              className="w-full aspect-[16/9] object-cover"
+            />
+          </div>
+        )}
+        
         <div className="text-center mb-12">
           <Badge variant="outline" className="mb-4 border-secondary text-secondary">
             Tendances

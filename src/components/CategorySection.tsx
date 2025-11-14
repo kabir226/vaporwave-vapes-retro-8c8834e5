@@ -27,6 +27,16 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
   return (
     <section className="w-full py-12 px-4 bg-muted/30">
       <div className="max-w-7xl mx-auto">
+        {settings?.image_url && (
+          <div className="mb-8 rounded-2xl overflow-hidden">
+            <img 
+              src={settings.image_url} 
+              alt={settings.title || 'Categories'} 
+              className="w-full aspect-[16/9] object-cover"
+            />
+          </div>
+        )}
+        
         <h2 className="text-3xl md:text-4xl font-black text-center text-foreground mb-8">
           {settings?.title || 'ACHETER SNUS PAR CATÉGORIE'}
         </h2>

@@ -23,10 +23,18 @@ const NewInStockSection: React.FC = () => {
         <div className="relative">
           <div className="flex items-center justify-center mb-4">
             <div className="bg-muted rounded-2xl overflow-hidden max-w-md w-full aspect-square flex items-center justify-center">
-              <div className="text-center p-8">
-                <p className="text-lg text-muted-foreground mb-4">Product Image Placeholder</p>
-                <p className="text-sm text-muted-foreground">Pablo Blueberry Peach Ice - 50mg</p>
-              </div>
+              {settings?.image_url ? (
+                <img 
+                  src={settings.image_url} 
+                  alt={settings.title || 'New Product'} 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="text-center p-8">
+                  <p className="text-lg text-muted-foreground mb-4">Product Image Placeholder</p>
+                  <p className="text-sm text-muted-foreground">Pablo Blueberry Peach Ice - 50mg</p>
+                </div>
+              )}
             </div>
           </div>
 
