@@ -51,6 +51,11 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
   });
   
   const [stepImages, setStepImages] = useState<string[]>([]);
+  const [testimonials, setTestimonials] = useState<Array<{ image_url: string; text: string; author: string }>>([
+    { image_url: '', text: '', author: '' },
+    { image_url: '', text: '', author: '' },
+    { image_url: '', text: '', author: '' }
+  ]);
 
   useEffect(() => {
     if (setting) {
@@ -70,6 +75,16 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
         const settingsData = setting.settings as any;
         setStepImages(settingsData.step_images || []);
       }
+      
+      // Load testimonials if section is customer_change
+      if (setting.section_name === 'customer_change' && setting.settings) {
+        const settingsData = setting.settings as any;
+        setTestimonials(settingsData.testimonials || [
+          { image_url: '', text: '', author: '' },
+          { image_url: '', text: '', author: '' },
+          { image_url: '', text: '', author: '' }
+        ]);
+      }
     } else {
       setFormData({
         section_name: '',
@@ -84,6 +99,11 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
         display_order: 0
       });
       setStepImages([]);
+      setTestimonials([
+        { image_url: '', text: '', author: '' },
+        { image_url: '', text: '', author: '' },
+        { image_url: '', text: '', author: '' }
+      ]);
     }
   }, [setting, isOpen]);
 
@@ -93,6 +113,9 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
       let settingsData = {};
       if (formData.section_name === 'how_to_use' && stepImages.length > 0) {
         settingsData = { step_images: stepImages };
+      }
+      if (formData.section_name === 'customer_change') {
+        settingsData = { testimonials };
       }
       
       const dataToSave = {
@@ -206,6 +229,57 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
               <p className="text-xs text-muted-foreground mt-1">
                 Uploadez jusqu'à 4 images pour illustrer chaque étape d'utilisation
               </p>
+            </div>
+          )}
+
+          {formData.section_name === 'customer_change' && (
+            <div className="space-y-6 border rounded-lg p-4 bg-muted/30">
+              <Label className="text-lg font-semibold">Témoignages clients (3)</Label>
+              {testimonials.map((testimonial, index) => (
+                <div key={index} className="space-y-3 border rounded-lg p-4 bg-background">
+                  <Label className="font-semibold">Témoignage {index + 1}</Label>
+                  
+                  <div>
+                    <Label>Image du client</Label>
+                    <ImageUpload
+                      images={testimonial.image_url ? [testimonial.image_url] : []}
+                      onImagesChange={(images) => {
+                        const updated = [...testimonials];
+                        updated[index].image_url = images[0] || '';
+                        setTestimonials(updated);
+                      }}
+                      productId={`homepage/testimonial-${index}`}
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label>Texte du témoignage</Label>
+                    <Textarea
+                      value={testimonial.text}
+                      onChange={(e) => {
+                        const updated = [...testimonials];
+                        updated[index].text = e.target.value;
+                        setTestimonials(updated);
+                      }}
+                      rows={3}
+                      placeholder="Le témoignage du client..."
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label>Nom du client</Label>
+                    <Input
+                      value={testimonial.author}
+                      onChange={(e) => {
+                        const updated = [...testimonials];
+                        updated[index].author = e.target.value;
+                        setTestimonials(updated);
+                      }}
+                      placeholder="Ex: Hussein F"
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
