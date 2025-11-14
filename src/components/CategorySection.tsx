@@ -76,6 +76,7 @@ const CategorySection: React.FC = () => {
                             variant="outline" 
                             size="sm"
                             className="bg-background hover:bg-primary hover:text-primary-foreground border-2"
+                            onClick={() => category.link && (window.location.href = category.link)}
                           >
                             ACHETER MAINTENANT
                           </Button>
@@ -122,6 +123,7 @@ const CategorySection: React.FC = () => {
                     <Button 
                       variant="outline" 
                       className="bg-background hover:bg-primary hover:text-primary-foreground border-2"
+                      onClick={() => category.link && (window.location.href = category.link)}
                     >
                       ACHETER MAINTENANT
                     </Button>

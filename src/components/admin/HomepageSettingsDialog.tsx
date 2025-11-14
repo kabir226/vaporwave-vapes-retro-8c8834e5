@@ -61,10 +61,10 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
     { image_url: '', name: '', price: '' },
     { image_url: '', name: '', price: '' }
   ]);
-  const [categories, setCategories] = useState<Array<{ image_url: string; name: string; description: string }>>([
-    { image_url: '', name: '', description: '' },
-    { image_url: '', name: '', description: '' },
-    { image_url: '', name: '', description: '' }
+  const [categories, setCategories] = useState<Array<{ image_url: string; name: string; description: string; link: string }>>([
+    { image_url: '', name: '', description: '', link: '' },
+    { image_url: '', name: '', description: '', link: '' },
+    { image_url: '', name: '', description: '', link: '' }
   ]);
 
   useEffect(() => {
@@ -110,9 +110,9 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
       if (setting.section_name === 'categories' && setting.settings) {
         const settingsData = setting.settings as any;
         setCategories(settingsData.categories || [
-          { image_url: '', name: '', description: '' },
-          { image_url: '', name: '', description: '' },
-          { image_url: '', name: '', description: '' }
+          { image_url: '', name: '', description: '', link: '' },
+          { image_url: '', name: '', description: '', link: '' },
+          { image_url: '', name: '', description: '', link: '' }
         ]);
       }
     } else {
@@ -140,9 +140,9 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
         { image_url: '', name: '', price: '' }
       ]);
       setCategories([
-        { image_url: '', name: '', description: '' },
-        { image_url: '', name: '', description: '' },
-        { image_url: '', name: '', description: '' }
+        { image_url: '', name: '', description: '', link: '' },
+        { image_url: '', name: '', description: '', link: '' },
+        { image_url: '', name: '', description: '', link: '' }
       ]);
     }
   }, [setting, isOpen]);
@@ -423,6 +423,19 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
                       }}
                       rows={2}
                       placeholder="Ex: Pour une expérience intense"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label>Lien du bouton</Label>
+                    <Input
+                      value={category.link}
+                      onChange={(e) => {
+                        const updated = [...categories];
+                        updated[index].link = e.target.value;
+                        setCategories(updated);
+                      }}
+                      placeholder="Ex: /shop?category=forte ou https://..."
                     />
                   </div>
                 </div>
