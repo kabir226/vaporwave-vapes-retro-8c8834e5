@@ -10,19 +10,11 @@ import {
 } from "@/components/ui/carousel";
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 
-interface CategorySectionProps {
-  categories: Array<{
-    id: string | number;
-    name: string;
-    description: string;
-    image: string;
-    count?: number;
-  }>;
-}
-
-const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
+const CategorySection: React.FC = () => {
   const { getSetting } = useHomepageSettings('categories');
   const settings = getSetting('categories');
+  
+  const categories = settings?.settings?.categories || [];
 
   return (
     <section className="w-full py-12 px-4 bg-muted/30">
@@ -54,16 +46,24 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
             className="w-full max-w-[85%] mx-auto"
           >
             <CarouselContent className="-ml-2">
-              {categories.slice(0, 3).map((category) => (
-                <CarouselItem key={category.id} className="pl-2">
+              {categories.map((category, index) => (
+                <CarouselItem key={index} className="pl-2">
                   <Card 
                     className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-2 hover:border-primary"
                   >
                     <CardContent className="p-0">
-                      <div className="relative aspect-[4/3] bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
-                        <span className="text-4xl opacity-50 group-hover:scale-110 transition-transform">
-                          {category.image}
-                        </span>
+                      <div className="relative aspect-[4/3] bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center overflow-hidden">
+                        {category.image_url ? (
+                          <img 
+                            src={category.image_url} 
+                            alt={category.name}
+                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                          />
+                        ) : (
+                          <span className="text-4xl opacity-50 group-hover:scale-110 transition-transform">
+                            📦
+                          </span>
+                        )}
                         <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                         <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
                           <p className="text-xs text-muted-foreground mb-1">
@@ -93,16 +93,24 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
 
         {/* Desktop Grid */}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.slice(0, 3).map((category) => (
+          {categories.map((category, index) => (
             <Card 
-              key={category.id} 
+              key={index}
               className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-2 hover:border-primary"
             >
               <CardContent className="p-0">
-                <div className="relative aspect-[4/3] bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
-                  <span className="text-6xl opacity-50 group-hover:scale-110 transition-transform">
-                    {category.image}
-                  </span>
+                <div className="relative aspect-[4/3] bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center overflow-hidden">
+                  {category.image_url ? (
+                    <img 
+                      src={category.image_url} 
+                      alt={category.name}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  ) : (
+                    <span className="text-6xl opacity-50 group-hover:scale-110 transition-transform">
+                      📦
+                    </span>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
                     <p className="text-sm text-muted-foreground mb-2">
