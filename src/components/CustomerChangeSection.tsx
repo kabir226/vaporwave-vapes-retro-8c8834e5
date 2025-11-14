@@ -4,8 +4,12 @@ import { Card } from '@/components/ui/card';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 
 const CustomerChangeSection: React.FC = () => {
-  const { getSetting } = useHomepageSettings('customer_change');
+  const { getSetting, loading } = useHomepageSettings();
   const settings = getSetting('customer_change');
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <section className="w-full py-16 px-4 bg-card">
