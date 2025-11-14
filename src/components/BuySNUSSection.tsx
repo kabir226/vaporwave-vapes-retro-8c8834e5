@@ -22,25 +22,7 @@ const BuySNUSSection: React.FC = () => {
 
         
 
-        <div className="text-center">
-          <h3 className="text-3xl md:text-4xl font-bold mb-8">
-            Frequently Asked Questions
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
-            <Button variant="outline" className="h-auto py-6 text-base font-semibold rounded-xl">
-              Nicotine Pouches
-            </Button>
-            
-            <Button variant="outline" className="h-auto py-6 text-base font-semibold rounded-xl">
-              Shipping
-            </Button>
-            
-            <Button variant="outline" className="h-auto py-6 text-base font-semibold rounded-xl md:col-span-2">
-              Customer Support
-            </Button>
-          </div>
-        </div>
+        
       </div>
     </section>;
 };
