@@ -18,6 +18,9 @@ import CustomerChangeSection from '@/components/CustomerChangeSection';
 import HowToUseSection from '@/components/HowToUseSection';
 import MixMatchSection from '@/components/MixMatchSection';
 import BuySNUSSection from '@/components/BuySNUSSection';
+import TrendingProducts from '@/components/TrendingProducts';
+import TestimonialCarousel from '@/components/TestimonialCarousel';
+import BenefitsSection from '@/components/BenefitsSection';
 import { useCart } from '@/hooks/useCart';
 import { useAgeVerification } from '@/hooks/useAgeVerification';
 import { useProducts } from '@/hooks/useProducts';
@@ -54,11 +57,20 @@ const Index = () => {
   const transformedProducts = products.map(p => ({
     ...p,
     image: p.images?.[0] || '📦',
-    inStock: p.in_stock
+    inStock: p.in_stock,
+    reviews: 0
   }));
 
   // Filtrer les produits de la catégorie "Meilleures ventes"
   const bestSellersProducts = bestSellersCategory ? transformedProducts.filter(p => p.category_id === bestSellersCategory.id) : transformedProducts.slice(0, 8);
+  
+  // Testimonials mock data
+  const testimonials = [
+    { content: "Excellent produit, j'ai enfin réussi à arrêter de fumer!", author: "Marc D.", rating: 5, verified: true },
+    { content: "Livraison rapide et produits de qualité.", author: "Sophie L.", rating: 5, verified: true },
+    { content: "Très satisfait, je recommande vivement!", author: "Pierre M.", rating: 5, verified: true },
+  ];
+
   const handleAddToCart = (product: any) => {
     setLastAddedProduct(product);
     setShowCartAnimation(true);
@@ -76,13 +88,13 @@ const Index = () => {
       <ParticleBackground />
       
       {/* Trust Banner - Very Top */}
-      
+      <TrustBanner />
       
       {/* Header */}
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
 
       {/* Promotional Banner */}
-      
+      <PromotionalBanner />
 
       {/* Age Warning Banner */}
       <AgeWarningBanner />
@@ -103,8 +115,14 @@ const Index = () => {
       {/* Best Sellers Section */}
       {!loadingProducts && !loadingCategories && <BestSellersSection products={bestSellersProducts} onAddToCart={handleAddToCart} />}
 
+      {/* Trending Products Section */}
+      {!loadingProducts && <TrendingProducts products={transformedProducts.slice(0, 8)} onAddToCart={handleAddToCart} />}
+
       {/* Why Switch Section */}
       <WhySwitchSection />
+
+      {/* Benefits Section */}
+      <BenefitsSection />
 
       {/* Benefits Comparison Section */}
       <BenefitsComparisonSection />
@@ -123,6 +141,9 @@ const Index = () => {
 
       {/* Buy SNUS Section */}
       <BuySNUSSection />
+
+      {/* Testimonials Section */}
+      <TestimonialCarousel testimonials={testimonials} />
 
       {/* Footer */}
       <Footer />
