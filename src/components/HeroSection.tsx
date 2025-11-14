@@ -56,14 +56,19 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
           {/* Primary CTA Button */}
           <div className="pt-2">
-            <Button 
-              size="lg" 
-              className="bg-foreground hover:bg-foreground/90 text-background font-bold px-12 py-6 text-base group rounded-full w-full md:w-auto"
-              onClick={onDiscoverProducts}
+            <a 
+              href="https://wa.me/message/VU57PC3IDGREF1" 
+              target="_blank" 
+              rel="noopener noreferrer"
             >
-              {heroSettings?.button_text || "ACHETER NICOTINE SANS FUMÉE"}
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
+              <Button 
+                size="lg" 
+                className="bg-foreground hover:bg-foreground/90 text-background font-bold px-12 py-6 text-base group rounded-full w-full md:w-auto"
+              >
+                {heroSettings?.button_text || "ACHETER NICOTINE SANS FUMÉE"}
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </a>
           </div>
         </div>
       </div>
