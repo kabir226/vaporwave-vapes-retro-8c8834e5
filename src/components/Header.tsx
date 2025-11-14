@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import Logo from './Logo';
+import penguinLogo from '@/assets/penguin-logo.png';
 interface HeaderProps {
   cart: any[];
   onToggleCart: () => void;
@@ -33,10 +33,7 @@ const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl h-16 md:h-20 flex items-center justify-between py-0 px-0 mx-0 my-0">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          
-          <span className="text-2xl font-black text-cyber">
-            NO-SMOKING
-          </span>
+          <img src={penguinLogo} alt="Logo" className="h-12 w-auto transition-transform group-hover:scale-105" />
         </Link>
 
         {/* Desktop Navigation */}
