@@ -26,6 +26,9 @@ interface Product {
   rating: number | null;
   in_stock: boolean;
   slug: string;
+  specifications?: string | null;
+  ingredients?: string | null;
+  usage_instructions?: string | null;
 }
 
 const ProductDetail = () => {
@@ -272,11 +275,17 @@ const ProductDetail = () => {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <ul className="space-y-2 text-muted-foreground">
-                    <li>• Strength: {product.strength || 'Standard'}</li>
-                    <li>• Stock: {product.stock} units available</li>
-                    <li>• Rating: {product.rating ? `${product.rating}/5` : 'Not rated'}</li>
-                  </ul>
+                  {product.specifications ? (
+                    <div className="text-muted-foreground whitespace-pre-line">
+                      {product.specifications}
+                    </div>
+                  ) : (
+                    <ul className="space-y-2 text-muted-foreground">
+                      <li>• Strength: {product.strength || 'Standard'}</li>
+                      <li>• Stock: {product.stock} units available</li>
+                      <li>• Rating: {product.rating ? `${product.rating}/5` : 'Not rated'}</li>
+                    </ul>
+                  )}
                 </AccordionContent>
               </AccordionItem>
 
@@ -288,7 +297,11 @@ const ProductDetail = () => {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  {product.features && product.features.length > 0 ? (
+                  {product.ingredients ? (
+                    <div className="text-muted-foreground whitespace-pre-line">
+                      {product.ingredients}
+                    </div>
+                  ) : product.features && product.features.length > 0 ? (
                     <ul className="space-y-2 text-muted-foreground">
                       {product.features.map((feature, index) => (
                         <li key={index}>• {feature}</li>
@@ -308,14 +321,20 @@ const ProductDetail = () => {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="space-y-2 text-muted-foreground">
-                    <p>1. Place the pouch between your gum and upper lip</p>
-                    <p>2. Leave it there for 20-30 minutes</p>
-                    <p>3. Dispose of the pouch responsibly</p>
-                    <p className="text-sm mt-4 text-destructive">
-                      Warning: This product contains nicotine. Nicotine is an addictive substance.
-                    </p>
-                  </div>
+                  {product.usage_instructions ? (
+                    <div className="text-muted-foreground whitespace-pre-line">
+                      {product.usage_instructions}
+                    </div>
+                  ) : (
+                    <div className="space-y-2 text-muted-foreground">
+                      <p>1. Place the pouch between your gum and upper lip</p>
+                      <p>2. Leave it there for 20-30 minutes</p>
+                      <p>3. Dispose of the pouch responsibly</p>
+                      <p className="text-sm mt-4 text-destructive">
+                        Warning: This product contains nicotine. Nicotine is an addictive substance.
+                      </p>
+                    </div>
+                  )}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>

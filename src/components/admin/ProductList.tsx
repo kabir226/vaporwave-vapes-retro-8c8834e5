@@ -19,6 +19,9 @@ export interface Product {
   features: string[];
   category_id: string | null;
   slug: string;
+  specifications?: string | null;
+  ingredients?: string | null;
+  usage_instructions?: string | null;
 }
 
 const ProductList = () => {
