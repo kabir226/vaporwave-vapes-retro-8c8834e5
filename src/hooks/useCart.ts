@@ -18,18 +18,25 @@ interface CartItem {
 }
 
 export const useCart = () => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
   const { toast } = useToast();
 
   const addToCart = (product: any) => {
     setCart(prev => {
       const existing = prev.find(item => item.id === product.id);
+      let newCart;
       if (existing) {
-        return prev.map(item => 
+        newCart = prev.map(item => 
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
+      } else {
+        newCart = [...prev, { ...product, quantity: 1 }];
       }
-      return [...prev, { ...product, quantity: 1 }];
+      localStorage.setItem('cart', JSON.stringify(newCart));
+      return newCart;
     });
 
     toast({
@@ -41,20 +48,32 @@ export const useCart = () => {
 
   const updateQuantity = (id: number, quantity: number) => {
     if (quantity === 0) {
-      setCart(prev => prev.filter(item => item.id !== id));
+      setCart(prev => {
+        const newCart = prev.filter(item => item.id !== id);
+        localStorage.setItem('cart', JSON.stringify(newCart));
+        return newCart;
+      });
       toast({
         title: "Produit retiré",
         description: "Le produit a été retiré de votre panier",
       });
     } else {
-      setCart(prev => prev.map(item => 
-        item.id === id ? { ...item, quantity } : item
-      ));
+      setCart(prev => {
+        const newCart = prev.map(item => 
+          item.id === id ? { ...item, quantity } : item
+        );
+        localStorage.setItem('cart', JSON.stringify(newCart));
+        return newCart;
+      });
     }
   };
 
   const removeItem = (id: number) => {
-    setCart(prev => prev.filter(item => item.id !== id));
+    setCart(prev => {
+      const newCart = prev.filter(item => item.id !== id);
+      localStorage.setItem('cart', JSON.stringify(newCart));
+      return newCart;
+    });
     toast({
       title: "Produit retiré",
       description: "Le produit a été retiré de votre panier",
