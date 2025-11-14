@@ -52,9 +52,6 @@ const NewInStockSection: React.FC = () => {
             <div className="flex items-center justify-center gap-2 mb-2">
               
             </div>
-            <div className="flex justify-center gap-1 mb-2">
-              {[1, 2, 3, 4, 5].map(star => {})}
-            </div>
             
           </div>
         </div>

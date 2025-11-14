@@ -2,6 +2,13 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 const CustomerChangeSection: React.FC = () => {
   const {
     getSetting,
@@ -35,22 +42,33 @@ const CustomerChangeSection: React.FC = () => {
             
           </div>}
 
-        <div className="relative">
-          <div className="overflow-hidden">
-            <div className="flex gap-4 pb-4">
-              <Card className="min-w-[300px] md:min-w-[400px] p-6 bg-background">
-                <div className="mb-4 rounded-lg overflow-hidden aspect-[4/3] bg-muted flex items-center justify-center">
-                  {settings?.image_url ? <img src={settings.image_url} alt="Customer testimonial" className="w-full h-full object-cover" /> : <p className="text-sm text-muted-foreground">Customer photo</p>}
-                </div>
-                <p className="text-sm text-muted-foreground italic mb-4">
-                  "Was recommended by a friend to try out snus for the first time, as I have been trying to quit vaping 
-                  for a while. Was easy to find the best snus for me through the..."
-                </p>
-                <p className="font-semibold text-right text-foreground">Hussein F</p>
-              </Card>
-            </div>
-          </div>
-        </div>
+        <Carousel className="w-full max-w-5xl mx-auto">
+          <CarouselContent>
+            {settings?.settings?.testimonials?.map((testimonial: any, index: number) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <Card className="p-6 bg-background h-full">
+                  <div className="mb-4 rounded-lg overflow-hidden aspect-[4/3] bg-muted flex items-center justify-center">
+                    {testimonial.image_url ? (
+                      <img 
+                        src={testimonial.image_url} 
+                        alt={`${testimonial.author} testimonial`} 
+                        className="w-full h-full object-cover" 
+                      />
+                    ) : (
+                      <p className="text-sm text-muted-foreground">Customer photo</p>
+                    )}
+                  </div>
+                  <p className="text-sm text-muted-foreground italic mb-4">
+                    "{testimonial.text}"
+                  </p>
+                  <p className="font-semibold text-right text-foreground">{testimonial.author}</p>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
     </section>;
 };
