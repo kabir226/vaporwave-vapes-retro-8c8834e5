@@ -34,8 +34,8 @@ const Header: React.FC<HeaderProps> = ({
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
           
-          <span className="text-2xl font-black text-cyber">
-            NO-SMOKING
+          <span className="text-xl font-black text-cyber">
+            SNUSPEDIA
           </span>
         </Link>
 
