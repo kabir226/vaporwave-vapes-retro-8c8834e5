@@ -152,7 +152,7 @@ const ProductDetail = () => {
               <img 
                 src={mainImage} 
                 alt={product.name}
-                className="w-full h-full object-cover scale-125"
+                className="w-full h-full object-cover"
               />
               <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                 <ZoomIn className="w-5 h-5" />
@@ -173,7 +173,7 @@ const ProductDetail = () => {
                     <img 
                       src={image} 
                       alt={`${product.name} ${index + 1}`}
-                      className="w-full h-full object-cover scale-125"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                 ))}
@@ -335,12 +335,12 @@ const ProductDetail = () => {
                   onClick={() => navigate(`/product/${relatedProduct.slug}`)}
                 >
                   <CardContent className="p-4">
-                    <div className="aspect-square bg-muted rounded-lg mb-3 flex items-center justify-center overflow-hidden">
+                    <div className="aspect-square bg-muted rounded-lg mb-3 overflow-hidden">
                       {relatedProduct.images && relatedProduct.images.length > 0 ? (
                         <img 
                           src={relatedProduct.images[0]} 
                           alt={relatedProduct.name}
-                          className="w-full h-full object-cover scale-125 group-hover:scale-[1.35] transition-transform"
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                         />
                       ) : (
                         <span className="text-4xl">📦</span>
