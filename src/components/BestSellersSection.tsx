@@ -55,12 +55,12 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
             >
               <CardContent className="p-4">
                 {/* Product Image */}
-                <div className="relative aspect-square bg-muted rounded-lg mb-3 flex items-center justify-center overflow-hidden">
+                <div className="relative aspect-square bg-muted rounded-lg mb-3 overflow-hidden">
                   {typeof product.image === 'string' && product.image.startsWith('http') ? (
                     <img 
                       src={product.image} 
                       alt={product.name}
-                      className="w-full h-full object-cover scale-125 group-hover:scale-[1.35] transition-transform"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                     />
                   ) : (
                     <span className="text-5xl md:text-6xl group-hover:scale-110 transition-transform">

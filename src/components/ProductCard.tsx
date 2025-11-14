@@ -51,12 +51,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
 
         {/* Product Image */}
         <div className="text-center mb-6">
-          <div className="mb-4 animate-float group-hover:scale-110 transition-transform duration-300 flex justify-center overflow-hidden rounded-lg">
+          <div className="mb-4 animate-float group-hover:scale-110 transition-transform duration-300 overflow-hidden rounded-lg">
             {product.images && product.images.length > 0 ? (
               <img 
                 src={product.images[0]} 
                 alt={product.name}
-                className="w-32 h-32 object-cover scale-125 rounded-lg"
+                className="w-32 h-32 object-cover rounded-lg"
               />
             ) : (
               <div className="w-32 h-32 bg-muted rounded-lg flex items-center justify-center text-4xl">
