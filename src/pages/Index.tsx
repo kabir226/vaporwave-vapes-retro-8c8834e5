@@ -19,7 +19,6 @@ import HowToUseSection from '@/components/HowToUseSection';
 import MixMatchSection from '@/components/MixMatchSection';
 import BuySNUSSection from '@/components/BuySNUSSection';
 import TrendingProducts from '@/components/TrendingProducts';
-import TestimonialCarousel from '@/components/TestimonialCarousel';
 import BenefitsSection from '@/components/BenefitsSection';
 import { useCart } from '@/hooks/useCart';
 import { useAgeVerification } from '@/hooks/useAgeVerification';
@@ -63,13 +62,6 @@ const Index = () => {
 
   // Filtrer les produits de la catégorie "Meilleures ventes"
   const bestSellersProducts = bestSellersCategory ? transformedProducts.filter(p => p.category_id === bestSellersCategory.id) : transformedProducts.slice(0, 8);
-  
-  // Testimonials mock data
-  const testimonials = [
-    { content: "Excellent produit, j'ai enfin réussi à arrêter de fumer!", author: "Marc D.", rating: 5, verified: true },
-    { content: "Livraison rapide et produits de qualité.", author: "Sophie L.", rating: 5, verified: true },
-    { content: "Très satisfait, je recommande vivement!", author: "Pierre M.", rating: 5, verified: true },
-  ];
 
   const handleAddToCart = (product: any) => {
     setLastAddedProduct(product);
@@ -141,9 +133,6 @@ const Index = () => {
 
       {/* Buy SNUS Section */}
       <BuySNUSSection />
-
-      {/* Testimonials Section */}
-      <TestimonialCarousel testimonials={testimonials} />
 
       {/* Footer */}
       <Footer />
