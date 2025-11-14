@@ -61,6 +61,11 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
     { image_url: '', name: '', price: '' },
     { image_url: '', name: '', price: '' }
   ]);
+  const [categories, setCategories] = useState<Array<{ image_url: string; name: string; description: string }>>([
+    { image_url: '', name: '', description: '' },
+    { image_url: '', name: '', description: '' },
+    { image_url: '', name: '', description: '' }
+  ]);
 
   useEffect(() => {
     if (setting) {
@@ -100,6 +105,16 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
           { image_url: '', name: '', price: '' }
         ]);
       }
+      
+      // Load categories if section is categories
+      if (setting.section_name === 'categories' && setting.settings) {
+        const settingsData = setting.settings as any;
+        setCategories(settingsData.categories || [
+          { image_url: '', name: '', description: '' },
+          { image_url: '', name: '', description: '' },
+          { image_url: '', name: '', description: '' }
+        ]);
+      }
     } else {
       setFormData({
         section_name: '',
@@ -124,6 +139,11 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
         { image_url: '', name: '', price: '' },
         { image_url: '', name: '', price: '' }
       ]);
+      setCategories([
+        { image_url: '', name: '', description: '' },
+        { image_url: '', name: '', description: '' },
+        { image_url: '', name: '', description: '' }
+      ]);
     }
   }, [setting, isOpen]);
 
@@ -139,6 +159,9 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
       }
       if (formData.section_name === 'new_in_stock') {
         settingsData = { products };
+      }
+      if (formData.section_name === 'categories') {
+        settingsData = { categories };
       }
       
       const dataToSave = {
@@ -349,6 +372,57 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
                         setProducts(updated);
                       }}
                       placeholder="Ex: £4.99 GBP"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {formData.section_name === 'categories' && (
+            <div className="space-y-6 border rounded-lg p-4 bg-muted/30">
+              <Label className="text-lg font-semibold">Catégories (3)</Label>
+              {categories.map((category, index) => (
+                <div key={index} className="space-y-3 border rounded-lg p-4 bg-background">
+                  <Label className="font-semibold">Catégorie {index + 1}</Label>
+                  
+                  <div>
+                    <Label>Image de la catégorie</Label>
+                    <ImageUpload
+                      images={category.image_url ? [category.image_url] : []}
+                      onImagesChange={(images) => {
+                        const updated = [...categories];
+                        updated[index].image_url = images[0] || '';
+                        setCategories(updated);
+                      }}
+                      productId={`homepage/category-${index}`}
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label>Nom de la catégorie</Label>
+                    <Input
+                      value={category.name}
+                      onChange={(e) => {
+                        const updated = [...categories];
+                        updated[index].name = e.target.value;
+                        setCategories(updated);
+                      }}
+                      placeholder="Ex: SNUS Nicotine Forte"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label>Description</Label>
+                    <Textarea
+                      value={category.description}
+                      onChange={(e) => {
+                        const updated = [...categories];
+                        updated[index].description = e.target.value;
+                        setCategories(updated);
+                      }}
+                      rows={2}
+                      placeholder="Ex: Pour une expérience intense"
                     />
                   </div>
                 </div>

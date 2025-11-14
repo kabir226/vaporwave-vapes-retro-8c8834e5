@@ -96,12 +96,7 @@ const Index = () => {
     })} onToggleCart={() => setShowCart(true)} cartItemsCount={cart.reduce((sum, item) => sum + item.quantity, 0)} />
 
       {/* Category Section - Shop by Category */}
-      {!loadingCategories && <CategorySection categories={categories.map(c => ({
-      ...c,
-      image: '📦',
-      count: products.filter(p => p.category_id === c.id).length,
-      featured: c.display_order === 1
-    }))} />}
+      <CategorySection />
 
       {/* Best Sellers Section */}
       {!loadingProducts && !loadingCategories && <BestSellersSection products={bestSellersProducts} onAddToCart={handleAddToCart} />}
