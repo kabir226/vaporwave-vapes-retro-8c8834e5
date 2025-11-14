@@ -10,27 +10,33 @@ interface Benefit {
   title: string;
   previewTitle: string;
   previewDescription: string;
+  imageUrl?: string;
+  id: string;
 }
 
 const WhySwitchSection: React.FC = () => {
   const [selectedBenefit, setSelectedBenefit] = useState<Benefit | null>(null);
-  const { getSetting } = useHomepageSettings('why_switch');
-  const settings = getSetting('why_switch');
+  const { settings } = useHomepageSettings();
 
-  const benefits: Benefit[] = [
+  const mainSettings = settings.find(s => s.section_name === 'why_switch');
+  
+  const defaultBenefits: Benefit[] = [
     {
+      id: 'why_switch_safer',
       icon: <Leaf className="w-5 h-5 md:w-6 md:h-6 text-primary" />,
       title: 'Safer Alternative',
       previewTitle: 'Safer Alternative',
       previewDescription: 'Nicotine pouches offer a safer alternative to traditional smoking. With no combustion, no tar, and no smoke, you can enjoy nicotine without exposing yourself to the harmful chemicals found in cigarettes. Your lungs will thank you for making the switch to a cleaner option.'
     },
     {
+      id: 'why_switch_discreet',
       icon: <Lock className="w-5 h-5 md:w-6 md:h-6 text-primary" />,
       title: 'Discreet',
       previewTitle: 'Subtle and hidden',
       previewDescription: 'With nicotine pouches, you can use nicotine discreetly, wherever you are, even in places where smoking isn\'t allowed, like on a plane or at work. The pouches are small, invisible, and discreet, allowing you to satisfy your cravings privately, without drawing attention.'
     },
     {
+      id: 'why_switch_smokeless',
       icon: <Heart className="w-5 h-5 md:w-6 md:h-6 text-primary" />,
       title: 'Smokeless',
       previewTitle: 'Smokeless',
@@ -38,16 +44,26 @@ const WhySwitchSection: React.FC = () => {
     }
   ];
 
+  const benefits = defaultBenefits.map(benefit => {
+    const setting = settings.find(s => s.section_name === benefit.id);
+    return {
+      ...benefit,
+      previewTitle: setting?.title || benefit.previewTitle,
+      previewDescription: setting?.description || benefit.previewDescription,
+      imageUrl: setting?.image_url
+    };
+  });
+
   return (
     <>
       <section className="w-full py-16 px-4 bg-background">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
-            {settings?.title || 'Why make the switch from smoking products?'}
+            {mainSettings?.title || 'Why make the switch from smoking products?'}
           </h2>
           
           <p className="text-center text-base md:text-lg text-foreground mb-8 max-w-3xl mx-auto">
-            {settings?.subtitle || "Switching to nicotine pouches isn't just a change. It's a commitment to a healthier, safer lifestyle, that yours lungs will appreciate!"}
+            {mainSettings?.subtitle || "Switching to nicotine pouches isn't just a change. It's a commitment to a healthier, safer lifestyle, that yours lungs will appreciate!"}
           </p>
 
           <div className="flex justify-center mb-12">
@@ -60,7 +76,7 @@ const WhySwitchSection: React.FC = () => {
           <div className="relative rounded-2xl overflow-hidden aspect-[4/3] mb-8">
             {/* Background Image */}
             <img 
-              src={settings?.image_url || whySwitchBg} 
+              src={mainSettings?.image_url || whySwitchBg} 
               alt="Why Switch Background" 
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -151,6 +167,7 @@ const WhySwitchSection: React.FC = () => {
           onClose={() => setSelectedBenefit(null)}
           title={selectedBenefit.previewTitle}
           description={selectedBenefit.previewDescription}
+          imageUrl={selectedBenefit.imageUrl}
           imagePlaceholder="Lifestyle image placeholder"
         />
       )}

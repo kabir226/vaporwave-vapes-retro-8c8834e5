@@ -7,6 +7,7 @@ interface BenefitPreviewDialogProps {
   onClose: () => void;
   title: string;
   description: string;
+  imageUrl?: string;
   imagePlaceholder?: string;
 }
 
@@ -15,6 +16,7 @@ const BenefitPreviewDialog: React.FC<BenefitPreviewDialogProps> = ({
   onClose,
   title,
   description,
+  imageUrl,
   imagePlaceholder
 }) => {
   return (
@@ -29,8 +31,14 @@ const BenefitPreviewDialog: React.FC<BenefitPreviewDialogProps> = ({
         </button>
         
         <div className="relative">
-          <div className="aspect-[3/4] bg-muted flex items-center justify-center">
-            {imagePlaceholder ? (
+          <div className="aspect-[3/4] bg-muted flex items-center justify-center overflow-hidden">
+            {imageUrl ? (
+              <img 
+                src={imageUrl} 
+                alt={title} 
+                className="w-full h-full object-cover"
+              />
+            ) : imagePlaceholder ? (
               <p className="text-muted-foreground text-center px-8">{imagePlaceholder}</p>
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20" />
