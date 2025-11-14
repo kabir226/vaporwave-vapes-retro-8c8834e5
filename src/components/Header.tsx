@@ -33,7 +33,10 @@ const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl h-16 md:h-20 flex items-center justify-between py-0 px-0 mx-0 my-0">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          <Logo className="h-12 w-auto transition-transform group-hover:scale-105" />
+          
+          <span className="text-2xl font-black text-cyber">
+            NO-SMOKING
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
