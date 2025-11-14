@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -11,12 +12,24 @@ import { useProducts } from '@/hooks/useProducts';
 import { useCategories } from '@/hooks/useCategories';
 
 const Shop = () => {
+  const [searchParams] = useSearchParams();
   const { products: dbProducts, loading } = useProducts();
   const { categories: dbCategories } = useCategories();
   const [cart, setCart] = useState([]);
   const [showCart, setShowCart] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
+
+  // Gérer le paramètre de catégorie dans l'URL
+  useEffect(() => {
+    const categorySlug = searchParams.get('category');
+    if (categorySlug && dbCategories.length > 0) {
+      const category = dbCategories.find(cat => cat.slug === categorySlug);
+      if (category) {
+        setSelectedCategory(category.id);
+      }
+    }
+  }, [searchParams, dbCategories]);
 
   // Transformer les catégories pour inclure le comptage
   const categories = [
