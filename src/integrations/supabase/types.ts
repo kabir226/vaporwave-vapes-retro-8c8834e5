@@ -47,6 +47,90 @@ export type Database = {
         }
         Relationships: []
       }
+      currencies: {
+        Row: {
+          code: string
+          created_at: string
+          exchange_rate: number
+          id: string
+          is_default: boolean
+          name: string
+          symbol: string
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          exchange_rate?: number
+          id?: string
+          is_default?: boolean
+          name: string
+          symbol: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          exchange_rate?: number
+          id?: string
+          is_default?: boolean
+          name?: string
+          symbol?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      homepage_settings: {
+        Row: {
+          button_link: string | null
+          button_text: string | null
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          section_name: string
+          settings: Json | null
+          subtitle: string | null
+          title: string | null
+          updated_at: string | null
+          video_url: string | null
+        }
+        Insert: {
+          button_link?: string | null
+          button_text?: string | null
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          section_name: string
+          settings?: Json | null
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string | null
+          video_url?: string | null
+        }
+        Update: {
+          button_link?: string | null
+          button_text?: string | null
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          section_name?: string
+          settings?: Json | null
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string | null
+          video_url?: string | null
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           created_at: string | null
@@ -123,6 +207,7 @@ export type Database = {
         Row: {
           category_id: string | null
           created_at: string | null
+          currency_code: string | null
           description: string | null
           features: string[] | null
           id: string
@@ -139,6 +224,7 @@ export type Database = {
         Insert: {
           category_id?: string | null
           created_at?: string | null
+          currency_code?: string | null
           description?: string | null
           features?: string[] | null
           id?: string
@@ -155,6 +241,7 @@ export type Database = {
         Update: {
           category_id?: string | null
           created_at?: string | null
+          currency_code?: string | null
           description?: string | null
           features?: string[] | null
           id?: string
@@ -169,6 +256,13 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_products_currency"
+            columns: ["currency_code"]
+            isOneToOne: false
+            referencedRelation: "currencies"
+            referencedColumns: ["code"]
+          },
           {
             foreignKeyName: "products_category_id_fkey"
             columns: ["category_id"]

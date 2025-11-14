@@ -64,10 +64,10 @@ const CategorySection: React.FC = () => {
                             📦
                           </span>
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/60 to-transparent" />
                         <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
                           {category.description && (
-                            <p className="text-xs text-muted-foreground mb-1">
+                            <p className="text-xs text-foreground/80 mb-1 font-medium">
                               {category.description}
                             </p>
                           )}
@@ -114,10 +114,10 @@ const CategorySection: React.FC = () => {
                       📦
                     </span>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/60 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
                     {category.description && (
-                      <p className="text-sm text-muted-foreground mb-2">
+                      <p className="text-sm text-foreground/80 mb-2 font-medium">
                         {category.description}
                       </p>
                     )}
