@@ -66,9 +66,11 @@ const CategorySection: React.FC = () => {
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                         <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                          <p className="text-xs text-muted-foreground mb-1">
-                            {category.description.split(' ').slice(0, 4).join(' ')}...
-                          </p>
+                          {category.description && (
+                            <p className="text-xs text-muted-foreground mb-1">
+                              {category.description}
+                            </p>
+                          )}
                           <h3 className="text-lg font-bold text-foreground mb-2">
                             {category.name}
                           </h3>
@@ -114,9 +116,11 @@ const CategorySection: React.FC = () => {
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {category.description.split(' ').slice(0, 4).join(' ')}...
-                    </p>
+                    {category.description && (
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {category.description}
+                      </p>
+                    )}
                     <h3 className="text-xl font-bold text-foreground mb-3">
                       {category.name}
                     </h3>
