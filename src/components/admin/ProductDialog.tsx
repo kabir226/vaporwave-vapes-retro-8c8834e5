@@ -32,6 +32,9 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
     currency_code: "EUR",
     slug: "",
     images: [] as string[],
+    specifications: "",
+    ingredients: "",
+    usage_instructions: "",
   });
 
   useEffect(() => {
@@ -51,6 +54,9 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
         currency_code: (product as any).currency_code || "EUR",
         slug: product.slug,
         images: product.images || [],
+        specifications: (product as any).specifications || "",
+        ingredients: (product as any).ingredients || "",
+        usage_instructions: (product as any).usage_instructions || "",
       });
     } else {
       setFormData({
@@ -63,6 +69,9 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
         currency_code: "EUR",
         slug: "",
         images: [],
+        specifications: "",
+        ingredients: "",
+        usage_instructions: "",
       });
     }
   }, [product]);
@@ -101,6 +110,9 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
         category_id: formData.category_id || null,
         currency_code: formData.currency_code,
         images: formData.images,
+        specifications: formData.specifications || null,
+        ingredients: formData.ingredients || null,
+        usage_instructions: formData.usage_instructions || null,
       };
 
       if (product) {
@@ -155,6 +167,39 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               rows={4}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="specifications">Spécifications</Label>
+            <Textarea
+              id="specifications"
+              value={formData.specifications}
+              onChange={(e) => setFormData({ ...formData, specifications: e.target.value })}
+              rows={4}
+              placeholder="Ex: Strength: Strong, Weight: 20g, Nicotine: 8mg/pouch"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="ingredients">Ingrédients</Label>
+            <Textarea
+              id="ingredients"
+              value={formData.ingredients}
+              onChange={(e) => setFormData({ ...formData, ingredients: e.target.value })}
+              rows={4}
+              placeholder="Liste des ingrédients du produit"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="usage_instructions">Instructions d'utilisation</Label>
+            <Textarea
+              id="usage_instructions"
+              value={formData.usage_instructions}
+              onChange={(e) => setFormData({ ...formData, usage_instructions: e.target.value })}
+              rows={4}
+              placeholder="Comment utiliser ce produit"
             />
           </div>
 

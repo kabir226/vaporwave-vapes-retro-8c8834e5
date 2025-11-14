@@ -213,13 +213,16 @@ export type Database = {
           id: string
           images: string[] | null
           in_stock: boolean | null
+          ingredients: string | null
           name: string
           price: number
           rating: number | null
           slug: string
+          specifications: string | null
           stock: number | null
           strength: Database["public"]["Enums"]["product_strength"] | null
           updated_at: string | null
+          usage_instructions: string | null
         }
         Insert: {
           category_id?: string | null
@@ -230,13 +233,16 @@ export type Database = {
           id?: string
           images?: string[] | null
           in_stock?: boolean | null
+          ingredients?: string | null
           name: string
           price: number
           rating?: number | null
           slug: string
+          specifications?: string | null
           stock?: number | null
           strength?: Database["public"]["Enums"]["product_strength"] | null
           updated_at?: string | null
+          usage_instructions?: string | null
         }
         Update: {
           category_id?: string | null
@@ -247,13 +253,16 @@ export type Database = {
           id?: string
           images?: string[] | null
           in_stock?: boolean | null
+          ingredients?: string | null
           name?: string
           price?: number
           rating?: number | null
           slug?: string
+          specifications?: string | null
           stock?: number | null
           strength?: Database["public"]["Enums"]["product_strength"] | null
           updated_at?: string | null
+          usage_instructions?: string | null
         }
         Relationships: [
           {
