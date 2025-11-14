@@ -123,7 +123,7 @@ const Index = () => {
       <HowToUseSection />
 
       {/* Mix & Match Section */}
-      <MixMatchSection />
+      
 
       {/* Buy SNUS Section */}
       <BuySNUSSection />
