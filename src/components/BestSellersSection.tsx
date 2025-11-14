@@ -50,38 +50,33 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
             return (
             <Card 
               key={product.id} 
-              className="group hover:shadow-xl transition-all duration-300 overflow-hidden border hover:border-primary cursor-pointer"
+              className="group relative overflow-hidden bg-black border-border hover:border-primary transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 cursor-pointer"
               onClick={() => product.slug && navigate(`/product/${product.slug}`)}
             >
-              <CardContent className="p-4">
-                {/* Product Image */}
-                <div className="relative aspect-square bg-muted rounded-lg mb-3 overflow-hidden">
+              <CardContent className="p-0">
+                {/* Product Display Area */}
+                <div className="relative h-64 bg-black overflow-hidden flex items-center justify-center">
                   {typeof product.image === 'string' && product.image.startsWith('http') ? (
                     <img 
                       src={product.image} 
                       alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
                   ) : (
-                    <span className="text-5xl md:text-6xl group-hover:scale-110 transition-transform">
+                    <span className="text-7xl group-hover:scale-110 transition-transform duration-300">
                       {product.image || '📦'}
                     </span>
-                  )}
-                  {product.badge && (
-                    <Badge className="absolute top-2 left-2 bg-destructive text-destructive-foreground">
-                      {product.badge}
-                    </Badge>
                   )}
                 </div>
 
                 {/* Product Info */}
-                <div className="space-y-2">
-                  <h3 className="font-bold text-sm md:text-base text-foreground line-clamp-2 min-h-[2.5rem]">
+                <div className="bg-black p-4 text-center border-t border-border">
+                  <h3 className="text-lg font-bold text-white mb-3 line-clamp-2 min-h-[3rem]">
                     {product.name}
                   </h3>
                   
                   {product.rating && (
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center justify-center gap-1 mb-2">
                       <div className="flex">
                         {[...Array(5)].map((_, i) => (
                           <Star 
@@ -96,26 +91,19 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
                     </div>
                   )}
 
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-foreground">
-                      {currencySymbol}{product.price.toFixed(2)}
-                    </span>
-                    {product.originalPrice && (
-                      <span className="text-sm text-muted-foreground line-through">
-                        {currencySymbol}{product.originalPrice.toFixed(2)}
-                      </span>
-                    )}
+                  <div className="text-2xl font-bold text-white mb-4">
+                    {currencySymbol}{product.price.toFixed(2)}
                   </div>
 
                   <Button 
-                    className="w-full bg-foreground hover:bg-foreground/90 text-background font-semibold"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold"
                     onClick={(e) => {
                       e.stopPropagation();
                       onAddToCart(product);
                     }}
                   >
                     <ShoppingCart className="w-4 h-4 mr-2" />
-                    Ajouter
+                    Ajouter au panier
                   </Button>
                 </div>
               </CardContent>
