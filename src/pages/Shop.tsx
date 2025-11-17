@@ -19,6 +19,7 @@ const Shop = () => {
   const [showCart, setShowCart] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
+  const searchQuery = searchParams.get('search') || '';
 
   // Gérer le paramètre de catégorie dans l'URL
   useEffect(() => {
@@ -48,9 +49,14 @@ const Shop = () => {
     category: p.category_id || '',
   }));
 
-  const filteredProducts = selectedCategory === 'all' 
-    ? products 
-    : products.filter(p => p.category_id === selectedCategory);
+  // Filtrer par catégorie ET par recherche
+  const filteredProducts = products.filter(p => {
+    const matchesCategory = selectedCategory === 'all' || p.category_id === selectedCategory;
+    const matchesSearch = !searchQuery || 
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
 
   const addToCart = (product) => {
     setCart(prev => {
