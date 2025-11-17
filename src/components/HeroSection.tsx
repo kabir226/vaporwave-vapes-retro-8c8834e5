@@ -161,21 +161,54 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
           {/* Primary CTA Button */}
           {!hasSlides && (
-            <div className="pt-2">
-              <a 
-                href="https://wa.me/message/VU57PC3IDGREF1" 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <Button 
-                  size="lg" 
-                  className="bg-foreground hover:bg-foreground/90 text-background font-bold px-12 py-6 text-base group rounded-full w-full md:w-auto"
+            <>
+              <div className="pt-2">
+                <a 
+                  href="https://wa.me/message/VU57PC3IDGREF1" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
                 >
-                  {heroSettings?.button_text || "ACHETER NICOTINE SANS FUMÉE"}
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </a>
-            </div>
+                  <Button 
+                    size="lg" 
+                    className="bg-foreground hover:bg-foreground/90 text-background font-bold px-12 py-6 text-base group rounded-full w-full md:w-auto"
+                  >
+                    {heroSettings?.button_text || "ACHETER NICOTINE SANS FUMÉE"}
+                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </a>
+              </div>
+
+              {/* Feature Benefits */}
+              <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 pt-6 text-sm md:text-base">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <div className="w-5 h-5 flex-shrink-0">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 10h.01M15 10h.01M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 18.5l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"/>
+                    </svg>
+                  </div>
+                  <span>Utilisation discrète, n'importe où, n'importe quand</span>
+                </div>
+
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <div className="w-5 h-5 flex-shrink-0">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                    </svg>
+                  </div>
+                  <span>Plus doux pour votre corps comparé au tabagisme</span>
+                </div>
+
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <div className="w-5 h-5 flex-shrink-0">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  </div>
+                  <span>Sans taches sur les dents</span>
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>
