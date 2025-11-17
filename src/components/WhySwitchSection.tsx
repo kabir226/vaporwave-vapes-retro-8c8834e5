@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { PlayCircle, Leaf, Lock, Heart } from 'lucide-react';
 import BenefitPreviewDialog from './BenefitPreviewDialog';
+import VideoPreviewDialog from './VideoPreviewDialog';
 import whySwitchBg from '@/assets/why-switch-background.jpg';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 
@@ -16,6 +17,7 @@ interface Benefit {
 
 const WhySwitchSection: React.FC = () => {
   const [selectedBenefit, setSelectedBenefit] = useState<Benefit | null>(null);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
   const { settings } = useHomepageSettings();
 
   const mainSettings = settings.find(s => s.section_name === 'why_switch');
@@ -67,7 +69,11 @@ const WhySwitchSection: React.FC = () => {
           </p>
 
           <div className="flex justify-center mb-12">
-            <Button variant="ghost" className="gap-2 text-foreground hover:text-primary">
+            <Button 
+              variant="ghost" 
+              className="gap-2 text-foreground hover:text-primary"
+              onClick={() => setIsVideoOpen(true)}
+            >
               <PlayCircle className="w-6 h-6" />
               <span className="underline">See how to use</span>
             </Button>
@@ -160,7 +166,7 @@ const WhySwitchSection: React.FC = () => {
         </div>
       </section>
 
-      {/* Preview Dialog */}
+      {/* Preview Dialogs */}
       {selectedBenefit && (
         <BenefitPreviewDialog
           isOpen={!!selectedBenefit}
@@ -171,6 +177,13 @@ const WhySwitchSection: React.FC = () => {
           imagePlaceholder="Lifestyle image placeholder"
         />
       )}
+      
+      <VideoPreviewDialog
+        isOpen={isVideoOpen}
+        onClose={() => setIsVideoOpen(false)}
+        videoUrl="/videos/how-to-use.mp4"
+        title="Comment utiliser"
+      />
     </>
   );
 };
