@@ -76,6 +76,17 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
     { image_url: '', name: '', description: '', link: '', link_type: 'custom' }
   ]);
   
+  const [heroSlides, setHeroSlides] = useState<Array<{
+    image_url: string;
+    buttons: Array<{ text: string; link: string; color: string }>;
+  }>>([
+    { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] },
+    { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] },
+    { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] },
+    { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] },
+    { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] }
+  ]);
+  
   const { categories: dbCategories } = useCategories();
 
   useEffect(() => {
@@ -126,6 +137,18 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
           { image_url: '', name: '', description: '', link: '' }
         ]);
       }
+      
+      // Load hero slides if section is hero
+      if (setting.section_name === 'hero' && setting.settings) {
+        const settingsData = setting.settings as any;
+        setHeroSlides(settingsData.slides || [
+          { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] },
+          { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] },
+          { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] },
+          { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] },
+          { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] }
+        ]);
+      }
     } else {
       setFormData({
         section_name: '',
@@ -155,6 +178,13 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
         { image_url: '', name: '', description: '', link: '' },
         { image_url: '', name: '', description: '', link: '' }
       ]);
+      setHeroSlides([
+        { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] },
+        { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] },
+        { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] },
+        { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] },
+        { image_url: '', buttons: [{ text: '', link: '', color: '#DC2626' }] }
+      ]);
     }
   }, [setting, isOpen]);
 
@@ -173,6 +203,9 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
       }
       if (formData.section_name === 'categories') {
         settingsData = { categories };
+      }
+      if (formData.section_name === 'hero') {
+        settingsData = { slides: heroSlides };
       }
       
       const dataToSave = {
@@ -501,6 +534,106 @@ const HomepageSettingsDialog: React.FC<HomepageSettingsDialogProps> = ({
                       </Select>
                     </div>
                   )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {formData.section_name === 'hero' && (
+            <div className="space-y-6 border rounded-lg p-4 bg-muted/30">
+              <Label className="text-lg font-semibold">Carrousel Hero (5 slides)</Label>
+              {heroSlides.map((slide, slideIndex) => (
+                <div key={slideIndex} className="space-y-4 border rounded-lg p-4 bg-background">
+                  <Label className="font-semibold">Slide {slideIndex + 1}</Label>
+                  
+                  <div>
+                    <Label>Image du slide</Label>
+                    <ImageUpload
+                      images={slide.image_url ? [slide.image_url] : []}
+                      onImagesChange={(images) => {
+                        const updated = [...heroSlides];
+                        updated[slideIndex].image_url = images[0] || '';
+                        setHeroSlides(updated);
+                      }}
+                      productId={`homepage/hero-slide-${slideIndex}`}
+                    />
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <Label className="font-semibold">Boutons</Label>
+                    {slide.buttons.map((button, buttonIndex) => (
+                      <div key={buttonIndex} className="space-y-2 border rounded-lg p-3 bg-muted/20">
+                        <Label className="text-sm">Bouton {buttonIndex + 1}</Label>
+                        
+                        <div>
+                          <Label className="text-xs">Texte du bouton</Label>
+                          <Input
+                            value={button.text}
+                            onChange={(e) => {
+                              const updated = [...heroSlides];
+                              updated[slideIndex].buttons[buttonIndex].text = e.target.value;
+                              setHeroSlides(updated);
+                            }}
+                            placeholder="Ex: Découvrir"
+                          />
+                        </div>
+                        
+                        <div>
+                          <Label className="text-xs">Lien</Label>
+                          <Input
+                            value={button.link}
+                            onChange={(e) => {
+                              const updated = [...heroSlides];
+                              updated[slideIndex].buttons[buttonIndex].link = e.target.value;
+                              setHeroSlides(updated);
+                            }}
+                            placeholder="Ex: /shop ou https://..."
+                          />
+                        </div>
+                        
+                        <div>
+                          <Label className="text-xs">Couleur</Label>
+                          <Input
+                            type="color"
+                            value={button.color}
+                            onChange={(e) => {
+                              const updated = [...heroSlides];
+                              updated[slideIndex].buttons[buttonIndex].color = e.target.value;
+                              setHeroSlides(updated);
+                            }}
+                          />
+                        </div>
+                        
+                        {slide.buttons.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              const updated = [...heroSlides];
+                              updated[slideIndex].buttons = updated[slideIndex].buttons.filter((_, i) => i !== buttonIndex);
+                              setHeroSlides(updated);
+                            }}
+                          >
+                            Supprimer ce bouton
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                    
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const updated = [...heroSlides];
+                        updated[slideIndex].buttons.push({ text: '', link: '', color: '#DC2626' });
+                        setHeroSlides(updated);
+                      }}
+                    >
+                      + Ajouter un bouton
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
