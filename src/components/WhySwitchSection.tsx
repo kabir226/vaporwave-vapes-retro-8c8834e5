@@ -26,23 +26,23 @@ const WhySwitchSection: React.FC = () => {
     {
       id: 'why_switch_safer',
       icon: <Leaf className="w-5 h-5 md:w-6 md:h-6 text-primary" />,
-      title: 'Safer Alternative',
-      previewTitle: 'Safer Alternative',
-      previewDescription: 'Nicotine pouches offer a safer alternative to traditional smoking. With no combustion, no tar, and no smoke, you can enjoy nicotine without exposing yourself to the harmful chemicals found in cigarettes. Your lungs will thank you for making the switch to a cleaner option.'
+      title: 'Alternative plus sûre',
+      previewTitle: 'Alternative plus sûre',
+      previewDescription: 'Les sachets de nicotine offrent une alternative plus sûre au tabagisme traditionnel. Sans combustion, sans goudron et sans fumée, vous pouvez profiter de la nicotine sans vous exposer aux produits chimiques nocifs présents dans les cigarettes. Vos poumons vous remercieront d\'avoir opté pour une option plus propre.'
     },
     {
       id: 'why_switch_discreet',
       icon: <Lock className="w-5 h-5 md:w-6 md:h-6 text-primary" />,
-      title: 'Discreet',
-      previewTitle: 'Subtle and hidden',
-      previewDescription: 'With nicotine pouches, you can use nicotine discreetly, wherever you are, even in places where smoking isn\'t allowed, like on a plane or at work. The pouches are small, invisible, and discreet, allowing you to satisfy your cravings privately, without drawing attention.'
+      title: 'Discret',
+      previewTitle: 'Subtil et caché',
+      previewDescription: 'Avec les sachets de nicotine, vous pouvez consommer de la nicotine discrètement, où que vous soyez, même dans les endroits où fumer n\'est pas autorisé, comme dans un avion ou au travail. Les sachets sont petits, invisibles et discrets, vous permettant de satisfaire vos envies en privé, sans attirer l\'attention.'
     },
     {
       id: 'why_switch_smokeless',
       icon: <Heart className="w-5 h-5 md:w-6 md:h-6 text-primary" />,
-      title: 'Smokeless',
-      previewTitle: 'Smokeless',
-      previewDescription: 'Enjoy nicotine without any smoke, odor, or ash. Nicotine pouches are completely smokeless, making them perfect for use anywhere, anytime. No need to step outside or worry about disturbing others with smoke or smell. It\'s a clean, modern way to consume nicotine.'
+      title: 'Sans fumée',
+      previewTitle: 'Sans fumée',
+      previewDescription: 'Profitez de la nicotine sans fumée, odeur ou cendre. Les sachets de nicotine sont complètement sans fumée, ce qui les rend parfaits pour une utilisation n\'importe où, n\'importe quand. Pas besoin de sortir ou de vous inquiéter de déranger les autres avec de la fumée ou des odeurs. C\'est une façon propre et moderne de consommer de la nicotine.'
     }
   ];
 
@@ -61,11 +61,11 @@ const WhySwitchSection: React.FC = () => {
       <section className="w-full py-16 px-4 bg-background">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
-            {mainSettings?.title || 'Why make the switch from smoking products?'}
+            {mainSettings?.title || 'Pourquoi passer des produits du tabac ?'}
           </h2>
           
           <p className="text-center text-base md:text-lg text-foreground mb-8 max-w-3xl mx-auto">
-            {mainSettings?.subtitle || "Switching to nicotine pouches isn't just a change. It's a commitment to a healthier, safer lifestyle, that yours lungs will appreciate!"}
+            {mainSettings?.subtitle || "Passer aux sachets de nicotine n'est pas qu'un simple changement. C'est un engagement vers un mode de vie plus sain et plus sûr, que vos poumons apprécieront !"}
           </p>
 
           <div className="flex justify-center mb-12">
@@ -75,7 +75,7 @@ const WhySwitchSection: React.FC = () => {
               onClick={() => setIsVideoOpen(true)}
             >
               <PlayCircle className="w-6 h-6" />
-              <span className="underline">See how to use</span>
+              <span className="underline">Voir comment utiliser</span>
             </Button>
           </div>
 

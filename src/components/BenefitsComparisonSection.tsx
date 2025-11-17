@@ -21,44 +21,44 @@ const BenefitsComparisonSection: React.FC = () => {
     { 
       id: 'benefits_comparison_variety',
       icon: BarChart3, 
-      label: 'Variety of Strengths',
-      previewTitle: 'Variety of Strengths',
-      previewDescription: 'Available in a range of nicotine strengths, nicotine pouches allow you to customise your experience to suit your preferences. Whether you\'re new to nicotine or an experienced user, you can choose the strength that\'s right for you.'
+      label: 'Variété de forces',
+      previewTitle: 'Variété de forces',
+      previewDescription: 'Disponibles dans une gamme de forces de nicotine, les sachets de nicotine vous permettent de personnaliser votre expérience selon vos préférences. Que vous soyez novice en nicotine ou utilisateur expérimenté, vous pouvez choisir la force qui vous convient.'
     },
     { 
       id: 'benefits_comparison_flavours',
       icon: Smile, 
-      label: 'Fresh Flavours',
-      previewTitle: 'Fresh Flavours',
-      previewDescription: 'Flavour options like mint, citrus, berry, and more add an enjoyable twist to the experience. Discover a world of refreshing tastes that make your nicotine experience more pleasant and enjoyable.'
+      label: 'Saveurs fraîches',
+      previewTitle: 'Saveurs fraîches',
+      previewDescription: 'Des options de saveurs comme la menthe, les agrumes, les baies et bien plus encore ajoutent une touche agréable à l\'expérience. Découvrez un monde de goûts rafraîchissants qui rendent votre expérience nicotinique plus agréable.'
     },
     { 
       id: 'benefits_comparison_smoke',
       icon: Droplet, 
-      label: 'No Smoke',
-      previewTitle: 'No Smoke',
-      previewDescription: 'Completely smokeless, nicotine pouches produce no smoke or vapor. Enjoy your nicotine discreetly without any visible emissions, making them perfect for use in any environment.'
+      label: 'Sans fumée',
+      previewTitle: 'Sans fumée',
+      previewDescription: 'Complètement sans fumée, les sachets de nicotine ne produisent ni fumée ni vapeur. Profitez de votre nicotine discrètement sans émissions visibles, ce qui les rend parfaits pour une utilisation dans n\'importe quel environnement.'
     },
     { 
       id: 'benefits_comparison_odor',
       icon: Ban, 
-      label: 'No Odor',
-      previewTitle: 'No Odor',
-      previewDescription: 'Unlike traditional smoking, nicotine pouches leave no lingering smell on your clothes, breath, or surroundings. Stay fresh and odor-free while enjoying your nicotine experience.'
+      label: 'Sans odeur',
+      previewTitle: 'Sans odeur',
+      previewDescription: 'Contrairement au tabagisme traditionnel, les sachets de nicotine ne laissent aucune odeur persistante sur vos vêtements, votre haleine ou votre environnement. Restez frais et sans odeur tout en profitant de votre expérience nicotinique.'
     },
     { 
       id: 'benefits_comparison_tobacco',
       icon: Cigarette, 
-      label: 'Tobacco-Free',
-      previewTitle: 'Tobacco-Free',
-      previewDescription: 'Made without tobacco leaf, nicotine pouches provide a cleaner alternative. They contain pharmaceutical-grade nicotine and natural fibers, eliminating the harmful compounds found in tobacco products.'
+      label: 'Sans tabac',
+      previewTitle: 'Sans tabac',
+      previewDescription: 'Fabriqués sans feuille de tabac, les sachets de nicotine offrent une alternative plus propre. Ils contiennent de la nicotine de qualité pharmaceutique et des fibres naturelles, éliminant les composés nocifs présents dans les produits du tabac.'
     },
     { 
       id: 'benefits_comparison_lasting',
       icon: Clock, 
-      label: 'Long-Lasting',
-      previewTitle: 'Long-Lasting',
-      previewDescription: 'Each pouch delivers a consistent and long-lasting nicotine experience, typically lasting 30-60 minutes. Enjoy extended satisfaction without the need for frequent replacements.'
+      label: 'Longue durée',
+      previewTitle: 'Longue durée',
+      previewDescription: 'Chaque sachet offre une expérience nicotinique cohérente et de longue durée, durant généralement 30 à 60 minutes. Profitez d\'une satisfaction prolongée sans besoin de remplacements fréquents.'
     },
   ];
 
@@ -82,7 +82,7 @@ const BenefitsComparisonSection: React.FC = () => {
       <section className="w-full py-16 px-4 bg-card">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-            {mainSettings?.title || 'The benefits of nicotine pouches over smoking'}
+            {mainSettings?.title || 'Les avantages des sachets de nicotine par rapport au tabagisme'}
           </h2>
 
           <div className="mb-12 rounded-2xl overflow-hidden">
