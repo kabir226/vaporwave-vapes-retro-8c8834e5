@@ -7,16 +7,16 @@ const BuySNUSSection: React.FC = () => {
           
 
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            Buy SNUS UK
+            Acheter SNUS France
           </h2>
 
           <p className="text-base md:text-lg text-muted-foreground mb-4">
-            Ready to ditch the harmful effects of smoking?
+            Prêt à abandonner les effets nocifs du tabagisme ?
           </p>
 
           <p className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto mb-8">
-            MKPodPlug's nicotine pouches offer the smoke-free, healthier alternative that lets you live life to the 
-            fullest. Reclaim your stamina, protect your lungs, and experience nicotine in a way that won't hold you back.
+            Les pochettes de nicotine MKPodPlug offrent l'alternative sans fumée et plus saine qui vous permet de vivre pleinement. 
+            Retrouvez votre endurance, protégez vos poumons et consommez la nicotine d'une manière qui ne vous retiendra pas.
           </p>
 
           <div className="flex justify-center">
