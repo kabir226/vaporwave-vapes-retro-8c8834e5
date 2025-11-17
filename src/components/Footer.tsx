@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import { AlertTriangle, Shield, Info } from 'lucide-react';
 const Footer: React.FC = () => {
   const legalLinks = ['Mentions légales', 'Conditions générales', 'Politique de confidentialité', 'Conformité Tobacco 18', 'Contact'];
-  const warnings = ["La vape est strictement interdite aux personnes de moins de 18 ans", "Nos produits contiennent de la nicotine, une substance hautement addictive", "Ne vapotez pas si vous ne fumez pas"];
+  const warnings = ["Les substituts nicotiniques sont strictement interdits aux personnes de moins de 18 ans", "Nos produits contiennent de la nicotine, une substance hautement addictive", "Évitez-les si vous n'êtes pas fumeur"];
   return <footer className="bg-card/80 backdrop-blur-xl border-t border-border py-16 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Brand Section */}
@@ -22,9 +22,6 @@ const Footer: React.FC = () => {
               </h4>
             </div>
             
-            <p className="text-sm mb-4 text-foreground">
-              Conforme à la législation française :
-            </p>
             
             <ul className="space-y-2">
               {warnings.map((warning, index) => <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
