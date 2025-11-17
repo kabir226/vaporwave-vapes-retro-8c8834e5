@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { X, Upload, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import ImageCropDialog from "./ImageCropDialog";
 
 interface ImageUploadProps {
   images: string[];
@@ -15,6 +16,9 @@ const ImageUpload = ({ images, onImagesChange, productId }: ImageUploadProps) =>
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [cropDialogOpen, setCropDialogOpen] = useState(false);
+  const [currentImageSrc, setCurrentImageSrc] = useState<string>("");
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
 
   const compressImage = async (file: File): Promise<Blob> => {
     return new Promise((resolve, reject) => {
@@ -63,18 +67,16 @@ const ImageUpload = ({ images, onImagesChange, productId }: ImageUploadProps) =>
     });
   };
 
-  const uploadImage = async (file: File) => {
+  const uploadImage = async (blob: Blob, originalFileName: string) => {
     try {
-      // Compresser l'image
-      const compressedBlob = await compressImage(file);
       const timestamp = Date.now();
-      const fileName = `${timestamp}-${file.name.replace(/[^a-zA-Z0-9.]/g, "-")}`;
+      const fileName = `${timestamp}-${originalFileName.replace(/[^a-zA-Z0-9.]/g, "-")}`;
       const filePath = `${productId || "temp"}/${fileName}`;
 
       // Upload vers Supabase Storage
       const { error: uploadError, data } = await supabase.storage
         .from("product-images")
-        .upload(filePath, compressedBlob, {
+        .upload(filePath, blob, {
           contentType: "image/jpeg",
           upsert: false,
         });
@@ -96,28 +98,42 @@ const ImageUpload = ({ images, onImagesChange, productId }: ImageUploadProps) =>
   const handleFiles = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
+    const file = files[0]; // On prend la première image pour le crop
+    if (!file.type.startsWith("image/")) {
+      toast({
+        title: "Erreur",
+        description: `${file.name} n'est pas une image`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Créer une URL temporaire pour l'image
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setCurrentImageSrc(e.target?.result as string);
+      setPendingFile(file);
+      setCropDialogOpen(true);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleCropComplete = async (croppedImageBlob: Blob) => {
+    if (!pendingFile) return;
+
     setUploading(true);
     try {
-      const uploadPromises = Array.from(files).map((file) => {
-        if (!file.type.startsWith("image/")) {
-          toast({
-            title: "Erreur",
-            description: `${file.name} n'est pas une image`,
-            variant: "destructive",
-          });
-          return null;
-        }
-        return uploadImage(file);
-      });
-
-      const results = await Promise.all(uploadPromises);
-      const newImages = results.filter((url): url is string => url !== null);
-      onImagesChange([...images, ...newImages]);
+      const imageUrl = await uploadImage(croppedImageBlob, pendingFile.name);
+      onImagesChange([...images, imageUrl]);
 
       toast({
         title: "Succès",
-        description: `${newImages.length} image(s) uploadée(s)`,
+        description: "Image uploadée avec succès",
       });
+
+      // Reset
+      setPendingFile(null);
+      setCurrentImageSrc("");
     } catch (error: any) {
       toast({
         title: "Erreur",
@@ -239,6 +255,13 @@ const ImageUpload = ({ images, onImagesChange, productId }: ImageUploadProps) =>
           ))}
         </div>
       )}
+
+      <ImageCropDialog
+        open={cropDialogOpen}
+        onOpenChange={setCropDialogOpen}
+        imageSrc={currentImageSrc}
+        onCropComplete={handleCropComplete}
+      />
     </div>
   );
 };
