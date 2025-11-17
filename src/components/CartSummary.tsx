@@ -31,6 +31,16 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onUpdateQuantity, onRem
   const shippingCost = freeShipping ? 0 : 4.99;
   const finalTotal = total + shippingCost;
 
+  const createWhatsAppMessage = () => {
+    const productList = cart.map(item => 
+      `• ${item.name} x${item.quantity} - ${(item.price * item.quantity).toFixed(2)}${currencySymbol}`
+    ).join('%0A');
+    
+    const message = `Bonjour! Je souhaite commander:%0A%0A${productList}%0A%0ASous-total: ${total.toFixed(2)}${currencySymbol}%0ALivraison: ${shippingCost.toFixed(2)}${currencySymbol}%0ATotal: ${finalTotal.toFixed(2)}${currencySymbol}`;
+    
+    return `https://wa.me/message/VU57PC3IDGREF1?text=${message}`;
+  };
+
   if (cart.length === 0) {
     return (
       <Card className="max-w-md mx-auto">
@@ -128,7 +138,10 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onUpdateQuantity, onRem
         </div>
         
         <div className="space-y-2">
-          <Button className="w-full bg-primary hover:bg-primary/90">
+          <Button 
+            className="w-full bg-primary hover:bg-primary/90"
+            onClick={() => window.open(createWhatsAppMessage(), '_blank')}
+          >
             Commander maintenant
           </Button>
           <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">

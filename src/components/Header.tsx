@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { ShoppingCart, Menu, Search } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { ShoppingCart, Menu, Search, X } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
+import SearchBar from './SearchBar';
+
 interface HeaderProps {
   cart: any[];
   onToggleCart: () => void;
@@ -14,8 +16,17 @@ const Header: React.FC<HeaderProps> = ({
   onToggleCart
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
+
+  const handleSearch = (query: string) => {
+    if (query.trim()) {
+      navigate(`/shop?search=${encodeURIComponent(query)}`);
+      setIsSearchOpen(false);
+    }
+  };
   const navItems = [{
     href: '/',
     label: 'Accueil'
@@ -49,8 +60,8 @@ const Header: React.FC<HeaderProps> = ({
 
           {/* Right: Search & Cart Icons */}
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon">
-              <Search className="w-5 h-5" />
+            <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(!isSearchOpen)}>
+              {isSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
             </Button>
             <Button variant="ghost" size="icon" className="relative" onClick={onToggleCart}>
               <ShoppingCart className="w-5 h-5" />
@@ -60,6 +71,13 @@ const Header: React.FC<HeaderProps> = ({
             </Button>
           </div>
         </div>
+
+        {/* Search Bar */}
+        {isSearchOpen && (
+          <div className="pb-4 animate-in slide-in-from-top">
+            <SearchBar onSearch={handleSearch} placeholder="Rechercher des produits..." />
+          </div>
+        )}
       </div>
     </header>
 
