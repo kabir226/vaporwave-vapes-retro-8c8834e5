@@ -12,23 +12,23 @@ const HowToUseSection: React.FC = () => {
   const steps = [
     {
       number: 1,
-      title: 'Place the pouch',
-      description: 'Place the pouch between your upper lip and gum. Use the left or right side. Do not chew or suck',
+      title: 'Placer le sachet',
+      description: 'Placez le sachet entre votre lèvre supérieure et votre gencive. Utilisez le côté gauche ou droit. Ne mâchez pas et ne sucez pas',
     },
     {
       number: 2,
-      title: 'Feel the effect',
-      description: 'Feel the pouch start to work with a slight burn and tingling sensation',
+      title: 'Ressentir l\'effet',
+      description: 'Sentez le sachet commencer à agir avec une légère sensation de brûlure et de picotement',
     },
     {
       number: 3,
-      title: 'Wait 10-45 minutes',
-      description: 'After 10-45 minutes of use, remove the pouch from your gum',
+      title: 'Attendre 10-45 minutes',
+      description: 'Après 10 à 45 minutes d\'utilisation, retirez le sachet de votre gencive',
     },
     {
       number: 4,
-      title: 'Dispose properly',
-      description: 'Dispose of the used pouch at the top lid compartment',
+      title: 'Jeter correctement',
+      description: 'Jetez le sachet usagé dans le compartiment du couvercle supérieur',
     },
   ];
 
@@ -36,7 +36,7 @@ const HowToUseSection: React.FC = () => {
     <section className="w-full py-16 px-4 bg-background">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          {settings?.title || 'How to use nicotine pouches'}
+          {settings?.title || 'Comment utiliser les sachets de nicotine'}
         </h2>
         {settings?.subtitle && (
           <p className="text-center text-muted-foreground mb-8">{settings.subtitle}</p>
@@ -63,7 +63,7 @@ const HowToUseSection: React.FC = () => {
                     ) : (
                       <div className="text-center">
                         <p className="text-4xl md:text-6xl mb-2">📍</p>
-                        <p className="text-sm text-muted-foreground">Step {step.number} illustration</p>
+                        <p className="text-sm text-muted-foreground">Illustration étape {step.number}</p>
                       </div>
                     )}
                   </div>
@@ -84,7 +84,7 @@ const HowToUseSection: React.FC = () => {
             rel="noopener noreferrer"
           >
             <Button variant="default" size="lg" className="rounded-full">
-              {settings?.button_text || 'Get started with beginners'}
+              {settings?.button_text || 'Commencer avec les débutants'}
             </Button>
           </a>
         </div>
