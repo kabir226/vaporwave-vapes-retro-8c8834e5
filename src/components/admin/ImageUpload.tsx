@@ -118,12 +118,14 @@ const ImageUpload = ({ images, onImagesChange, productId }: ImageUploadProps) =>
     reader.readAsDataURL(file);
   };
 
-  const handleCropComplete = async (croppedImageBlob: Blob) => {
+  const handleCropComplete = async (_croppedImageBlob: Blob) => {
     if (!pendingFile) return;
 
     setUploading(true);
     try {
-      const imageUrl = await uploadImage(croppedImageBlob, pendingFile.name);
+      // Option A : on compresse et on sauvegarde toujours l'image originale (non recadrée)
+      const compressedOriginal = await compressImage(pendingFile);
+      const imageUrl = await uploadImage(compressedOriginal, pendingFile.name);
       onImagesChange([...images, imageUrl]);
 
       toast({
