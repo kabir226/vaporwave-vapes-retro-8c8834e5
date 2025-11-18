@@ -238,11 +238,11 @@ const ImageUpload = ({ images, onImagesChange, productId }: ImageUploadProps) =>
       {images.length > 0 && (
         <div className="grid grid-cols-3 gap-4">
           {images.map((imageUrl, index) => (
-            <div key={index} className="relative group">
+            <div key={index} className="relative group bg-muted rounded-lg overflow-hidden flex items-center justify-center h-32">
               <img
                 src={imageUrl}
                 alt={`Produit ${index + 1}`}
-                className="w-full h-32 object-cover rounded-lg border"
+                className="max-h-full max-w-full object-contain"
               />
               <Button
                 type="button"

@@ -150,33 +150,37 @@ const ProductDetail = () => {
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {/* Image Gallery */}
           <div className="space-y-4">
-            <div className="relative aspect-square bg-muted rounded-lg overflow-hidden group cursor-pointer"
-                 onClick={() => setZoomOpen(true)}>
-              <img 
-                src={mainImage} 
+            <div
+              className="relative bg-muted rounded-lg overflow-hidden group cursor-pointer flex items-center justify-center h-[420px]"
+              onClick={() => setZoomOpen(true)}
+            >
+              <img
+                src={mainImage}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                className="max-h-full max-w-full object-contain"
               />
               <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                 <ZoomIn className="w-5 h-5" />
               </div>
             </div>
-            
+
             {/* Thumbnail Gallery */}
             {product.images && product.images.length > 1 && (
               <div className="grid grid-cols-4 gap-2">
                 {product.images.map((image, index) => (
-                  <div 
+                  <div
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`aspect-square bg-muted rounded-lg overflow-hidden cursor-pointer border-2 transition-all ${
-                      selectedImage === index ? 'border-primary' : 'border-transparent hover:border-muted-foreground/20'
+                    className={`bg-muted rounded-lg overflow-hidden cursor-pointer border-2 transition-all flex items-center justify-center h-24 ${
+                      selectedImage === index
+                        ? 'border-primary'
+                        : 'border-transparent hover:border-muted-foreground/20'
                     }`}
                   >
-                    <img 
-                      src={image} 
+                    <img
+                      src={image}
                       alt={`${product.name} ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      className="max-h-full max-w-full object-contain"
                     />
                   </div>
                 ))}
@@ -357,12 +361,12 @@ const ProductDetail = () => {
                   onClick={() => navigate(`/product/${relatedProduct.slug}`)}
                 >
                   <CardContent className="p-4">
-                    <div className="aspect-square bg-muted rounded-lg mb-3 overflow-hidden">
+                    <div className="bg-muted rounded-lg mb-3 overflow-hidden flex items-center justify-center h-32">
                       {relatedProduct.images && relatedProduct.images.length > 0 ? (
                         <img 
                           src={relatedProduct.images[0]} 
                           alt={relatedProduct.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                          className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform"
                         />
                       ) : (
                         <span className="text-4xl">📦</span>
