@@ -102,7 +102,7 @@ const Index = () => {
       {!loadingProducts && !loadingCategories && <BestSellersSection products={bestSellersProducts} onAddToCart={handleAddToCart} />}
 
       {/* Trending Products Section */}
-      {!loadingProducts && <TrendingProducts products={transformedProducts.slice(0, 8)} onAddToCart={handleAddToCart} />}
+      {!loadingProducts}
 
       {/* Why Switch Section */}
       <WhySwitchSection />
