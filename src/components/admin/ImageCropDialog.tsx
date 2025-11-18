@@ -36,9 +36,9 @@ const ImageCropDialog = ({
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [showGrid, setShowGrid] = useState(true);
 
-  // Ratio du cadre produit (aspect ratio du ProductCard)
-  // Le cadre fait h-32 (128px) et la largeur est flexible, donc on utilise 1:1 par défaut
-  const PRODUCT_FRAME_ASPECT = 1;
+  // Ratio libre pour permettre un recadrage portrait/paysage selon l'image
+  // undefined = crop libre, ou 3/4 pour un format portrait standard
+  const PRODUCT_FRAME_ASPECT = undefined; // Crop libre
 
   const onCropCompleteCallback = useCallback(
     (_croppedArea: Area, croppedAreaPixels: Area) => {
@@ -161,8 +161,7 @@ const ImageCropDialog = ({
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Grid3x3 className="w-4 h-4" />
             <p>
-              La grille représente les proportions du cadre produit sur votre site
-              (format carré 1:1)
+              Recadrage libre - ajustez la zone pour inclure tous les éléments importants de votre image
             </p>
           </div>
         </div>
