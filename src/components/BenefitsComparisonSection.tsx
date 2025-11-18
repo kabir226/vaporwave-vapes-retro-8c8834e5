@@ -135,13 +135,13 @@ const BenefitsComparisonSection: React.FC = () => {
 
           <div className="text-center max-w-4xl mx-auto">
             <h3 className="text-xl md:text-2xl font-bold mb-4">
-              Variety of Strengths and Flavours
+              Variété de forces et de saveurs
             </h3>
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-              Available in a range of nicotine strengths and flavours, nicotine pouches allow you to customise your 
-              experience to suit your preferences. Whether you're new to nicotine or an experienced user, you can choose 
-              the strength that's right for you. Flavour options like mint, citrus, and berry add an enjoyable twist to the 
-              experience.
+              Disponibles dans une gamme de forces de nicotine et de saveurs, les sachets de nicotine vous permettent de personnaliser votre 
+              expérience selon vos préférences. Que vous soyez novice en nicotine ou utilisateur expérimenté, vous pouvez choisir 
+              la force qui vous convient. Les options de saveurs comme la menthe, les agrumes et les baies ajoutent une touche agréable à 
+              l'expérience.
             </p>
           </div>
         </div>
