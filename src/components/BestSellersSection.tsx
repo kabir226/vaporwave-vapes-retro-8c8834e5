@@ -33,24 +33,33 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
   const settings = getSetting('bestsellers');
 
   return (
-    <section className="w-full py-12 px-4">
+    <section className="w-full py-12 px-4 bg-black">
       <div className="max-w-7xl mx-auto">
         {settings?.image_url && (
           <div className="mb-8 rounded-2xl overflow-hidden">
             <img 
               src={settings.image_url} 
-              alt={settings.title || 'Best Sellers'} 
+              alt={settings.title || 'Produits Tendance'} 
               className="w-full aspect-[16/9] object-cover"
             />
           </div>
         )}
         
-        <h2 className="text-3xl md:text-4xl font-black text-center text-foreground mb-8">
-          {settings?.title || 'MEILLEURES VENTES'}
+        {/* Badge Tendances */}
+        <div className="flex justify-center mb-6">
+          <div className="border-2 border-[#FF8C00] rounded-full px-6 py-2">
+            <span className="text-[#FF8C00] font-semibold tracking-wider">Tendances</span>
+          </div>
+        </div>
+        
+        {/* Titre avec dégradé */}
+        <h2 className="text-4xl md:text-6xl font-black text-center mb-4 bg-gradient-to-r from-[#FF0000] via-[#FF4500] to-[#FF8C00] bg-clip-text text-transparent tracking-tight">
+          {settings?.title || 'PRODUITS TENDANCE'}
         </h2>
-        {settings?.subtitle && (
-          <p className="text-center text-muted-foreground mb-6">{settings.subtitle}</p>
-        )}
+        
+        <p className="text-center text-gray-400 mb-8 text-lg">
+          {settings?.subtitle || 'Les produits les plus populaires du moment'}
+        </p>
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {products.map((product) => {
