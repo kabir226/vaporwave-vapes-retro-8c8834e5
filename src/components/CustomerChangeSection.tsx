@@ -44,9 +44,7 @@ const CustomerChangeSection: React.FC = () => {
                         <video
                           src={testimonial.image_url}
                           className="w-full h-full object-cover"
-                          autoPlay
-                          loop
-                          muted
+                          controls
                           playsInline
                         />
                       ) : (
