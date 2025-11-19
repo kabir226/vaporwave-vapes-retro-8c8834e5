@@ -40,11 +40,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
       <CardContent className="p-4">
         <div className="relative h-32 mb-3 flex items-center justify-center">
           {product.images && product.images.length > 0 ? (
-            <img 
-              src={product.images[0]} 
-              alt={product.name}
-              className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300"
-            />
+            product.images[0].match(/\.(mp4|webm|ogg|mov)$/i) ? (
+              <video 
+                src={product.images[0]} 
+                className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <img 
+                src={product.images[0]} 
+                alt={product.name}
+                className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300"
+              />
+            )
           ) : (
             <span className="text-5xl scale-110 group-hover:scale-125 transition-transform duration-300">
               📦

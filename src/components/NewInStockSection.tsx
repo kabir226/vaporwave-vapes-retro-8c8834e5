@@ -48,10 +48,29 @@ const NewInStockSection: React.FC = () => {
                   <div className="relative cursor-pointer">
                     <div className="flex items-center justify-center mb-4">
                       <div className="bg-muted rounded-2xl overflow-hidden w-full aspect-square flex items-center justify-center">
-                        {product.image_url ? <img src={product.image_url} alt={product.name || 'Nouveau produit'} className="w-full h-full object-cover" /> : <div className="text-center p-8">
+                        {product.image_url ? (
+                          product.image_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                            <video 
+                              src={product.image_url} 
+                              className="w-full h-full object-cover"
+                              autoPlay
+                              loop
+                              muted
+                              playsInline
+                            />
+                          ) : (
+                            <img 
+                              src={product.image_url} 
+                              alt={product.name || 'Nouveau produit'} 
+                              className="w-full h-full object-cover" 
+                            />
+                          )
+                        ) : (
+                          <div className="text-center p-8">
                             <p className="text-lg text-muted-foreground mb-4">Image du produit</p>
                             <p className="text-sm text-muted-foreground">{product.name}</p>
-                          </div>}
+                          </div>
+                        )}
                       </div>
                     </div>
 
