@@ -76,11 +76,22 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
                 {/* Product Display Area */}
                 <div className="relative h-32 mb-3 flex items-center justify-center">
                   {typeof product.image === 'string' && product.image.startsWith('http') ? (
-                    <img 
-                      src={product.image} 
-                      alt={product.name}
-                      className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300"
-                    />
+                    product.image.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                      <video 
+                        src={product.image} 
+                        className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                      />
+                    ) : (
+                      <img 
+                        src={product.image} 
+                        alt={product.name}
+                        className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300"
+                      />
+                    )
                   ) : (
                     <span className="text-5xl scale-110 group-hover:scale-125 transition-transform duration-300">
                       {product.image || '📦'}
