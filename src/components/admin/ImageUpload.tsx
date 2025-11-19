@@ -73,11 +73,19 @@ const ImageUpload = ({ images, onImagesChange, productId }: ImageUploadProps) =>
       const fileName = `${timestamp}-${originalFileName.replace(/[^a-zA-Z0-9.]/g, "-")}`;
       const filePath = `${productId || "temp"}/${fileName}`;
 
+      // Déterminer le content type
+      let contentType = "image/jpeg";
+      if (blob.type) {
+        contentType = blob.type;
+      } else if (originalFileName.match(/\.(mp4|webm|ogg|mov)$/i)) {
+        contentType = "video/mp4";
+      }
+
       // Upload vers Supabase Storage
       const { error: uploadError, data } = await supabase.storage
         .from("product-images")
         .upload(filePath, blob, {
-          contentType: "image/jpeg",
+          contentType,
           upsert: false,
         });
 
@@ -98,17 +106,41 @@ const ImageUpload = ({ images, onImagesChange, productId }: ImageUploadProps) =>
   const handleFiles = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
-    const file = files[0]; // On prend la première image pour le crop
-    if (!file.type.startsWith("image/")) {
+    const file = files[0];
+    
+    // Vérifier si c'est une image ou vidéo
+    if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
       toast({
         title: "Erreur",
-        description: `${file.name} n'est pas une image`,
+        description: `${file.name} n'est ni une image ni une vidéo`,
         variant: "destructive",
       });
       return;
     }
 
-    // Créer une URL temporaire pour l'image
+    // Si c'est une vidéo, upload direct sans recadrage
+    if (file.type.startsWith("video/")) {
+      setUploading(true);
+      try {
+        const imageUrl = await uploadImage(file, file.name);
+        onImagesChange([...images, imageUrl]);
+        toast({
+          title: "Succès",
+          description: "Vidéo uploadée avec succès",
+        });
+      } catch (error: any) {
+        toast({
+          title: "Erreur",
+          description: error.message,
+          variant: "destructive",
+        });
+      } finally {
+        setUploading(false);
+      }
+      return;
+    }
+
+    // Pour les images, ouvrir le crop dialog
     const reader = new FileReader();
     reader.onload = (e) => {
       setCurrentImageSrc(e.target?.result as string);
@@ -206,14 +238,14 @@ const ImageUpload = ({ images, onImagesChange, productId }: ImageUploadProps) =>
           ref={fileInputRef}
           type="file"
           multiple
-          accept="image/*"
+          accept="image/*,video/*"
           onChange={(e) => handleFiles(e.target.files)}
           className="hidden"
         />
 
         <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
         <p className="text-sm text-muted-foreground mb-2">
-          Glissez-déposez vos images ici ou
+          Glissez-déposez vos images/vidéos ici ou
         </p>
         <Button
           type="button"
@@ -227,34 +259,45 @@ const ImageUpload = ({ images, onImagesChange, productId }: ImageUploadProps) =>
               Upload en cours...
             </>
           ) : (
-            "Sélectionner des images"
+            "Sélectionner des fichiers"
           )}
         </Button>
         <p className="text-xs text-muted-foreground mt-2">
-          Images compressées automatiquement
+          Images compressées automatiquement, vidéos uploadées en format original
         </p>
       </div>
 
       {images.length > 0 && (
         <div className="grid grid-cols-3 gap-4">
-          {images.map((imageUrl, index) => (
-            <div key={index} className="relative group bg-muted rounded-lg overflow-hidden flex items-center justify-center h-32">
-              <img
-                src={imageUrl}
-                alt={`Produit ${index + 1}`}
-                className="max-h-full max-w-full object-contain"
-              />
-              <Button
-                type="button"
-                variant="destructive"
-                size="icon"
-                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                onClick={() => handleRemoveImage(imageUrl, index)}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-          ))}
+          {images.map((imageUrl, index) => {
+            const isVideo = imageUrl.match(/\.(mp4|webm|ogg|mov)$/i);
+            return (
+              <div key={index} className="relative group bg-muted rounded-lg overflow-hidden flex items-center justify-center h-32">
+                {isVideo ? (
+                  <video
+                    src={imageUrl}
+                    className="max-h-full max-w-full object-contain"
+                    controls
+                  />
+                ) : (
+                  <img
+                    src={imageUrl}
+                    alt={`Produit ${index + 1}`}
+                    className="max-h-full max-w-full object-contain"
+                  />
+                )}
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="icon"
+                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={() => handleRemoveImage(imageUrl, index)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            );
+          })}
         </div>
       )}
 
