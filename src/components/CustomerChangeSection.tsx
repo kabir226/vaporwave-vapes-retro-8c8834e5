@@ -39,7 +39,26 @@ const CustomerChangeSection: React.FC = () => {
             {settings?.settings?.testimonials?.map((testimonial: any, index: number) => <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                 <Card className="p-6 bg-background h-full">
                   <div className="mb-4 rounded-lg overflow-hidden aspect-[4/3] bg-muted flex items-center justify-center">
-                    {testimonial.image_url ? <img src={testimonial.image_url} alt={`${testimonial.author} testimonial`} className="w-full h-full object-cover" /> : <p className="text-sm text-muted-foreground">Photo du client</p>}
+                    {testimonial.image_url ? (
+                      testimonial.image_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                        <video
+                          src={testimonial.image_url}
+                          className="w-full h-full object-cover"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                        />
+                      ) : (
+                        <img
+                          src={testimonial.image_url}
+                          alt={`${testimonial.author} testimonial`}
+                          className="w-full h-full object-cover"
+                        />
+                      )
+                    ) : (
+                      <p className="text-sm text-muted-foreground">Photo du client</p>
+                    )}
                   </div>
                   <p className="text-sm text-muted-foreground italic mb-4">
                     "{testimonial.text}"
