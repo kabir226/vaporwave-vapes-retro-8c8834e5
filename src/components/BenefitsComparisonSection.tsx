@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart3, Smile, Droplet, Ban, Cigarette, Clock } from 'lucide-react';
-import BenefitPreviewDialog from './BenefitPreviewDialog';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 
 interface Benefit {
@@ -13,7 +12,7 @@ interface Benefit {
 }
 
 const BenefitsComparisonSection: React.FC = () => {
-  const [selectedBenefit, setSelectedBenefit] = useState<Benefit | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const { settings } = useHomepageSettings();
   const [benefits, setBenefits] = useState<Benefit[]>([]);
 
@@ -75,56 +74,73 @@ const BenefitsComparisonSection: React.FC = () => {
     setBenefits(updatedBenefits);
   }, [settings]);
 
+  // Autoplay carousel every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % benefits.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [benefits.length]);
+
   const mainSettings = settings.find(s => s.section_name === 'benefits_comparison');
+  const activeBenefit = benefits[activeIndex];
+
+  if (benefits.length === 0) return null;
 
   return (
-    <>
-      <section className="w-full py-16 px-4 bg-card">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-            {mainSettings?.title || 'Les avantages des sachets de nicotine par rapport au tabagisme'}
-          </h2>
+    <section className="w-full py-16 px-4 bg-card">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+          {mainSettings?.title || 'Les avantages des sachets de nicotine par rapport au tabagisme'}
+        </h2>
 
-          <div className="mb-12 rounded-2xl overflow-hidden">
-            {mainSettings?.image_url ? (
+        {/* Carousel Card */}
+        <div className="bg-muted/30 rounded-3xl overflow-hidden">
+          {/* Top: Main Image */}
+          <div className="relative w-full aspect-[16/9] overflow-hidden">
+            {activeBenefit?.imageUrl ? (
               <img 
-                src={mainSettings.image_url} 
-                alt={mainSettings.title || 'Benefits'} 
-                className="w-full aspect-[16/9] object-cover"
+                key={activeIndex}
+                src={activeBenefit.imageUrl} 
+                alt={activeBenefit.previewTitle} 
+                className="w-full h-full object-cover animate-fade-in"
               />
             ) : (
-              <div className="bg-muted aspect-[16/9] flex items-center justify-center">
-                <div className="text-center p-8">
-                  <p className="text-lg text-muted-foreground">Image placeholder - Nicotine pouches in hand</p>
-                </div>
+              <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center animate-fade-in">
+                <p className="text-muted-foreground text-center px-8">Image placeholder</p>
               </div>
             )}
           </div>
 
-          {/* Benefits row with rounded background */}
-          <div className="mb-12 flex justify-center">
-            <div className="inline-flex items-center gap-4 md:gap-6 px-6 md:px-8 py-6 bg-muted/50 rounded-full">
+          {/* Middle: Navigation Icons */}
+          <div className="py-8 px-4 flex justify-center">
+            <div className="inline-flex items-center gap-4 md:gap-6 px-6 md:px-8 py-4 bg-background/50 rounded-full backdrop-blur-sm">
               {benefits.map((benefit, index) => {
                 const Icon = benefit.icon;
+                const isActive = index === activeIndex;
                 return (
                   <button
                     key={index}
-                    onClick={() => setSelectedBenefit(benefit)}
+                    onClick={() => setActiveIndex(index)}
                     className="group cursor-pointer"
                   >
                     <div className="relative">
-                      {/* Sound wave animations */}
-                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0s' }} />
-                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.4s' }} />
-                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.8s' }} />
-                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.2s' }} />
-                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '1.6s' }} />
+                      {/* Active indicator with sound waves */}
+                      {isActive && (
+                        <>
+                          <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0s' }} />
+                          <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.4s' }} />
+                          <div className="absolute inset-0 rounded-full bg-primary/30 animate-sound-wave" style={{ animationDelay: '0.8s' }} />
+                        </>
+                      )}
                       
-                      {/* Icon circle with conditional border */}
-                      <div className={`relative w-12 h-12 md:w-16 md:h-16 rounded-full bg-background flex items-center justify-center shadow-md transition-all group-hover:scale-110 ${
-                        index === 0 ? 'ring-3 ring-primary ring-offset-2 ring-offset-muted/50' : ''
+                      {/* Icon circle */}
+                      <div className={`relative w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all duration-300 ${
+                        isActive 
+                          ? 'bg-primary text-primary-foreground scale-110' 
+                          : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:scale-105'
                       }`}>
-                        <Icon className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
+                        <Icon className="w-5 h-5 md:w-6 md:h-6" />
                       </div>
                     </div>
                   </button>
@@ -133,32 +149,24 @@ const BenefitsComparisonSection: React.FC = () => {
             </div>
           </div>
 
-          <div className="text-center max-w-4xl mx-auto">
-            <h3 className="text-xl md:text-2xl font-bold mb-4">
-              Variété de forces et de saveurs
+          {/* Bottom: Title and Description */}
+          <div className="px-6 md:px-12 pb-12 text-center">
+            <h3 
+              key={`title-${activeIndex}`}
+              className="text-2xl md:text-3xl font-bold mb-4 animate-fade-in"
+            >
+              {activeBenefit?.previewTitle}
             </h3>
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-              Disponibles dans une gamme de forces de nicotine et de saveurs, les sachets de nicotine vous permettent de personnaliser votre 
-              expérience selon vos préférences. Que vous soyez novice en nicotine ou utilisateur expérimenté, vous pouvez choisir 
-              la force qui vous convient. Les options de saveurs comme la menthe, les agrumes et les baies ajoutent une touche agréable à 
-              l'expérience.
+            <p 
+              key={`desc-${activeIndex}`}
+              className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto animate-fade-in"
+            >
+              {activeBenefit?.previewDescription}
             </p>
           </div>
         </div>
-      </section>
-
-      {/* Preview Dialog */}
-      {selectedBenefit && (
-        <BenefitPreviewDialog
-          isOpen={!!selectedBenefit}
-          onClose={() => setSelectedBenefit(null)}
-          title={selectedBenefit.previewTitle}
-          description={selectedBenefit.previewDescription}
-          imageUrl={selectedBenefit.imageUrl}
-          imagePlaceholder="Lifestyle image placeholder"
-        />
-      )}
-    </>
+      </div>
+    </section>
   );
 };
 
