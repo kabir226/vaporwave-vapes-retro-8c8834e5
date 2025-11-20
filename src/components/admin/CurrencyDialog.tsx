@@ -7,6 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { currencySchema } from "@/lib/validations/product";
 
 interface Currency {
   id: string;
@@ -59,8 +60,21 @@ const CurrencyDialog = ({ open, currency, onClose }: CurrencyDialogProps) => {
     setLoading(true);
 
     try {
+      // Validate input data
+      const validatedData = currencySchema.parse({
+        code: formData.code,
+        name: formData.name,
+        symbol: formData.symbol,
+        exchange_rate: formData.exchange_rate,
+      });
+      
+      const dataToSubmit = {
+        ...validatedData,
+        is_default: formData.is_default,
+      };
+      
       // Si is_default est true, retirer le flag des autres devises
-      if (formData.is_default) {
+      if (dataToSubmit.is_default) {
         await (supabase as any)
           .from("currencies")
           .update({ is_default: false })
@@ -70,7 +84,7 @@ const CurrencyDialog = ({ open, currency, onClose }: CurrencyDialogProps) => {
       if (currency) {
         const { error } = await (supabase as any)
           .from("currencies")
-          .update(formData)
+          .update(dataToSubmit)
           .eq("id", currency.id);
 
         if (error) throw error;
@@ -82,7 +96,7 @@ const CurrencyDialog = ({ open, currency, onClose }: CurrencyDialogProps) => {
       } else {
         const { error } = await (supabase as any)
           .from("currencies")
-          .insert([formData]);
+          .insert([dataToSubmit]);
 
         if (error) throw error;
 
