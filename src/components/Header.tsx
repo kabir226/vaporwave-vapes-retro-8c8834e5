@@ -39,9 +39,6 @@ const Header: React.FC<HeaderProps> = ({
   }, {
     href: '/contact',
     label: 'Contact'
-  }, {
-    href: '/auth',
-    label: 'Admin'
   }];
   const isActive = (path: string) => location.pathname === path;
   return <>
