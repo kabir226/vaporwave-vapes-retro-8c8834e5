@@ -42,17 +42,16 @@ const Header: React.FC<HeaderProps> = ({
   }];
   const isActive = (path: string) => location.pathname === path;
   return <>
-    <header className="sticky top-0 w-full z-50 bg-background/95 backdrop-blur-xl border-b border-border">
-      <div className="container mx-auto px-4">
-        <div className="h-16 flex items-center justify-between">
+    <header className="sticky top-0 w-full z-50 bg-background/95 backdrop-blur-xl border-b border-border overflow-x-hidden">
+      <div className="container mx-auto px-4 max-w-full">
+        <div className="h-16 flex items-center justify-between max-w-full">
           {/* Left: Menu Button */}
           <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(true)}>
             <Menu className="w-5 h-5" />
           </Button>
 
           {/* Center: Logo/Brand Name */}
-          <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 group">
-            
+          <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 group whitespace-nowrap">
             <span className="text-xl font-black text-cyber">
               SNUSPEDIA
             </span>
