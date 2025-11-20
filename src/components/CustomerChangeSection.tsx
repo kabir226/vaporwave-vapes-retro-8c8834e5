@@ -35,10 +35,11 @@ const CustomerChangeSection: React.FC = () => {
           </div>}
 
         <Carousel className="w-full max-w-5xl mx-auto">
-          <CarouselContent>
-            {settings?.settings?.testimonials?.map((testimonial: any, index: number) => <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                <Card className="p-6 bg-background h-full">
-                  <div className="mb-4 rounded-lg overflow-hidden aspect-[4/3] bg-muted flex items-center justify-center">
+          <CarouselContent className="gap-4">
+            {settings?.settings?.testimonials?.map((testimonial: any, index: number) => <CarouselItem key={index} className="basis-[85%] md:basis-1/2 lg:basis-1/3">
+                <div className="flex flex-col gap-4 h-full">
+                  {/* Image Section */}
+                  <div className="rounded-2xl overflow-hidden aspect-[4/3] bg-muted flex items-center justify-center">
                     {testimonial.image_url ? (
                       testimonial.image_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
                         <video
@@ -58,11 +59,21 @@ const CustomerChangeSection: React.FC = () => {
                       <p className="text-sm text-muted-foreground">Photo du client</p>
                     )}
                   </div>
-                  <p className="text-sm text-muted-foreground italic mb-4">
-                    "{testimonial.text}"
-                  </p>
-                  <p className="font-semibold text-right text-foreground">{testimonial.author}</p>
-                </Card>
+                  
+                  {/* Text Section with Speech Bubble Effect */}
+                  <div className="relative">
+                    {/* Triangle Arrow pointing up */}
+                    <div className="absolute -top-3 left-8 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[12px] border-b-neutral-800"></div>
+                    
+                    {/* Text Card */}
+                    <Card className="bg-neutral-800 border-neutral-700 p-6">
+                      <p className="text-sm text-muted-foreground italic mb-4">
+                        "{testimonial.text}"
+                      </p>
+                      <p className="font-semibold text-right text-foreground">{testimonial.author}</p>
+                    </Card>
+                  </div>
+                </div>
               </CarouselItem>)}
           </CarouselContent>
           <CarouselPrevious />
