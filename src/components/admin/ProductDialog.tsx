@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { Product } from "./ProductList";
 import ImageUpload from "./ImageUpload";
+import { productSchema } from "@/lib/validations/product";
 
 interface ProductDialogProps {
   open: boolean;
@@ -99,20 +100,26 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
 
     try {
       const slug = formData.slug || generateSlug(formData.name);
-      const dataToSave: any = {
+      
+      // Validate input data
+      const validatedData = productSchema.parse({
         name: formData.name,
-        description: formData.description || null,
+        description: formData.description || undefined,
         price: parseFloat(formData.price),
-        stock: parseInt(formData.stock),
+        stock: parseInt(formData.stock) || 0,
         slug,
-        in_stock: parseInt(formData.stock) > 0,
         strength: formData.strength || null,
         category_id: formData.category_id || null,
         currency_code: formData.currency_code,
-        images: formData.images,
         specifications: formData.specifications || null,
         ingredients: formData.ingredients || null,
         usage_instructions: formData.usage_instructions || null,
+      });
+      
+      const dataToSave: any = {
+        ...validatedData,
+        in_stock: validatedData.stock! > 0,
+        images: formData.images,
       };
 
       if (product) {

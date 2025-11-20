@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { Category } from "./CategoryList";
+import { categorySchema } from "@/lib/validations/product";
 
 interface CategoryDialogProps {
   open: boolean;
@@ -56,10 +57,20 @@ const CategoryDialog = ({ open, category, onClose }: CategoryDialogProps) => {
 
     try {
       const slug = formData.slug || generateSlug(formData.name);
-      const dataToSave = {
-        ...formData,
+      
+      // Validate input data
+      const validatedData = categorySchema.parse({
+        name: formData.name,
+        description: formData.description || undefined,
         slug,
-        display_order: parseInt(formData.display_order),
+        display_order: parseInt(formData.display_order) || 0,
+      });
+      
+      const dataToSave = {
+        name: validatedData.name,
+        slug: validatedData.slug,
+        description: validatedData.description || null,
+        display_order: validatedData.display_order || 0,
       };
 
       if (category) {
@@ -69,7 +80,7 @@ const CategoryDialog = ({ open, category, onClose }: CategoryDialogProps) => {
           .eq("id", category.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("categories").insert(dataToSave);
+        const { error } = await supabase.from("categories").insert([dataToSave]);
         if (error) throw error;
       }
 

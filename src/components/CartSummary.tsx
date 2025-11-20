@@ -32,13 +32,17 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onUpdateQuantity, onRem
   const finalTotal = total + shippingCost;
 
   const createWhatsAppMessage = () => {
-    const productList = cart.map(item => 
-      `• ${item.name} x${item.quantity} - ${(item.price * item.quantity).toFixed(2)}${currencySymbol}`
-    ).join('%0A');
+    // Properly encode each product name to prevent URL injection
+    const productList = cart.map(item => {
+      const safeName = encodeURIComponent((item.name || 'Product').substring(0, 100));
+      const safePrice = (item.price * item.quantity).toFixed(2);
+      return `• ${safeName} x${item.quantity} - ${safePrice}${currencySymbol}`;
+    }).join('%0A');
     
-    const message = `Bonjour! Je souhaite commander:%0A%0A${productList}%0A%0ASous-total: ${total.toFixed(2)}${currencySymbol}%0ALivraison: ${shippingCost.toFixed(2)}${currencySymbol}%0ATotal: ${finalTotal.toFixed(2)}${currencySymbol}`;
+    // Build the complete message with proper encoding
+    const messageText = `Bonjour! Je souhaite commander:\n\n${decodeURIComponent(productList)}\n\nSous-total: ${total.toFixed(2)}${currencySymbol}\nLivraison: ${shippingCost.toFixed(2)}${currencySymbol}\nTotal: ${finalTotal.toFixed(2)}${currencySymbol}`;
     
-    return `https://wa.me/message/VU57PC3IDGREF1?text=${message}`;
+    return `https://wa.me/message/VU57PC3IDGREF1?text=${encodeURIComponent(messageText)}`;
   };
 
   if (cart.length === 0) {
