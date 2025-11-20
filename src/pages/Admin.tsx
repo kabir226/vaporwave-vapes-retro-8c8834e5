@@ -42,12 +42,8 @@ const Admin = () => {
 
       if (roleError || !roleData) {
         console.error("Role check error:", roleError);
-        toast({
-          title: "Accès refusé",
-          description: "Vous n'avez pas les permissions d'administrateur.",
-          variant: "destructive",
-        });
-        navigate("/");
+        setIsAdmin(false);
+        setLoading(false);
         return;
       }
 
@@ -75,7 +71,27 @@ const Admin = () => {
   }
 
   if (!isAdmin) {
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
+        <div className="max-w-md w-full text-center space-y-6">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold text-destructive">Accès refusé</h1>
+            <p className="text-muted-foreground">
+              Vous n'avez pas les permissions d'administrateur.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3">
+            <Button onClick={handleSignOut} variant="default" size="lg">
+              <LogOut className="mr-2 h-4 w-4" />
+              Se déconnecter et changer de compte
+            </Button>
+            <Button onClick={() => navigate("/")} variant="outline">
+              Retour à l'accueil
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
