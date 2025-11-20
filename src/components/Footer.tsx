@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { AlertTriangle, Shield, Info } from 'lucide-react';
+import { Link } from 'react-router-dom';
 const Footer: React.FC = () => {
   const legalLinks = ['Mentions légales', 'Conditions générales', 'Politique de confidentialité', 'Conformité Tobacco 18', 'Contact'];
   const warnings = ["Les substituts nicotiniques sont strictement interdits aux personnes de moins de 18 ans", "Nos produits contiennent de la nicotine, une substance hautement addictive", "Évitez-les si vous n'êtes pas fumeur"];
@@ -43,9 +44,13 @@ const Footer: React.FC = () => {
 
         {/* Copyright */}
         <div className="text-center">
-          <p className="text-sm text-muted-foreground">© 2025 SNUSPEDIA. Tous droits réservés.Site réservé aux personnes majeures de 18 ans et plus • Vente interdite aux mineurs<br />
+          <p className="text-sm text-muted-foreground">
+            © 2025 SNUSPEDIA. Tous droits réservés.<br />
             <span className="text-xs">
               Site réservé aux personnes majeures de 18 ans et plus • Vente interdite aux mineurs
+            </span>
+            <span className="text-xs opacity-30 ml-4">
+              <Link to="/auth" className="hover:opacity-100 transition-opacity">·</Link>
             </span>
           </p>
         </div>
