@@ -23,23 +23,49 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      const {
-        error
-      } = await supabase.auth.signInWithPassword({
-        email: formData.name,
-        password: formData.email
-      });
-      if (error) throw error;
+    
+    // Validate form data
+    if (!formData.name.trim() || !formData.email.trim() || !formData.subject || !formData.message.trim()) {
       toast({
-        title: "Connexion réussie",
-        description: "Bienvenue dans l'administration"
+        title: "Erreur",
+        description: "Veuillez remplir tous les champs requis",
+        variant: "destructive"
       });
-      navigate('/admin');
+      setLoading(false);
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez entrer une adresse email valide",
+        variant: "destructive"
+      });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // Here you would normally send the contact form to your backend
+      // For now, we'll just show a success message
+      toast({
+        title: "Message envoyé",
+        description: "Nous vous répondrons dans les plus brefs délais"
+      });
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
     } catch (error: any) {
       toast({
-        title: "Erreur de connexion",
-        description: error.message,
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'envoi du message",
         variant: "destructive"
       });
     } finally {
@@ -109,8 +135,8 @@ const Contact = () => {
                       <input type="text" name="name" required value={formData.name} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium mb-2">mail *</label>
-                      <input type="password" name="email" required value={formData.email} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent" />
+                      <label className="block text-sm font-medium mb-2">Email *</label>
+                      <input type="email" name="email" required value={formData.email} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary focus:border-transparent" />
                     </div>
                   </div>
                   
@@ -136,7 +162,7 @@ const Contact = () => {
                   
                   <Button type="submit" className="w-full py-3 text-base font-semibold" disabled={loading}>
                     <Send className="w-4 h-4 mr-2" />
-                    {loading ? "Connexion..." : "Se connecter"}
+                    {loading ? "Envoi..." : "Envoyer le message"}
                   </Button>
                 </form>
               </CardContent>
