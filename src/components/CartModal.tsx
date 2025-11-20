@@ -21,7 +21,7 @@ const CartModal: React.FC<CartModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-      <div className="relative animate-scale-in">
+      <div className="relative animate-scale-in max-w-md w-full">
         <button
           onClick={onClose}
           className="absolute -top-2 -right-2 z-10 bg-background border rounded-full w-8 h-8 flex items-center justify-center hover:bg-muted transition-colors shadow-lg"
