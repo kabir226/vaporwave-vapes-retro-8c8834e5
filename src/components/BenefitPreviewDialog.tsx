@@ -25,7 +25,7 @@ const BenefitPreviewDialog: React.FC<BenefitPreviewDialogProps> = ({
         
         <div className="relative">
           <div className="aspect-[3/4] bg-muted flex items-center justify-center overflow-hidden">
-            {imageUrl ? <img src={imageUrl} alt={title} className="w-full h-full object-scale-down" /> : imagePlaceholder ? <p className="text-muted-foreground text-center px-8">{imagePlaceholder}</p> : <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20" />}
+            {imageUrl ? <img src={imageUrl} alt={title} className="w-full h-full object-cover" /> : imagePlaceholder ? <p className="text-muted-foreground text-center px-8">{imagePlaceholder}</p> : <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20" />}
           </div>
           
           <div className="p-8">
