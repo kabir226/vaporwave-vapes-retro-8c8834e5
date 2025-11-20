@@ -18,7 +18,7 @@ const BenefitPreviewDialog: React.FC<BenefitPreviewDialogProps> = ({
   imagePlaceholder
 }) => {
   return <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm p-0 bg-card border-border rounded-3xl overflow-hidden">
+      <DialogContent className="w-[85vw] max-w-[320px] sm:max-w-sm p-0 bg-card border-border rounded-3xl overflow-hidden">
         <button onClick={onClose} className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors" aria-label="Close">
           <X className="w-6 h-6 text-foreground" />
         </button>
