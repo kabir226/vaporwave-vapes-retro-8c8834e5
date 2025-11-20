@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, Home } from "lucide-react";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -237,6 +237,16 @@ const Auth = () => {
               </form>
             </TabsContent>
           </Tabs>
+          <div className="mt-4 pt-4 border-t">
+            <Button 
+              variant="outline" 
+              className="w-full" 
+              onClick={() => navigate("/")}
+            >
+              <Home className="mr-2 h-4 w-4" />
+              Retour à l'accueil
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>
