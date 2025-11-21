@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 const WhatsAppButton = () => {
   return (
     <a
-      href="https://wa.me/message/VU57PC3IDGREF1"
+      href="whatsapp://send?phone=22605145905"
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 left-6 z-50"
