@@ -1,4 +1,5 @@
 // Utility functions for Meta Pixel tracking
+import { supabase } from "@/integrations/supabase/client";
 
 // Hash email using SHA-256
 export async function hashEmail(email: string): Promise<string> {
@@ -11,20 +12,13 @@ export async function hashEmail(email: string): Promise<string> {
   return hashHex;
 }
 
-// Track Purchase event
+// Track Purchase event (client-side + server-side)
 export async function trackPurchase(orderData: {
   value: number;
   currency?: string;
   orderId: string;
   email?: string;
 }) {
-  if (typeof window === 'undefined' || !(window as any).fbq) {
-    console.warn('Meta Pixel not loaded');
-    return;
-  }
-
-  const fbq = (window as any).fbq;
-  
   const purchaseData: any = {
     value: orderData.value,
     currency: orderData.currency || 'EUR',
@@ -32,21 +26,47 @@ export async function trackPurchase(orderData: {
   };
 
   const eventId = orderData.orderId;
+  let hashedEmail: string | undefined;
 
-  // Add hashed email if available
+  // Hash email if available
   if (orderData.email) {
-    const hashedEmail = await hashEmail(orderData.email);
-    fbq('track', 'Purchase', purchaseData, {
-      eventID: eventId,
-      em: hashedEmail,
-    });
-  } else {
-    fbq('track', 'Purchase', purchaseData, {
-      eventID: eventId,
-    });
+    hashedEmail = await hashEmail(orderData.email);
   }
 
-  console.log('Meta Pixel Purchase event tracked:', { eventId, ...purchaseData });
+  // Client-side tracking with Meta Pixel
+  if (typeof window !== 'undefined' && (window as any).fbq) {
+    const fbq = (window as any).fbq;
+    if (hashedEmail) {
+      fbq('track', 'Purchase', purchaseData, {
+        eventID: eventId,
+        em: hashedEmail,
+      });
+    } else {
+      fbq('track', 'Purchase', purchaseData, {
+        eventID: eventId,
+      });
+    }
+    console.log('Meta Pixel Purchase event tracked (client-side):', { eventId, ...purchaseData });
+  }
+
+  // Server-side tracking via Conversions API
+  try {
+    await supabase.functions.invoke('track-meta-event', {
+      body: {
+        eventName: 'Purchase',
+        eventData: {
+          ...purchaseData,
+          ...(hashedEmail && { em: hashedEmail }),
+        },
+        eventId,
+        userAgent: navigator.userAgent,
+        sourceUrl: window.location.href,
+      },
+    });
+    console.log('Meta Conversions API event sent (server-side):', { eventId });
+  } catch (error) {
+    console.error('Failed to send server-side Meta event:', error);
+  }
 }
 
 // Track AddToCart event
