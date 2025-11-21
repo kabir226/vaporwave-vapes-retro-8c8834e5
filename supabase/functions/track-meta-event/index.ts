@@ -37,7 +37,7 @@ serve(async (req) => {
         event_source_url: sourceUrl,
         user_data: {
           client_user_agent: userAgent,
-          ...(eventData.em && { em: eventData.em }),
+          ...(eventData.em && { em: [eventData.em] }), // Facebook expects array of hashed emails
         },
         custom_data: {
           currency: eventData.currency || 'EUR',
