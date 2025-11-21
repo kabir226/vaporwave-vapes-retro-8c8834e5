@@ -1,5 +1,11 @@
 import { z } from 'zod';
 
+export const pricingTierSchema = z.object({
+  quantity: z.number().int().min(1, "La quantité doit être au moins 1"),
+  price: z.number().min(0, "Le prix doit être positif"),
+  label: z.string().optional(),
+});
+
 export const productSchema = z.object({
   name: z.string()
     .trim()
@@ -26,6 +32,7 @@ export const productSchema = z.object({
   specifications: z.string().max(5000).optional().nullable(),
   ingredients: z.string().max(5000).optional().nullable(),
   usage_instructions: z.string().max(5000).optional().nullable(),
+  pricing_tiers: z.array(pricingTierSchema).optional().nullable(),
 });
 
 export const categorySchema = z.object({
@@ -65,6 +72,7 @@ export const currencySchema = z.object({
     .finite({ message: "Le taux de change doit être un nombre valide" }),
 });
 
+export type PricingTier = z.infer<typeof pricingTierSchema>;
 export type ProductFormData = z.infer<typeof productSchema>;
 export type CategoryFormData = z.infer<typeof categorySchema>;
 export type CurrencyFormData = z.infer<typeof currencySchema>;
