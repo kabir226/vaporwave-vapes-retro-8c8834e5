@@ -25,6 +25,8 @@ serve(async (req) => {
       );
     }
 
+    console.log('Received event:', { eventName, eventId, eventData });
+
     // Prepare the payload for Meta Conversions API
     const payload = {
       data: [{
@@ -35,7 +37,7 @@ serve(async (req) => {
         event_source_url: sourceUrl,
         user_data: {
           client_user_agent: userAgent,
-          ...(eventData.em && { em: eventData.em }), // Hashed email if provided
+          ...(eventData.em && { em: eventData.em }),
         },
         custom_data: {
           currency: eventData.currency || 'EUR',
@@ -47,11 +49,11 @@ serve(async (req) => {
       }],
     };
 
-    console.log('Sending event to Meta Conversions API:', { eventName, eventId });
+    console.log('Sending to Meta API:', JSON.stringify(payload, null, 2));
 
     // Send to Meta Conversions API
-    const response = await fetch(
-      `https://graph.facebook.com/v21.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`,
+    const metaResponse = await fetch(
+      `https://graph.facebook.com/v19.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`,
       {
         method: 'POST',
         headers: {
@@ -61,13 +63,14 @@ serve(async (req) => {
       }
     );
 
-    const result = await response.json();
+    const result = await metaResponse.json();
+    console.log('Meta API response:', result);
 
-    if (!response.ok) {
+    if (!metaResponse.ok) {
       console.error('Meta API error:', result);
       return new Response(
         JSON.stringify({ error: 'Failed to track event', details: result }),
-        { status: response.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: metaResponse.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 

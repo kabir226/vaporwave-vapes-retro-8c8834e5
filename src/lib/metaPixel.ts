@@ -25,7 +25,8 @@ export async function trackPurchase(orderData: {
     content_type: 'product',
   };
 
-  const eventId = orderData.orderId;
+  // Use orderId as eventId for deduplication
+  const eventId = `purchase_${orderData.orderId}`;
   let hashedEmail: string | undefined;
 
   // Hash email if available
@@ -33,25 +34,21 @@ export async function trackPurchase(orderData: {
     hashedEmail = await hashEmail(orderData.email);
   }
 
+  console.log('Tracking purchase with eventId:', eventId);
+
   // Client-side tracking with Meta Pixel
   if (typeof window !== 'undefined' && (window as any).fbq) {
     const fbq = (window as any).fbq;
-    if (hashedEmail) {
-      fbq('track', 'Purchase', purchaseData, {
-        eventID: eventId,
-        em: hashedEmail,
-      });
-    } else {
-      fbq('track', 'Purchase', purchaseData, {
-        eventID: eventId,
-      });
-    }
-    console.log('Meta Pixel Purchase event tracked (client-side):', { eventId, ...purchaseData });
+    fbq('track', 'Purchase', purchaseData, {
+      eventID: eventId,
+      ...(hashedEmail && { em: hashedEmail }),
+    });
+    console.log('Meta Pixel Purchase (Browser):', { eventId, ...purchaseData });
   }
 
   // Server-side tracking via Conversions API
   try {
-    await supabase.functions.invoke('track-meta-event', {
+    const response = await supabase.functions.invoke('track-meta-event', {
       body: {
         eventName: 'Purchase',
         eventData: {
@@ -63,7 +60,14 @@ export async function trackPurchase(orderData: {
         sourceUrl: window.location.href,
       },
     });
-    console.log('Meta Conversions API event sent (server-side):', { eventId });
+    
+    console.log('Meta Conversions API (Server) response:', response);
+    
+    if (response.error) {
+      console.error('Server-side tracking error:', response.error);
+    } else {
+      console.log('Meta Conversions API (Server) success:', response.data);
+    }
   } catch (error) {
     console.error('Failed to send server-side Meta event:', error);
   }
