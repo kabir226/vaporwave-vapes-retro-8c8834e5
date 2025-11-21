@@ -30,6 +30,7 @@ interface Product {
   specifications?: string | null;
   ingredients?: string | null;
   usage_instructions?: string | null;
+  pricing_tiers?: Array<{ quantity: number; price: number; label?: string }> | null;
 }
 
 const ProductDetail = () => {
@@ -44,6 +45,7 @@ const ProductDetail = () => {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<any[]>([]);
   const [showCart, setShowCart] = useState(false);
+  const [selectedTierIndex, setSelectedTierIndex] = useState<number | null>(null);
 
   // Currency info - moved here to use in handleBuyNow
   const currency = getCurrencyByCode((product as any)?.currency_code || 'EUR');
@@ -72,7 +74,14 @@ const ProductDetail = () => {
         .single();
 
       if (productError) throw productError;
-      setProduct(productData);
+      
+      // Cast pricing_tiers to the correct type
+      const typedProduct: Product = {
+        ...productData,
+        pricing_tiers: productData.pricing_tiers as Array<{ quantity: number; price: number; label?: string }> | null,
+      };
+      
+      setProduct(typedProduct);
 
       // Fetch related products from same category
       if (productData.category_id) {
@@ -83,7 +92,13 @@ const ProductDetail = () => {
           .neq('id', productData.id)
           .limit(4);
         
-        setRelatedProducts(relatedData || []);
+        if (relatedData) {
+          const typedRelatedProducts: Product[] = relatedData.map(p => ({
+            ...p,
+            pricing_tiers: p.pricing_tiers as Array<{ quantity: number; price: number; label?: string }> | null,
+          }));
+          setRelatedProducts(typedRelatedProducts);
+        }
       }
     } catch (err: any) {
       console.error('Error fetching product:', err);
@@ -130,18 +145,28 @@ const ProductDetail = () => {
   const handleBuyNow = () => {
     if (!product) return;
     
+    // Calculer le prix basé sur le palier sélectionné ou le prix par défaut
+    let finalPrice = product.price * quantity;
+    let finalQuantity = quantity;
+    
+    if (selectedTierIndex !== null && product.pricing_tiers && product.pricing_tiers[selectedTierIndex]) {
+      const tier = product.pricing_tiers[selectedTierIndex];
+      finalPrice = tier.price;
+      finalQuantity = tier.quantity;
+    }
+    
     // 1. Création ID unique
     const eventId = `wa-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
     
     // 2. Envoi Tracking (Pixel + Serveur)
     trackPurchase({
-      value: product.price * quantity,
+      value: finalPrice,
       currency: currencyCode || 'XOF',
       orderId: eventId
     });
 
     // 3. Ouverture WhatsApp
-    const message = `Bonjour, je suis intéressé par ${product.name} en quantité de ${quantity}.`;
+    const message = `Bonjour, je suis intéressé par ${product.name} en quantité de ${finalQuantity} au prix de ${currencySymbol}${finalPrice.toFixed(2)}.`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `whatsapp://send?phone=22605145905&text=${encodedMessage}`;
     
@@ -225,31 +250,88 @@ const ProductDetail = () => {
             </div>
 
             {/* Quantity Selector */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Quantity ({quantity} in cart)</label>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center border rounded-full">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="rounded-full"
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  >
-                    <Minus className="w-4 h-4" />
-                  </Button>
-                  <span className="w-12 text-center font-medium">{quantity}</span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="rounded-full"
-                    onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                    disabled={quantity >= product.stock}
-                  >
-                    <Plus className="w-4 h-4" />
-                  </Button>
+            {product.pricing_tiers && product.pricing_tiers.length > 0 ? (
+              <div className="space-y-3">
+                <label className="text-sm font-medium">Sélectionnez une quantité</label>
+                <div className="space-y-2">
+                  {product.pricing_tiers.map((tier, index) => {
+                    const unitPrice = tier.price / tier.quantity;
+                    const isSelected = selectedTierIndex === index;
+                    
+                    return (
+                      <div
+                        key={index}
+                        onClick={() => {
+                          setSelectedTierIndex(index);
+                          setQuantity(tier.quantity);
+                        }}
+                        className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                          isSelected
+                            ? 'border-primary bg-primary/5'
+                            : 'border-border hover:border-primary/50'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div
+                              className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                                isSelected ? 'border-primary' : 'border-border'
+                              }`}
+                            >
+                              {isSelected && (
+                                <div className="w-3 h-3 rounded-full bg-primary" />
+                              )}
+                            </div>
+                            <div>
+                              <div className="font-medium">
+                                {tier.quantity} {tier.quantity === 1 ? 'unité' : 'unités'}
+                                {tier.label && (
+                                  <span className="ml-2 text-sm text-muted-foreground">
+                                    {tier.label}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-sm text-muted-foreground">
+                                {currencySymbol}{unitPrice.toFixed(2)}/unité
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-xl font-bold text-primary">
+                            {currencySymbol}{tier.price.toFixed(2)}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Quantity ({quantity} in cart)</label>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center border rounded-full">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full"
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    >
+                      <Minus className="w-4 h-4" />
+                    </Button>
+                    <span className="w-12 text-center font-medium">{quantity}</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full"
+                      onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                      disabled={quantity >= product.stock}
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Action Buttons */}
             <div className="space-y-3">

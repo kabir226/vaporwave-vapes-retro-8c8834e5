@@ -216,6 +216,7 @@ export type Database = {
           ingredients: string | null
           name: string
           price: number
+          pricing_tiers: Json | null
           rating: number | null
           slug: string
           specifications: string | null
@@ -236,6 +237,7 @@ export type Database = {
           ingredients?: string | null
           name: string
           price: number
+          pricing_tiers?: Json | null
           rating?: number | null
           slug: string
           specifications?: string | null
@@ -256,6 +258,7 @@ export type Database = {
           ingredients?: string | null
           name?: string
           price?: number
+          pricing_tiers?: Json | null
           rating?: number | null
           slug?: string
           specifications?: string | null

@@ -36,6 +36,7 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
     specifications: "",
     ingredients: "",
     usage_instructions: "",
+    pricing_tiers: [] as Array<{ quantity: number; price: number; label?: string }>,
   });
 
   useEffect(() => {
@@ -58,6 +59,7 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
         specifications: (product as any).specifications || "",
         ingredients: (product as any).ingredients || "",
         usage_instructions: (product as any).usage_instructions || "",
+        pricing_tiers: (product as any).pricing_tiers || [],
       });
     } else {
       setFormData({
@@ -73,6 +75,7 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
         specifications: "",
         ingredients: "",
         usage_instructions: "",
+        pricing_tiers: [],
       });
     }
   }, [product]);
@@ -120,6 +123,7 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
         ...validatedData,
         in_stock: validatedData.stock! > 0,
         images: formData.images,
+        pricing_tiers: formData.pricing_tiers.length > 0 ? formData.pricing_tiers : null,
       };
 
       if (product) {
@@ -292,6 +296,98 @@ const ProductDialog = ({ open, product, onClose }: ProductDialogProps) => {
               onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
               placeholder="Généré automatiquement si vide"
             />
+          </div>
+
+          <div className="space-y-3 p-4 border rounded-lg bg-muted/30">
+            <div className="flex items-center justify-between">
+              <Label className="text-base font-semibold">Prix par quantité (optionnel)</Label>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setFormData({
+                    ...formData,
+                    pricing_tiers: [
+                      ...formData.pricing_tiers,
+                      { quantity: 1, price: 0, label: "" },
+                    ],
+                  });
+                }}
+              >
+                + Ajouter un palier
+              </Button>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Définissez des prix réduits pour des achats en quantité (ex: 5 unités pour 15€)
+            </p>
+
+            {formData.pricing_tiers.map((tier, index) => (
+              <div key={index} className="grid grid-cols-12 gap-2 items-end p-3 border rounded bg-background">
+                <div className="col-span-3">
+                  <Label htmlFor={`tier-quantity-${index}`} className="text-xs">
+                    Quantité
+                  </Label>
+                  <Input
+                    id={`tier-quantity-${index}`}
+                    type="number"
+                    min="1"
+                    value={tier.quantity}
+                    onChange={(e) => {
+                      const newTiers = [...formData.pricing_tiers];
+                      newTiers[index].quantity = parseInt(e.target.value) || 1;
+                      setFormData({ ...formData, pricing_tiers: newTiers });
+                    }}
+                  />
+                </div>
+                <div className="col-span-3">
+                  <Label htmlFor={`tier-price-${index}`} className="text-xs">
+                    Prix total
+                  </Label>
+                  <Input
+                    id={`tier-price-${index}`}
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={tier.price}
+                    onChange={(e) => {
+                      const newTiers = [...formData.pricing_tiers];
+                      newTiers[index].price = parseFloat(e.target.value) || 0;
+                      setFormData({ ...formData, pricing_tiers: newTiers });
+                    }}
+                  />
+                </div>
+                <div className="col-span-4">
+                  <Label htmlFor={`tier-label-${index}`} className="text-xs">
+                    Label (optionnel)
+                  </Label>
+                  <Input
+                    id={`tier-label-${index}`}
+                    type="text"
+                    placeholder="Ex: Pack Découverte"
+                    value={tier.label || ""}
+                    onChange={(e) => {
+                      const newTiers = [...formData.pricing_tiers];
+                      newTiers[index].label = e.target.value;
+                      setFormData({ ...formData, pricing_tiers: newTiers });
+                    }}
+                  />
+                </div>
+                <div className="col-span-2">
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => {
+                      const newTiers = formData.pricing_tiers.filter((_, i) => i !== index);
+                      setFormData({ ...formData, pricing_tiers: newTiers });
+                    }}
+                  >
+                    Supprimer
+                  </Button>
+                </div>
+              </div>
+            ))}
           </div>
 
           <div className="space-y-2">
