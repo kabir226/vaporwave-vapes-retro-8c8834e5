@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useCurrencies } from "@/hooks/useCurrencies";
 import CartModal from "@/components/CartModal";
+import { trackPurchase } from "@/lib/metaPixel";
 
 interface Product {
   id: string;
@@ -43,6 +44,11 @@ const ProductDetail = () => {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<any[]>([]);
   const [showCart, setShowCart] = useState(false);
+
+  // Currency info - moved here to use in handleBuyNow
+  const currency = getCurrencyByCode((product as any)?.currency_code || 'EUR');
+  const currencySymbol = currency?.symbol || '€';
+  const currencyCode = currency?.code || 'EUR';
 
   useEffect(() => {
     fetchProduct();
@@ -124,6 +130,17 @@ const ProductDetail = () => {
   const handleBuyNow = () => {
     if (!product) return;
     
+    // 1. Création ID unique
+    const eventId = `wa-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    
+    // 2. Envoi Tracking (Pixel + Serveur)
+    trackPurchase({
+      value: product.price * quantity,
+      currency: currencyCode || 'XOF',
+      orderId: eventId
+    });
+
+    // 3. Ouverture WhatsApp
     const message = `Bonjour, je suis intéressé par ${product.name} en quantité de ${quantity}.`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `whatsapp://send?phone=22605145905&text=${encodedMessage}`;
@@ -146,10 +163,6 @@ const ProductDetail = () => {
   const mainImage = product.images && product.images.length > 0 
     ? product.images[selectedImage] 
     : '/placeholder.svg';
-
-  const currency = getCurrencyByCode((product as any).currency_code || 'EUR');
-  const currencySymbol = currency?.symbol || '€';
-  const currencyCode = currency?.code || 'EUR';
 
   return (
     <div className="min-h-screen bg-background">
