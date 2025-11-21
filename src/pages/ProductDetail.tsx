@@ -121,6 +121,12 @@ const ProductDetail = () => {
     toast.success('Produit retiré du panier');
   };
 
+  const generateWhatsAppLink = () => {
+    const message = `Bonjour, je suis intéressé par ${product?.name} en quantité de ${quantity}.`;
+    const encodedMessage = encodeURIComponent(message);
+    return `https://wa.me/22605145905?text=${encodedMessage}`;
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -240,7 +246,7 @@ const ProductDetail = () => {
                 Add to cart
               </Button>
               <a 
-                href="https://wa.me/message/VU57PC3IDGREF1" 
+                href={generateWhatsAppLink()} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="block"
