@@ -121,10 +121,14 @@ const ProductDetail = () => {
     toast.success('Produit retiré du panier');
   };
 
-  const generateWhatsAppLink = () => {
-    const message = `Bonjour, je suis intéressé par ${product?.name} en quantité de ${quantity}.`;
+  const handleBuyNow = () => {
+    if (!product) return;
+    
+    const message = `Bonjour, je suis intéressé par ${product.name} en quantité de ${quantity}.`;
     const encodedMessage = encodeURIComponent(message);
-    return `https://wa.me/22605145905?text=${encodedMessage}`;
+    const whatsappUrl = `https://wa.me/22605145905?text=${encodedMessage}`;
+    
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
 
   if (loading) {
@@ -245,20 +249,14 @@ const ProductDetail = () => {
               >
                 Add to cart
               </Button>
-              <a 
-                href={generateWhatsAppLink()} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="block"
+              <Button 
+                className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90"
+                size="lg"
+                onClick={handleBuyNow}
+                disabled={!product.in_stock}
               >
-                <Button 
-                  className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90"
-                  size="lg"
-                  disabled={!product.in_stock}
-                >
-                  Buy it now
-                </Button>
-              </a>
+                Buy it now
+              </Button>
             </div>
 
             {/* Product Details Accordion */}
