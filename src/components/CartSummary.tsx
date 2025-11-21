@@ -42,7 +42,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onUpdateQuantity, onRem
     // Build the complete message with proper encoding
     const messageText = `Bonjour! Je souhaite commander:\n\n${decodeURIComponent(productList)}\n\nSous-total: ${total.toFixed(2)}${currencySymbol}\nLivraison: ${shippingCost.toFixed(2)}${currencySymbol}\nTotal: ${finalTotal.toFixed(2)}${currencySymbol}`;
     
-    return `https://wa.me/message/VU57PC3IDGREF1?text=${encodeURIComponent(messageText)}`;
+    return `whatsapp://send?phone=22605145905&text=${encodeURIComponent(messageText)}`;
   };
 
   if (cart.length === 0) {

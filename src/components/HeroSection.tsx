@@ -164,7 +164,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             <>
               <div className="pt-2">
                 <a 
-                  href="https://wa.me/message/VU57PC3IDGREF1" 
+                  href="whatsapp://send?phone=22605145905" 
                   target="_blank" 
                   rel="noopener noreferrer"
                 >
