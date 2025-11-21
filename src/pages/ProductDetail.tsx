@@ -126,7 +126,7 @@ const ProductDetail = () => {
     
     const message = `Bonjour, je suis intéressé par ${product.name} en quantité de ${quantity}.`;
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=22605145905&text=${encodedMessage}`;
+    const whatsappUrl = `whatsapp://send?phone=22605145905&text=${encodedMessage}`;
     
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
