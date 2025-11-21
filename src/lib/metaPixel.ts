@@ -1,6 +1,9 @@
 // Utility functions for Meta Pixel tracking
 import { supabase } from "@/integrations/supabase/client";
 
+// Generate unique event ID for deduplication
+const generateEventId = () => crypto.randomUUID();
+
 // Hash email using SHA-256
 export async function hashEmail(email: string): Promise<string> {
   const normalized = email.toLowerCase().trim();
@@ -12,6 +15,35 @@ export async function hashEmail(email: string): Promise<string> {
   return hashHex;
 }
 
+// Send event to server-side (Conversions API)
+async function sendServerEvent(
+  eventName: string, 
+  eventId: string, 
+  eventData: any, 
+  userData: any
+) {
+  try {
+    const response = await supabase.functions.invoke('track-meta-event', {
+      body: { 
+        eventName, 
+        eventId, 
+        eventData,
+        userData,
+        userAgent: navigator.userAgent,
+        sourceUrl: window.location.href
+      }
+    });
+    
+    console.log('Server-side tracking response:', response);
+    
+    if (response.error) {
+      console.error('Server-side tracking error:', response.error);
+    }
+  } catch (e) {
+    console.error('Erreur CAPI:', e);
+  }
+}
+
 // Track Purchase event (client-side + server-side)
 export async function trackPurchase(orderData: {
   value: number;
@@ -19,58 +51,43 @@ export async function trackPurchase(orderData: {
   orderId: string;
   email?: string;
 }) {
+  // 1. Generate unique event ID for deduplication
+  const eventId = generateEventId();
+  
+  // 2. Prepare event data
   const purchaseData: any = {
     value: orderData.value,
     currency: orderData.currency || 'EUR',
     content_type: 'product',
   };
 
-  // Use orderId as eventId for deduplication
-  const eventId = `purchase_${orderData.orderId}`;
-  let hashedEmail: string | undefined;
+  console.log('Tracking purchase with eventId:', eventId);
 
   // Hash email if available
+  let hashedEmail: string | undefined;
   if (orderData.email) {
     hashedEmail = await hashEmail(orderData.email);
   }
 
-  console.log('Tracking purchase with eventId:', eventId);
-
-  // Client-side tracking with Meta Pixel
+  // 3. Client-side tracking with Meta Pixel (Browser)
   if (typeof window !== 'undefined' && (window as any).fbq) {
     const fbq = (window as any).fbq;
     fbq('track', 'Purchase', purchaseData, {
-      eventID: eventId,
+      eventID: eventId, // Note: eventID with capital ID for Facebook
       ...(hashedEmail && { em: hashedEmail }),
     });
-    console.log('Meta Pixel Purchase (Browser):', { eventId, ...purchaseData });
+    console.log('Meta Pixel Purchase (Browser):', { eventID: eventId, ...purchaseData });
   }
 
-  // Server-side tracking via Conversions API
-  try {
-    const response = await supabase.functions.invoke('track-meta-event', {
-      body: {
-        eventName: 'Purchase',
-        eventData: {
-          ...purchaseData,
-          ...(hashedEmail && { em: hashedEmail }),
-        },
-        eventId,
-        userAgent: navigator.userAgent,
-        sourceUrl: window.location.href,
-      },
-    });
-    
-    console.log('Meta Conversions API (Server) response:', response);
-    
-    if (response.error) {
-      console.error('Server-side tracking error:', response.error);
-    } else {
-      console.log('Meta Conversions API (Server) success:', response.data);
+  // 4. Server-side tracking via Conversions API
+  await sendServerEvent(
+    'Purchase',
+    eventId,
+    purchaseData,
+    {
+      ...(hashedEmail && { em: hashedEmail }),
     }
-  } catch (error) {
-    console.error('Failed to send server-side Meta event:', error);
-  }
+  );
 }
 
 // Track AddToCart event
