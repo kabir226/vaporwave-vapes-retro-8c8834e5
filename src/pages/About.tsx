@@ -1,37 +1,28 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Award, Shield, Heart, Zap } from 'lucide-react';
-
 const About = () => {
-  const values = [
-    {
-      icon: <Shield className="w-8 h-8" />,
-      title: "Sécurité",
-      description: "Tous nos produits respectent les normes les plus strictes"
-    },
-    {
-      icon: <Award className="w-8 h-8" />,
-      title: "Qualité Premium",
-      description: "Une sélection rigoureuse pour une expérience exceptionnelle"
-    },
-    {
-      icon: <Heart className="w-8 h-8" />,
-      title: "Bien-être",
-      description: "Accompagner votre transition vers une vie sans fumée"
-    },
-    {
-      icon: <Zap className="w-8 h-8" />,
-      title: "Innovation",
-      description: "Les dernières technologies pour votre satisfaction"
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
+  const values = [{
+    icon: <Shield className="w-8 h-8" />,
+    title: "Sécurité",
+    description: "Tous nos produits respectent les normes les plus strictes"
+  }, {
+    icon: <Award className="w-8 h-8" />,
+    title: "Qualité Premium",
+    description: "Une sélection rigoureuse pour une expérience exceptionnelle"
+  }, {
+    icon: <Heart className="w-8 h-8" />,
+    title: "Bien-être",
+    description: "Accompagner votre transition vers une vie sans fumée"
+  }, {
+    icon: <Zap className="w-8 h-8" />,
+    title: "Innovation",
+    description: "Les dernières technologies pour votre satisfaction"
+  }];
+  return <div className="min-h-screen bg-background">
       <Header cart={[]} onToggleCart={() => {}} />
       
       <div className="pt-20 px-4">
@@ -40,12 +31,9 @@ const About = () => {
           <Badge variant="outline" className="mb-6 border-primary text-primary">
             À PROPOS DE NOUS
           </Badge>
-          <h1 className="text-4xl md:text-6xl font-black text-cyber mb-6">
-            NO-SMOKING
-          </h1>
+          <h1 className="text-4xl md:text-6xl font-black text-cyber mb-6">Pourquoi nous sommes ICI ?  </h1>
           <p className="text-xl text-muted-foreground leading-relaxed">
-            Pionniers de l'innovation dans l'univers de la vape, nous créons des expériences 
-            exceptionnelles pour accompagner votre transition vers une vie sans fumée.
+            Notre mission est claire : être à l'avant-garde de la création d'un avenir sans fumée. Le tabagisme a des conséquences néfastes sur la santé de millions de personnes dans le monde. Nous avons tous constaté ou entendu parler des effets dévastateurs du tabagisme, la perte d'êtres chers, des problèmes de santé chroniques et une qualité de vie détériorée. Chez SNUSPEDIA, nous pensons qu'il est temps de changer.
           </p>
         </section>
 
@@ -54,16 +42,13 @@ const About = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold text-primary mb-6">
-                Notre Histoire
+                Notre slogan : « Ne laissez pas les mauvaises habitudes gâcher les bons moments »
               </h2>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                Fondée par des passionnés de technologie et de design, No-Smoking est née 
-                d'une vision simple : révolutionner l'expérience de la vape avec des produits 
-                alliant esthétique futuriste et performance exceptionnelle.
+                Cela reflète parfaitement notre vision : aider les gens à se libérer des contraintes que le tabagisme impose à leur vie. Nous ne voulons pas seulement les aider à arrêter de fumer ; nous voulons les accompagner vers un mode de vie plus sain et plus épanouissant, sans compromis. Nous ne nous contentons pas d’aider à arrêter, nous les aidons à changer.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Chaque produit de notre gamme est soigneusement sélectionné et testé pour 
-                vous offrir une alternative moderne et élégante au tabac traditionnel.
+                Grâce à notre gamme de produits sans fumée, comme les sachets de nicotine, nous offrons une alternative plus saine qui permet aux gens de prendre le contrôle de leur santé.
               </p>
             </div>
             <div className="relative">
@@ -80,8 +65,7 @@ const About = () => {
             Nos Valeurs
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value, index) => (
-              <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow">
+            {values.map((value, index) => <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow">
                 <CardContent className="p-0">
                   <div className="text-primary mb-4 flex justify-center">
                     {value.icon}
@@ -89,8 +73,7 @@ const About = () => {
                   <h3 className="font-bold mb-2">{value.title}</h3>
                   <p className="text-sm text-muted-foreground">{value.description}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </section>
 
@@ -112,8 +95,6 @@ const About = () => {
       </div>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default About;
