@@ -80,12 +80,10 @@ const About = () => {
           <Card className="bg-primary/5 border-primary/20 p-8">
             <CardContent className="p-0">
               <h2 className="text-2xl font-bold text-primary mb-4">
-                Notre Mission
+                Notre vision : Un avenir sans limites
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Démocratiser l'accès à des alternatives de qualité au tabac traditionnel, 
-                tout en proposant une expérience utilisateur moderne, sûre et respectueuse 
-                de l'environnement. Nous croyons en un avenir sans fumée, mais pas sans plaisir.
+                Notre vision ultime est un monde où chacun peut vivre pleinement sa vie, libéré des contraintes des produits du tabac traditionnels. Nous envisageons une transition vers un mode de vie plus sain. Snuspedia , une source fiable d'information et de conseils, au service de millions de fumeurs.
               </p>
             </CardContent>
           </Card>
