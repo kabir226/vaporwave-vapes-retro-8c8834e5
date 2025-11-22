@@ -52,9 +52,7 @@ const About = () => {
               </p>
             </div>
             <div className="relative">
-              <div className="aspect-square bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl flex items-center justify-center">
-                <div className="text-6xl animate-float">🚀</div>
-              </div>
+              
             </div>
           </div>
         </section>
