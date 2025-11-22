@@ -67,9 +67,7 @@ const About = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((value, index) => <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow">
                 <CardContent className="p-0">
-                  <div className="text-primary mb-4 flex justify-center">
-                    {value.icon}
-                  </div>
+                  
                   <h3 className="font-bold mb-2">{value.title}</h3>
                   <p className="text-sm text-muted-foreground">{value.description}</p>
                 </CardContent>
