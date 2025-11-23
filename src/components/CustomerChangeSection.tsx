@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
+import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 const CustomerChangeSection: React.FC = () => {
   const {
@@ -34,7 +35,16 @@ const CustomerChangeSection: React.FC = () => {
             
           </div>}
 
-        <Carousel className="w-full max-w-5xl mx-auto">
+        <Carousel 
+          className="w-full max-w-5xl mx-auto"
+          plugins={[
+            Autoplay({
+              delay: 4000,
+              stopOnMouseEnter: true,
+              stopOnInteraction: true,
+            }),
+          ]}
+        >
           <CarouselContent className="gap-4">
             {settings?.settings?.testimonials?.map((testimonial: any, index: number) => <CarouselItem key={index} className="basis-[85%] md:basis-1/2 lg:basis-1/3">
                 <div className="flex flex-col gap-4 h-full">
