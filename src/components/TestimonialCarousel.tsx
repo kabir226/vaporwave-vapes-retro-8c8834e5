@@ -11,6 +11,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 
 interface Testimonial {
@@ -26,6 +27,7 @@ interface TestimonialCarouselProps {
 }
 
 const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testimonials }) => {
+  const [api, setApi] = React.useState<CarouselApi>();
   const { getSetting } = useHomepageSettings('testimonials');
   const settings = getSetting('testimonials');
 
@@ -55,6 +57,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testimonials 
         </div>
         
         <Carousel
+          setApi={setApi}
           opts={{
             align: "start",
             loop: true,
@@ -67,6 +70,12 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testimonials 
             }),
           ]}
           className="w-full"
+          onMouseEnter={() => {
+            api?.plugins()?.autoplay?.stop();
+          }}
+          onMouseLeave={() => {
+            api?.plugins()?.autoplay?.play();
+          }}
         >
           <CarouselContent>
             {testimonials.map((testimonial, index) => (
