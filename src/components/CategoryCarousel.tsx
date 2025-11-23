@@ -11,6 +11,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 
 interface Category {
@@ -28,6 +29,8 @@ interface CategoryCarouselProps {
 }
 
 const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories, title }) => {
+  const [api, setApi] = React.useState<CarouselApi>();
+
   return (
     <section className="py-16 px-4">
       <div className="max-w-7xl mx-auto">
@@ -41,6 +44,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories, title }
         </div>
         
         <Carousel
+          setApi={setApi}
           opts={{
             align: "start",
             loop: true,
@@ -53,6 +57,12 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories, title }
             }),
           ]}
           className="w-full"
+          onMouseEnter={() => {
+            api?.plugins()?.autoplay?.stop();
+          }}
+          onMouseLeave={() => {
+            api?.plugins()?.autoplay?.play();
+          }}
         >
           <CarouselContent>
             {categories.map((category) => (
