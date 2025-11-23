@@ -20,7 +20,7 @@ const About = () => {
   }, {
     icon: <Zap className="w-8 h-8" />,
     title: "Innovation",
-    description: "Les dernières technologies pour votre satisfaction"
+    description: "Les dernières avancées pour votre satisfaction"
   }];
   return <div className="min-h-screen bg-background">
       <Header cart={[]} onToggleCart={() => {}} />
