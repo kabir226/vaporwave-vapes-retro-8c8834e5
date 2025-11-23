@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ChevronRight } from 'lucide-react';
+import Autoplay from "embla-carousel-autoplay";
 import {
   Carousel,
   CarouselContent,
@@ -44,6 +45,13 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories, title }
             align: "start",
             loop: true,
           }}
+          plugins={[
+            Autoplay({
+              delay: 4000,
+              stopOnMouseEnter: true,
+              stopOnInteraction: true,
+            }),
+          ]}
           className="w-full"
         >
           <CarouselContent>

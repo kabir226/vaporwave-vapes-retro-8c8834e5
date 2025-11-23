@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Star, Quote, User } from 'lucide-react';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
+import Autoplay from "embla-carousel-autoplay";
 import {
   Carousel,
   CarouselContent,
@@ -58,6 +59,13 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testimonials 
             align: "start",
             loop: true,
           }}
+          plugins={[
+            Autoplay({
+              delay: 4000,
+              stopOnMouseEnter: true,
+              stopOnInteraction: true,
+            }),
+          ]}
           className="w-full"
         >
           <CarouselContent>
