@@ -38,13 +38,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
 
   return (
     <Card 
-      className="group relative overflow-hidden bg-card border border-border hover:shadow-lg transition-all duration-300 cursor-pointer"
+      className="group relative overflow-hidden bg-black/40 border border-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer"
       style={{ animationDelay: `${delay}s` }}
       onClick={() => product.slug && navigate(`/product/${product.slug}`)}
     >
-      <CardContent className="p-4 flex flex-col items-center">
+      <CardContent className="p-6 flex flex-col items-center">
         {/* Image ronde */}
-        <div className="relative w-32 h-32 mb-4 rounded-full overflow-hidden bg-muted flex items-center justify-center">
+        <div className="relative w-36 h-36 mb-4 rounded-full overflow-hidden bg-muted flex items-center justify-center">
           {product.images && product.images.length > 0 ? (
             product.images[0].match(/\.(mp4|webm|ogg|mov)$/i) ? (
               <video 
@@ -70,12 +70,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
         </div>
         
         {/* Titre */}
-        <h3 className="text-foreground text-sm font-medium text-center mb-2 line-clamp-2 min-h-[2.5rem]">
+        <h3 className="text-white text-base font-medium text-center mb-2 line-clamp-2">
           {product.name}
         </h3>
         
         {/* Prix */}
-        <div className="text-lg font-bold text-primary">
+        <div className="text-xl font-bold text-primary">
           {currencySymbol}{product.price.toFixed(2)}
         </div>
       </CardContent>
