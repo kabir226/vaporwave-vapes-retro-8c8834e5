@@ -13,6 +13,7 @@ interface Benefit {
 
 const BenefitsComparisonSection: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const { settings } = useHomepageSettings();
   const [benefits, setBenefits] = useState<Benefit[]>([]);
 
@@ -74,13 +75,15 @@ const BenefitsComparisonSection: React.FC = () => {
     setBenefits(updatedBenefits);
   }, [settings]);
 
-  // Autoplay carousel every 4 seconds
+  // Autoplay carousel every 4 seconds (only when not paused)
   useEffect(() => {
+    if (isPaused) return;
+    
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % benefits.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, [benefits.length]);
+  }, [benefits.length, isPaused]);
 
   const mainSettings = settings.find(s => s.section_name === 'benefits_comparison');
   const activeBenefit = benefits[activeIndex];
@@ -95,7 +98,11 @@ const BenefitsComparisonSection: React.FC = () => {
         </h2>
 
         {/* Carousel Card */}
-        <div className="bg-muted/30 rounded-3xl overflow-hidden">
+        <div 
+          className="bg-muted/30 rounded-3xl overflow-hidden"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
           {/* Top: Main Image */}
           <div className="relative w-full aspect-[16/9] overflow-hidden">
             {activeBenefit?.imageUrl ? (
