@@ -75,17 +75,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
         </h3>
         
         {/* Prix */}
-        <div className="text-lg font-bold text-foreground mb-3">
+        <div className="text-lg font-bold text-primary">
           {currencySymbol}{product.price.toFixed(2)}
         </div>
-
-        {/* Bouton Add to cart */}
-        <button
-          onClick={handleAddToCart}
-          className="w-full py-2.5 px-4 rounded-full border-2 border-foreground bg-transparent text-foreground text-sm font-medium hover:bg-foreground hover:text-background transition-all duration-300"
-        >
-          Add to cart
-        </button>
       </CardContent>
     </Card>
   );
