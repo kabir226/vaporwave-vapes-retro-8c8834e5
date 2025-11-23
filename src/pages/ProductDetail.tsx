@@ -245,7 +245,7 @@ const ProductDetail = () => {
               <h1 className="text-3xl md:text-4xl font-bold mb-2">{product.name}</h1>
               <p className="text-2xl font-bold text-primary">{currencySymbol}{product.price.toFixed(2)} {currencyCode}</p>
               <p className="text-sm text-muted-foreground mt-1">
-                Shipping calculated at checkout.
+                Frais de livraison calculés lors du paiement.
               </p>
             </div>
 
@@ -307,7 +307,7 @@ const ProductDetail = () => {
               </div>
             ) : (
               <div className="space-y-2">
-                <label className="text-sm font-medium">Quantity ({quantity} in cart)</label>
+                <label className="text-sm font-medium">Quantité ({quantity} au panier)</label>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center border rounded-full">
                     <Button
@@ -342,7 +342,7 @@ const ProductDetail = () => {
                 onClick={handleAddToCart}
                 disabled={!product.in_stock}
               >
-                Add to cart
+                Ajouter au panier
               </Button>
               <Button 
                 className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90"
@@ -350,7 +350,7 @@ const ProductDetail = () => {
                 onClick={handleBuyNow}
                 disabled={!product.in_stock}
               >
-                Buy it now
+                Acheter maintenant
               </Button>
             </div>
 
@@ -365,7 +365,7 @@ const ProductDetail = () => {
                 </AccordionTrigger>
                 <AccordionContent>
                   <p className="text-muted-foreground">
-                    {product.description || "No description available."}
+                    {product.description || "Aucune description disponible."}
                   </p>
                 </AccordionContent>
               </AccordionItem>
@@ -374,7 +374,7 @@ const ProductDetail = () => {
                 <AccordionTrigger className="text-left">
                   <div className="flex items-center gap-2">
                     <span className="text-xl">✅</span>
-                    <span>Specifications</span>
+                    <span>Spécifications</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
@@ -384,9 +384,9 @@ const ProductDetail = () => {
                     </div>
                   ) : (
                     <ul className="space-y-2 text-muted-foreground">
-                      <li>• Strength: {product.strength || 'Standard'}</li>
-                      <li>• Stock: {product.stock} units available</li>
-                      <li>• Rating: {product.rating ? `${product.rating}/5` : 'Not rated'}</li>
+                      <li>• Force : {product.strength || 'Standard'}</li>
+                      <li>• Stock : {product.stock} unités disponibles</li>
+                      <li>• Note : {product.rating ? `${product.rating}/5` : 'Non noté'}</li>
                     </ul>
                   )}
                 </AccordionContent>
@@ -396,7 +396,7 @@ const ProductDetail = () => {
                 <AccordionTrigger className="text-left">
                   <div className="flex items-center gap-2">
                     <span className="text-xl">🌿</span>
-                    <span>Ingredients</span>
+                    <span>Ingrédients</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
@@ -411,7 +411,7 @@ const ProductDetail = () => {
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-muted-foreground">No ingredients information available.</p>
+                    <p className="text-muted-foreground">Aucune information sur les ingrédients disponible.</p>
                   )}
                 </AccordionContent>
               </AccordionItem>
@@ -420,7 +420,7 @@ const ProductDetail = () => {
                 <AccordionTrigger className="text-left">
                   <div className="flex items-center gap-2">
                     <span className="text-xl">❓</span>
-                    <span>How to use nicotine pouches?</span>
+                    <span>Comment utiliser les sachets de nicotine ?</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
@@ -430,11 +430,11 @@ const ProductDetail = () => {
                     </div>
                   ) : (
                     <div className="space-y-2 text-muted-foreground">
-                      <p>1. Place the pouch between your gum and upper lip</p>
-                      <p>2. Leave it there for 20-30 minutes</p>
-                      <p>3. Dispose of the pouch responsibly</p>
+                      <p>1. Placez le sachet entre votre gencive et votre lèvre supérieure</p>
+                      <p>2. Laissez-le là pendant 20-30 minutes</p>
+                      <p>3. Jetez le sachet de manière responsable</p>
                       <p className="text-sm mt-4 text-destructive">
-                        Warning: This product contains nicotine. Nicotine is an addictive substance.
+                        Attention : Ce produit contient de la nicotine. La nicotine est une substance addictive.
                       </p>
                     </div>
                   )}
@@ -447,7 +447,7 @@ const ProductDetail = () => {
         {/* Frequently Bought Together */}
         {relatedProducts.length > 0 && (
           <div className="mt-16">
-            <h2 className="text-2xl font-bold mb-6">Frequently bought together</h2>
+            <h2 className="text-2xl font-bold mb-6">Fréquemment achetés ensemble</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {relatedProducts.map((relatedProduct) => {
                 const relatedCurrency = getCurrencyByCode((relatedProduct as any).currency_code || 'EUR');
