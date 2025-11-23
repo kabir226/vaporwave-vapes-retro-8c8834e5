@@ -31,19 +31,25 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
   const currency = getCurrencyByCode((product as any).currency_code || 'EUR');
   const currencySymbol = currency?.symbol || '€';
 
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAddToCart(product);
+  };
+
   return (
     <Card 
-      className="group relative overflow-hidden bg-black border border-white/20 hover:border-primary transition-all duration-300 cursor-pointer rounded-2xl"
+      className="group relative overflow-hidden bg-card border border-border hover:shadow-lg transition-all duration-300 cursor-pointer"
       style={{ animationDelay: `${delay}s` }}
       onClick={() => product.slug && navigate(`/product/${product.slug}`)}
     >
-      <CardContent className="p-4">
-        <div className="relative h-32 mb-3 flex items-center justify-center">
+      <CardContent className="p-4 flex flex-col items-center">
+        {/* Image ronde */}
+        <div className="relative w-32 h-32 mb-4 rounded-full overflow-hidden bg-muted flex items-center justify-center">
           {product.images && product.images.length > 0 ? (
             product.images[0].match(/\.(mp4|webm|ogg|mov)$/i) ? (
               <video 
                 src={product.images[0]} 
-                className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 autoPlay
                 loop
                 muted
@@ -53,25 +59,33 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
               <img 
                 src={product.images[0]} 
                 alt={product.name}
-                className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
               />
             )
           ) : (
-            <span className="text-5xl scale-110 group-hover:scale-125 transition-transform duration-300">
+            <span className="text-5xl group-hover:scale-110 transition-transform duration-300">
               📦
             </span>
           )}
         </div>
         
-        <div className="text-center space-y-1">
-          <h3 className="text-white text-sm font-bold leading-tight">
-            {product.name}
-          </h3>
-          
-          <div className="text-xl font-bold text-red-500">
-            {currencySymbol}{product.price.toFixed(2)}
-          </div>
+        {/* Titre */}
+        <h3 className="text-foreground text-sm font-medium text-center mb-2 line-clamp-2 min-h-[2.5rem]">
+          {product.name}
+        </h3>
+        
+        {/* Prix */}
+        <div className="text-lg font-bold text-foreground mb-3">
+          {currencySymbol}{product.price.toFixed(2)}
         </div>
+
+        {/* Bouton Add to cart */}
+        <button
+          onClick={handleAddToCart}
+          className="w-full py-2.5 px-4 rounded-full border-2 border-foreground bg-transparent text-foreground text-sm font-medium hover:bg-foreground hover:text-background transition-all duration-300"
+        >
+          Add to cart
+        </button>
       </CardContent>
     </Card>
   );
