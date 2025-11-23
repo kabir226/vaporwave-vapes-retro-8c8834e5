@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, PlayCircle } from 'lucide-react';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 import useEmblaCarousel from 'embla-carousel-react';
+import VideoPreviewDialog from '@/components/VideoPreviewDialog';
 
 interface HeroSectionProps {
   onDiscoverProducts: () => void;
@@ -21,6 +22,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isVideoDialogOpen, setIsVideoDialogOpen] = useState(false);
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -159,10 +161,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             {heroSettings?.subtitle || "Profitez de la satisfaction de la nicotine sans les effets nocifs du tabagisme."}
           </p>
 
-          {/* Primary CTA Button */}
+          {/* Primary CTA Buttons */}
           {!hasSlides && (
             <>
-              <div className="pt-2">
+              <div className="pt-2 flex flex-col md:flex-row items-center justify-center gap-4">
                 <a href="/shop">
                   <Button 
                     size="lg" 
@@ -172,6 +174,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </a>
+                
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  onClick={() => setIsVideoDialogOpen(true)}
+                  className="border-2 border-foreground/80 text-foreground hover:bg-foreground/10 hover:border-foreground font-bold px-8 py-6 text-base group rounded-full w-full md:w-auto"
+                >
+                  <PlayCircle className="w-5 h-5 mr-2" />
+                  Comment ça marche ?
+                </Button>
               </div>
 
               {/* Feature Benefits */}
@@ -208,6 +220,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           )}
         </div>
       </div>
+
+      {/* Video Dialog */}
+      <VideoPreviewDialog
+        isOpen={isVideoDialogOpen}
+        onClose={() => setIsVideoDialogOpen(false)}
+        videoUrl="/videos/snuspedia-explainer.mp4"
+        title="Comment ça marche ?"
+      />
     </section>
   );
 };

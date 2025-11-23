@@ -17,7 +17,7 @@ const VideoPreviewDialog: React.FC<VideoPreviewDialogProps> = ({
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[90vw] max-w-[350px] sm:max-w-2xl p-0 bg-card border-border rounded-3xl overflow-hidden">
+      <DialogContent className="w-[90vw] max-w-[350px] sm:max-w-4xl p-0 bg-card border-border rounded-3xl overflow-hidden">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors"
