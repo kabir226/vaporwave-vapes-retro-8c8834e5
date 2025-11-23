@@ -163,11 +163,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           {!hasSlides && (
             <>
               <div className="pt-2">
-                <a 
-                  href="whatsapp://send?phone=22605145905" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                >
+                <a href="/shop">
                   <Button 
                     size="lg" 
                     className="bg-foreground hover:bg-foreground/90 text-background font-bold px-12 py-6 text-base group rounded-full w-full md:w-auto"
