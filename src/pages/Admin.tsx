@@ -250,9 +250,9 @@ const Admin = () => {
             {activeTab === 'products' && <ProductList />}
             {activeTab === 'categories' && <CategoryList />}
             {activeTab === 'homepage' && <HomepageSettingsList />}
-            {activeTab === 'benefits' && <HomepageSettingsList />}
-            {activeTab === 'benefits-comparison' && <HomepageSettingsList />}
-            {activeTab === 'why-switch' && <HomepageSettingsList />}
+            {activeTab === 'benefits' && <HomepageSettingsList sectionPrefix="benefits" />}
+            {activeTab === 'benefits-comparison' && <HomepageSettingsList sectionPrefix="benefits_comparison" />}
+            {activeTab === 'why-switch' && <HomepageSettingsList sectionPrefix="why_switch" />}
             {activeTab === 'currencies' && <CurrencyList />}
           </div>
         </main>
