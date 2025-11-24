@@ -169,6 +169,33 @@ const Admin = () => {
                     <span>Page d'accueil</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton 
+                    onClick={() => setActiveTab('benefits')}
+                    isActive={activeTab === 'benefits'}
+                  >
+                    <Package className="mr-2 h-4 w-4" />
+                    <span>Benefits</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton 
+                    onClick={() => setActiveTab('benefits-comparison')}
+                    isActive={activeTab === 'benefits-comparison'}
+                  >
+                    <Package className="mr-2 h-4 w-4" />
+                    <span>Benefits Comparison</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton 
+                    onClick={() => setActiveTab('why-switch')}
+                    isActive={activeTab === 'why-switch'}
+                  >
+                    <Package className="mr-2 h-4 w-4" />
+                    <span>Why Switch</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroup>
 
@@ -205,6 +232,9 @@ const Admin = () => {
                   {activeTab === 'products' && 'Gestion des Produits'}
                   {activeTab === 'categories' && 'Gestion des Catégories'}
                   {activeTab === 'homepage' && 'Contenu de la Page d\'accueil'}
+                  {activeTab === 'benefits' && 'Gestion des Benefits'}
+                  {activeTab === 'benefits-comparison' && 'Gestion des Benefits Comparison'}
+                  {activeTab === 'why-switch' && 'Gestion de Why Switch'}
                   {activeTab === 'currencies' && 'Gestion des Devises'}
                 </h2>
               </div>
@@ -220,6 +250,9 @@ const Admin = () => {
             {activeTab === 'products' && <ProductList />}
             {activeTab === 'categories' && <CategoryList />}
             {activeTab === 'homepage' && <HomepageSettingsList />}
+            {activeTab === 'benefits' && <HomepageSettingsList />}
+            {activeTab === 'benefits-comparison' && <HomepageSettingsList />}
+            {activeTab === 'why-switch' && <HomepageSettingsList />}
             {activeTab === 'currencies' && <CurrencyList />}
           </div>
         </main>
