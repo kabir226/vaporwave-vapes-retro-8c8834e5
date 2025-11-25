@@ -246,7 +246,7 @@ const Admin = () => {
           </header>
 
           <div className="p-6">
-            {activeTab === 'dashboard' && <DashboardView />}
+            {activeTab === 'dashboard' && <DashboardView setActiveTab={setActiveTab} />}
             {activeTab === 'products' && <ProductList />}
             {activeTab === 'categories' && <CategoryList />}
             {activeTab === 'homepage' && <HomepageSettingsList />}
@@ -262,7 +262,7 @@ const Admin = () => {
 };
 
 // Dashboard Overview Component
-const DashboardView = () => {
+const DashboardView = ({ setActiveTab }: { setActiveTab: (tab: string) => void }) => {
   const { products } = useProducts();
   const { categories } = useCategories();
   const { currencies } = useCurrencies();
@@ -325,17 +325,29 @@ const DashboardView = () => {
           <CardTitle>Actions Rapides</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <Button className="h-auto flex-col items-start p-4" variant="outline">
+          <Button 
+            className="h-auto flex-col items-start p-4" 
+            variant="outline"
+            onClick={() => setActiveTab('products')}
+          >
             <Plus className="h-5 w-5 mb-2" />
             <span className="font-semibold">Ajouter un produit</span>
             <span className="text-xs text-muted-foreground">Créer un nouveau produit</span>
           </Button>
-          <Button className="h-auto flex-col items-start p-4" variant="outline">
+          <Button 
+            className="h-auto flex-col items-start p-4" 
+            variant="outline"
+            onClick={() => setActiveTab('categories')}
+          >
             <FolderTree className="h-5 w-5 mb-2" />
             <span className="font-semibold">Gérer les catégories</span>
             <span className="text-xs text-muted-foreground">Organiser le catalogue</span>
           </Button>
-          <Button className="h-auto flex-col items-start p-4" variant="outline">
+          <Button 
+            className="h-auto flex-col items-start p-4" 
+            variant="outline"
+            onClick={() => setActiveTab('homepage')}
+          >
             <HomeIcon className="h-5 w-5 mb-2" />
             <span className="font-semibold">Modifier la page d'accueil</span>
             <span className="text-xs text-muted-foreground">Personnaliser le contenu</span>
