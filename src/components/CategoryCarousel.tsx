@@ -1,9 +1,6 @@
 
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ChevronRight } from 'lucide-react';
 import Autoplay from "embla-carousel-autoplay";
 import {
   Carousel,
@@ -64,47 +61,34 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories, title }
             api?.plugins()?.autoplay?.play();
           }}
         >
-          <CarouselContent>
+          <CarouselContent className="-ml-2 md:-ml-4">
             {categories.map((category) => (
-              <CarouselItem key={category.id} className="md:basis-1/2 lg:basis-1/3">
-                <Card className="group bg-glass border-border hover:border-primary transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 overflow-hidden cursor-pointer">
-                  <CardContent className="p-0 relative">
+              <CarouselItem key={category.id} className="basis-1/3 md:basis-1/4 lg:basis-1/6 pl-2 md:pl-4">
+                <div className="group flex flex-col items-center gap-3 md:gap-4 cursor-pointer">
+                  {/* Conteneur rond pour l'image */}
+                  <div className="relative w-20 h-20 md:w-32 md:h-32 rounded-full border-2 border-primary/50 bg-secondary/20 flex items-center justify-center transition-all duration-300 group-hover:border-primary group-hover:scale-110 overflow-hidden">
                     {category.featured && (
-                      <Badge className="absolute top-4 right-4 z-10 bg-retro-gold text-black font-bold animate-pulse">
-                        POPULAIRE
+                      <Badge className="absolute -top-1 -right-1 z-10 bg-retro-gold text-black font-bold text-[10px] px-1.5 py-0.5 animate-pulse">
+                        TOP
                       </Badge>
                     )}
                     
-                    <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                      <div className="text-6xl animate-float group-hover:scale-110 transition-transform duration-300">
-                        {category.image}
-                      </div>
+                    {/* Image ou emoji de catégorie */}
+                    <div className="text-3xl md:text-5xl transition-transform duration-300">
+                      {category.image}
                     </div>
-                    
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold mb-2 text-primary group-hover:text-retro-gold transition-colors">
-                        {category.name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                        {category.description}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <Badge variant="outline" className="text-xs">
-                          {category.count} produits
-                        </Badge>
-                        <Button variant="outline" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                          Découvrir
-                          <ChevronRight className="w-4 h-4 ml-1" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                  
+                  {/* Nom de la catégorie */}
+                  <h3 className="text-xs md:text-sm font-semibold text-center text-foreground group-hover:text-primary transition-colors leading-tight max-w-full px-1">
+                    {category.name}
+                  </h3>
+                </div>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="hidden md:flex" />
-          <CarouselNext className="hidden md:flex" />
+          <CarouselPrevious className="hidden md:flex -left-4" />
+          <CarouselNext className="hidden md:flex -right-4" />
         </Carousel>
       </div>
     </section>
