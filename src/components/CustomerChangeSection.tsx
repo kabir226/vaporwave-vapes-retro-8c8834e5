@@ -2,10 +2,8 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
-import Autoplay from "embla-carousel-autoplay";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 const CustomerChangeSection: React.FC = () => {
-  const [api, setApi] = React.useState<CarouselApi>();
   const {
     getSetting,
     loading
@@ -37,21 +35,7 @@ const CustomerChangeSection: React.FC = () => {
           </div>}
 
         <Carousel 
-          setApi={setApi}
           className="w-full max-w-5xl mx-auto"
-          plugins={[
-            Autoplay({
-              delay: 4000,
-              stopOnMouseEnter: true,
-              stopOnInteraction: true,
-            }),
-          ]}
-          onMouseEnter={() => {
-            api?.plugins()?.autoplay?.stop();
-          }}
-          onMouseLeave={() => {
-            api?.plugins()?.autoplay?.play();
-          }}
         >
           <CarouselContent className="gap-4">
             {settings?.settings?.testimonials?.map((testimonial: any, index: number) => <CarouselItem key={index} className="basis-[85%] md:basis-1/2 lg:basis-1/3">
