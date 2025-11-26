@@ -51,7 +51,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onUpdateQuantity, onRem
         <CardContent className="text-center py-8">
           <ShoppingCart className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
           <p className="text-muted-foreground">Votre panier est vide</p>
-          <Button className="mt-4" onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}>
+          <Button className="mt-4" onClick={() => window.location.href = '/shop'}>
             Découvrir nos produits
           </Button>
         </CardContent>
