@@ -49,36 +49,38 @@ const CategorySection: React.FC = () => {
               {categories.map((category, index) => (
                 <CarouselItem key={index} className="pl-2">
                   <Card 
-                    className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-2 hover:border-primary"
+                    className="group hover:shadow-2xl transition-all duration-500 overflow-hidden border-0 rounded-2xl"
                   >
                     <CardContent className="p-0">
-                      <div className="relative aspect-[4/3] bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center overflow-hidden">
+                      <div className="relative aspect-[3/4] bg-muted flex items-center justify-center overflow-hidden">
                         {category.image_url ? (
                           <img 
                             src={category.image_url} 
                             alt={category.name}
-                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                           />
                         ) : (
-                          <span className="text-4xl opacity-50 group-hover:scale-110 transition-transform">
+                          <span className="text-4xl opacity-50">
                             📦
                           </span>
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/60 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                        {/* Overlay sombre pour lisibilité */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/70" />
+                        
+                        {/* Contenu superposé */}
+                        <div className="absolute inset-0 flex flex-col justify-center items-center p-6 text-center">
                           {category.description && (
-                            <p className="text-xs text-foreground/80 mb-1 font-medium">
+                            <p className="text-xs text-white/90 mb-3 font-medium leading-relaxed">
                               {category.description}
                             </p>
                           )}
-                          <h3 className="text-lg font-bold text-foreground mb-2">
+                          <h3 className="text-xl font-bold text-white mb-6 leading-tight">
                             {category.name}
                           </h3>
                           {category.link && (
                             <Button 
-                              variant="outline" 
-                              size="sm"
-                              className="bg-background hover:bg-primary hover:text-primary-foreground border-2"
+                              size="lg"
+                              className="bg-white text-black hover:bg-white/90 font-bold rounded-lg px-8 shadow-lg"
                               onClick={() => window.location.href = category.link}
                             >
                               ACHETER MAINTENANT
@@ -101,35 +103,38 @@ const CategorySection: React.FC = () => {
           {categories.map((category, index) => (
             <Card 
               key={index}
-              className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-2 hover:border-primary"
+              className="group hover:shadow-2xl transition-all duration-500 overflow-hidden border-0 rounded-2xl"
             >
               <CardContent className="p-0">
-                <div className="relative aspect-[4/3] bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center overflow-hidden">
+                <div className="relative aspect-[3/4] bg-muted flex items-center justify-center overflow-hidden">
                   {category.image_url ? (
                     <img 
                       src={category.image_url} 
                       alt={category.name}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   ) : (
-                    <span className="text-6xl opacity-50 group-hover:scale-110 transition-transform">
+                    <span className="text-6xl opacity-50">
                       📦
                     </span>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/60 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
+                  {/* Overlay sombre pour lisibilité */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/70" />
+                  
+                  {/* Contenu superposé */}
+                  <div className="absolute inset-0 flex flex-col justify-center items-center p-8 text-center">
                     {category.description && (
-                      <p className="text-sm text-foreground/80 mb-2 font-medium">
+                      <p className="text-sm text-white/90 mb-4 font-medium leading-relaxed max-w-xs">
                         {category.description}
                       </p>
                     )}
-                    <h3 className="text-xl font-bold text-foreground mb-3">
+                    <h3 className="text-2xl font-bold text-white mb-8 leading-tight">
                       {category.name}
                     </h3>
                     {category.link && (
                       <Button 
-                        variant="outline" 
-                        className="bg-background hover:bg-primary hover:text-primary-foreground border-2"
+                        size="lg"
+                        className="bg-white text-black hover:bg-white/90 font-bold rounded-lg px-10 py-6 text-base shadow-lg"
                         onClick={() => window.location.href = category.link}
                       >
                         ACHETER MAINTENANT
