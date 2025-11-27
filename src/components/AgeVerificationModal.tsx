@@ -10,32 +10,32 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onConfirm, 
   return (
     <div className="fixed inset-0 bg-black flex items-center justify-center z-[9999] p-4">
       <div className="text-center max-w-lg w-full space-y-8">
-        {/* Logo stylisé - peut être remplacé par votre logo */}
+        {/* Logo SNUSPEDIA */}
         <div className="flex justify-center mb-12">
-          <span className="text-[#c4ff0e] font-black text-5xl tracking-wider italic">
-            BLIP
+          <span className="text-primary font-black text-5xl tracking-wider italic">
+            SNUSPEDIA
           </span>
         </div>
 
         {/* Question principale */}
         <h2 className="text-white text-2xl font-normal mb-12">
-          are you over the age of 18?
+          avez-vous plus de 18 ans ?
         </h2>
 
         {/* Boutons horizontaux */}
         <div className="flex gap-4 justify-center items-center max-w-md mx-auto">
           <Button 
             onClick={onConfirm}
-            className="flex-1 bg-[#c4ff0e] hover:bg-[#b3ef00] text-black font-medium text-base py-7 rounded-full shadow-lg shadow-[#c4ff0e]/20 transition-all hover:shadow-[#c4ff0e]/40"
+            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-base py-7 rounded-full shadow-lg shadow-primary/20 transition-all hover:shadow-primary/40"
           >
-            yes, I am ✓
+            oui, j'ai 18+ ✓
           </Button>
           <Button 
             onClick={onDeny}
             variant="outline"
             className="flex-1 bg-black border-2 border-white/80 hover:border-white text-white hover:bg-white/5 font-medium text-base py-7 rounded-full transition-all"
           >
-            no, I'm not ✗
+            non, moins de 18 ✗
           </Button>
         </div>
 
