@@ -145,6 +145,14 @@ const ProductDetail = () => {
   const handleBuyNow = () => {
     if (!product) return;
     
+    // Vérification du stock
+    if (!product.in_stock) {
+      toast.error("Rupture de stock", {
+        description: "Ce produit est momentanément indisponible. Réessayez plus tard !",
+      });
+      return;
+    }
+    
     // Calculer le prix basé sur le palier sélectionné ou le prix par défaut
     let finalPrice = product.price * quantity;
     let finalQuantity = quantity;
@@ -348,9 +356,9 @@ const ProductDetail = () => {
                 className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90"
                 size="lg"
                 onClick={handleBuyNow}
-                disabled={!product.in_stock}
+                variant={product.in_stock ? undefined : "secondary"}
               >
-                Acheter maintenant
+                {product.in_stock ? "Acheter maintenant" : "RUPTURE DE STOCK"}
               </Button>
             </div>
 
