@@ -8,44 +8,39 @@ interface AgeVerificationModalProps {
 
 const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onConfirm, onDeny }) => {
   return (
-    <div className="fixed inset-0 bg-black/90 backdrop-blur-xl flex items-center justify-center z-[9999] p-4">
-      <div className="bg-black border-none shadow-none text-center max-w-[400px] w-full px-6 py-12 space-y-8">
-        {/* Cercle 18+ rouge distinctif */}
-        <div className="flex justify-center">
-          <div className="w-24 h-24 rounded-full border-4 border-red-600 flex items-center justify-center">
-            <span className="text-red-600 font-black text-3xl">18+</span>
-          </div>
+    <div className="fixed inset-0 bg-black flex items-center justify-center z-[9999] p-4">
+      <div className="text-center max-w-lg w-full space-y-8">
+        {/* Logo stylisé - peut être remplacé par votre logo */}
+        <div className="flex justify-center mb-12">
+          <span className="text-[#c4ff0e] font-black text-5xl tracking-wider italic">
+            BLIP
+          </span>
         </div>
 
-        {/* Titre et texte */}
-        <div className="space-y-4">
-          <h2 className="text-white font-bold text-2xl uppercase tracking-wider">
-            Vérification d'âge
-          </h2>
-          <p className="text-gray-400 text-base">
-            Vous devez avoir 18 ans ou plus pour entrer sur ce site. Les produits vendus peuvent contenir de la nicotine.
-          </p>
-        </div>
+        {/* Question principale */}
+        <h2 className="text-white text-2xl font-normal mb-12">
+          are you over the age of 18?
+        </h2>
 
-        {/* Boutons verticaux */}
-        <div className="space-y-3">
+        {/* Boutons horizontaux */}
+        <div className="flex gap-4 justify-center items-center max-w-md mx-auto">
           <Button 
             onClick={onConfirm}
-            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold uppercase py-6 rounded-md transition-colors"
+            className="flex-1 bg-[#c4ff0e] hover:bg-[#b3ef00] text-black font-medium text-base py-7 rounded-full shadow-lg shadow-[#c4ff0e]/20 transition-all hover:shadow-[#c4ff0e]/40"
           >
-            J'ai 18 ans ou plus
+            yes, I am ✓
           </Button>
           <Button 
             onClick={onDeny}
-            variant="ghost"
-            className="w-full text-gray-500 hover:text-white hover:bg-transparent uppercase py-6 rounded-md transition-colors"
+            variant="outline"
+            className="flex-1 bg-black border-2 border-white/80 hover:border-white text-white hover:bg-white/5 font-medium text-base py-7 rounded-full transition-all"
           >
-            J'ai moins de 18 ans
+            no, I'm not ✗
           </Button>
         </div>
 
-        {/* Disclaimer */}
-        <p className="text-gray-600 text-xs mt-6">
+        {/* Disclaimer discret */}
+        <p className="text-gray-700 text-xs mt-16">
           Vente interdite aux mineurs - Produits pouvant contenir de la nicotine
         </p>
       </div>
