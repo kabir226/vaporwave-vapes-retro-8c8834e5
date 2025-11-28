@@ -12,12 +12,10 @@ import { useCategories } from '@/hooks/useCategories';
 interface HeaderProps {
   cart: any[];
   onToggleCart: () => void;
-  onAddToCart?: (product: any) => void;
 }
 const Header: React.FC<HeaderProps> = ({
   cart,
-  onToggleCart,
-  onAddToCart
+  onToggleCart
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -71,7 +69,6 @@ const Header: React.FC<HeaderProps> = ({
             <SearchBar 
               onSearch={handleSearch} 
               placeholder="Rechercher des produits..." 
-              onAddToCart={onAddToCart}
             />
           </div>
         )}

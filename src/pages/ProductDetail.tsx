@@ -214,7 +214,7 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} onAddToCart={addToCart} />
+      <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
       
       <main className="container mx-auto px-4 py-8 mt-20">
         {/* Product Main Section */}
