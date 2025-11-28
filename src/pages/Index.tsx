@@ -82,7 +82,7 @@ const Index = () => {
       
       
       {/* Header */}
-      <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
+      <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} onAddToCart={handleAddToCart} />
 
       {/* Promotional Banner */}
       

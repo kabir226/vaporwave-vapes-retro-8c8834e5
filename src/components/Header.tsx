@@ -12,10 +12,12 @@ import { useCategories } from '@/hooks/useCategories';
 interface HeaderProps {
   cart: any[];
   onToggleCart: () => void;
+  onAddToCart?: (product: any) => void;
 }
 const Header: React.FC<HeaderProps> = ({
   cart,
-  onToggleCart
+  onToggleCart,
+  onAddToCart
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -66,7 +68,11 @@ const Header: React.FC<HeaderProps> = ({
         {/* Search Bar */}
         {isSearchOpen && (
           <div className="pb-4 animate-in slide-in-from-top">
-            <SearchBar onSearch={handleSearch} placeholder="Rechercher des produits..." />
+            <SearchBar 
+              onSearch={handleSearch} 
+              placeholder="Rechercher des produits..." 
+              onAddToCart={onAddToCart}
+            />
           </div>
         )}
       </div>

@@ -87,7 +87,7 @@ const Shop = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
+      <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} onAddToCart={addToCart} />
       
       <div className="pt-20 px-4 max-w-7xl mx-auto">
         {/* Toolbar */}

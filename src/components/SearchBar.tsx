@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, X } from 'lucide-react';
+import { Search, X, ShoppingCart } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useProducts } from '@/hooks/useProducts';
@@ -9,11 +9,13 @@ import { useCurrencies } from '@/hooks/useCurrencies';
 interface SearchBarProps {
   onSearch: (query: string) => void;
   placeholder?: string;
+  onAddToCart?: (product: any) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ 
   onSearch, 
-  placeholder = "Rechercher des produits..." 
+  placeholder = "Rechercher des produits...",
+  onAddToCart
 }) => {
   const [query, setQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
@@ -121,11 +123,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 return (
                   <div
                     key={product.id}
-                    onClick={() => handleProductClick(product.slug)}
-                    className="flex items-center gap-3 p-3 hover:bg-accent cursor-pointer transition-colors border-b border-border last:border-b-0"
+                    className="flex items-center gap-3 p-3 hover:bg-accent transition-colors border-b border-border last:border-b-0"
                   >
                     {/* Image miniature */}
-                    <div className="w-12 h-12 flex-shrink-0 bg-muted rounded overflow-hidden">
+                    <div 
+                      onClick={() => handleProductClick(product.slug)}
+                      className="w-12 h-12 flex-shrink-0 bg-muted rounded overflow-hidden cursor-pointer"
+                    >
                       {product.images && product.images[0] ? (
                         <img 
                           src={product.images[0]} 
@@ -140,7 +144,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     </div>
 
                     {/* Infos produit */}
-                    <div className="flex-1 min-w-0">
+                    <div 
+                      onClick={() => handleProductClick(product.slug)}
+                      className="flex-1 min-w-0 cursor-pointer"
+                    >
                       <p className="font-medium text-sm truncate">
                         {product.name}
                       </p>
@@ -149,14 +156,25 @@ const SearchBar: React.FC<SearchBarProps> = ({
                           {product.strength}
                         </p>
                       )}
-                    </div>
-
-                    {/* Prix */}
-                    <div className="flex-shrink-0">
+                      {/* Prix */}
                       <span className="text-primary font-bold text-sm">
                         {currencySymbol}{product.price.toFixed(2)}
                       </span>
                     </div>
+
+                    {/* Bouton Ajouter au panier */}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onAddToCart?.(product);
+                      }}
+                      className="flex-shrink-0 rounded-full border-2 border-foreground hover:bg-foreground hover:text-background font-semibold px-4"
+                    >
+                      <ShoppingCart className="w-4 h-4 mr-1" />
+                      Ajouter
+                    </Button>
                   </div>
                 );
               })}

@@ -126,6 +126,21 @@ const ProductDetail = () => {
     toast.success(`${quantity} × ${product.name} ajouté au panier`);
   };
 
+  const addToCart = (productToAdd: any) => {
+    const currentCart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existingItem = currentCart.find((item: any) => item.id === productToAdd.id);
+    
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      currentCart.push({ ...productToAdd, quantity: 1 });
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(currentCart));
+    setCart(currentCart);
+    toast.success(`${productToAdd.name} ajouté au panier`);
+  };
+
   const handleUpdateQuantity = (id: number | string, newQuantity: number) => {
     const updatedCart = cart.map((item: any) =>
       item.id === id ? { ...item, quantity: newQuantity } : item
@@ -199,7 +214,7 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
+      <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} onAddToCart={addToCart} />
       
       <main className="container mx-auto px-4 py-8 mt-20">
         {/* Product Main Section */}
