@@ -84,7 +84,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div ref={searchRef} className="relative max-w-md mx-auto">
+    <div ref={searchRef} className="relative z-50 max-w-md mx-auto">
       <form onSubmit={handleSubmit} className="relative">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -112,7 +112,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
       {/* Dropdown des résultats */}
       {showResults && query && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-popover border border-border rounded-xl shadow-2xl z-[100] overflow-hidden max-h-[50vh] overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-zinc-950 border border-zinc-800 rounded-xl shadow-2xl z-[9999] max-h-[60vh] overflow-y-auto">
           {loading ? (
             <div className="p-4 text-center text-muted-foreground text-sm">
               Recherche en cours...

@@ -34,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({
 
   const isActive = (path: string) => location.pathname === path;
   return <>
-    <header className="sticky top-0 w-full z-50 bg-background/95 backdrop-blur-xl border-b border-border overflow-x-hidden">
+    <header className="sticky top-0 w-full z-50 bg-background/95 backdrop-blur-xl border-b border-border">
       <div className="container mx-auto px-4 max-w-full">
         <div className="h-16 flex items-center justify-between max-w-full">
           {/* Left: Menu Button */}
