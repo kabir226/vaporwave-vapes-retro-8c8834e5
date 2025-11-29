@@ -112,7 +112,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
       {/* Dropdown des résultats */}
       {showResults && query && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-popover/95 backdrop-blur-sm border border-border rounded-xl shadow-2xl z-50 overflow-hidden max-h-[60vh] overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-popover border border-border rounded-xl shadow-2xl z-[100] overflow-hidden max-h-[50vh] overflow-y-auto">
           {loading ? (
             <div className="p-4 text-center text-muted-foreground text-sm">
               Recherche en cours...
