@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Star, ShoppingCart } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCurrencies } from '@/hooks/useCurrencies';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
@@ -69,12 +69,14 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
             return (
             <Card 
               key={product.id} 
-              className="group relative overflow-hidden bg-black border border-white/20 hover:border-primary transition-all duration-300 cursor-pointer rounded-2xl"
-              onClick={() => product.slug && navigate(`/product/${product.slug}`)}
+              className="group relative overflow-hidden bg-black border border-white/20 hover:border-primary transition-all duration-300 rounded-2xl"
             >
               <CardContent className="p-4">
                 {/* Product Display Area */}
-                <div className="relative h-32 mb-3 flex items-center justify-center">
+                <div 
+                  className="relative h-32 mb-3 flex items-center justify-center cursor-pointer"
+                  onClick={() => product.slug && navigate(`/product/${product.slug}`)}
+                >
                   {typeof product.image === 'string' && product.image.startsWith('http') ? (
                     product.image.match(/\.(mp4|webm|ogg|mov)$/i) ? (
                       <video 
@@ -100,14 +102,30 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
                 </div>
 
                 {/* Product Info */}
-                <div className="text-center space-y-1">
-                  <h3 className="text-white text-sm font-bold leading-tight">
+                <div className="text-center space-y-2">
+                  <h3 
+                    className="text-white text-sm font-bold leading-tight cursor-pointer"
+                    onClick={() => product.slug && navigate(`/product/${product.slug}`)}
+                  >
                     {product.name}
                   </h3>
                   
                   <div className="text-xl font-bold text-red-500">
                     {currencySymbol}{product.price.toFixed(2)}
                   </div>
+
+                  {/* Bouton Ajouter au panier */}
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onAddToCart(product);
+                    }}
+                    variant="outline"
+                    className="w-full rounded-full border-2 border-foreground hover:bg-foreground hover:text-background font-semibold mt-2"
+                  >
+                    <ShoppingCart className="w-4 h-4 mr-2" />
+                    Ajouter au panier
+                  </Button>
                 </div>
               </CardContent>
             </Card>
