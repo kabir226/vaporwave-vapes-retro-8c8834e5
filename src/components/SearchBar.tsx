@@ -23,7 +23,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const navigate = useNavigate();
   const searchRef = useRef<HTMLDivElement>(null);
 
-  // Debounce et filtrage en temps réel
+  // Debounce et filtrage intelligent en temps réel
   useEffect(() => {
     if (!query.trim()) {
       setFilteredProducts([]);
@@ -32,11 +32,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }
 
     const timeoutId = setTimeout(() => {
-      const results = products.filter(product => 
-        product.name.toLowerCase().includes(query.toLowerCase()) ||
-        product.description?.toLowerCase().includes(query.toLowerCase())
-      );
-      setFilteredProducts(results.slice(0, 6)); // Limite à 6 résultats
+      // Recherche intelligente : divise la requête en mots-clés
+      const searchTerms = query.toLowerCase().trim().split(/\s+/);
+      
+      const results = products.filter(product => {
+        const productTitle = product.name.toLowerCase();
+        // Vérifie que CHAQUE mot tapé existe dans le titre du produit
+        return searchTerms.every(term => productTitle.includes(term));
+      });
+      
+      setFilteredProducts(results.slice(0, 8)); // Limite à 8 résultats
       setShowResults(true);
     }, 300); // Debounce de 300ms
 
@@ -107,13 +112,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
       {/* Dropdown des résultats */}
       {showResults && query && (
-        <div className="absolute top-full mt-2 w-full bg-card border border-border rounded-lg shadow-lg overflow-hidden z-[100]">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-popover/95 backdrop-blur-sm border border-border rounded-xl shadow-2xl z-50 overflow-hidden max-h-[60vh] overflow-y-auto">
           {loading ? (
-            <div className="p-4 text-center text-muted-foreground">
+            <div className="p-4 text-center text-muted-foreground text-sm">
               Recherche en cours...
             </div>
           ) : filteredProducts.length > 0 ? (
-            <div className="max-h-[400px] overflow-y-auto">
+            <>
               {filteredProducts.map((product) => {
                 const currency = getCurrencyByCode(product.currency_code || 'EUR');
                 const currencySymbol = currency?.symbol || '€';
@@ -122,10 +127,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
                   <div
                     key={product.id}
                     onClick={() => handleProductClick(product.slug)}
-                    className="flex items-center gap-3 p-3 hover:bg-accent cursor-pointer transition-colors border-b border-border last:border-b-0"
+                    className="flex items-center gap-4 p-3 border-b border-border/50 last:border-0 hover:bg-accent/50 cursor-pointer transition-colors duration-200"
                   >
-                    {/* Image miniature */}
-                    <div className="w-12 h-12 flex-shrink-0 bg-muted rounded overflow-hidden">
+                    {/* Image */}
+                    <div className="w-12 h-12 flex-shrink-0 rounded-md bg-secondary/20 overflow-hidden">
                       {product.images && product.images[0] ? (
                         <img 
                           src={product.images[0]} 
@@ -134,48 +139,26 @@ const SearchBar: React.FC<SearchBarProps> = ({
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                          <Search className="w-6 h-6" />
+                          <Search className="w-5 h-5" />
                         </div>
                       )}
                     </div>
 
                     {/* Infos produit */}
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm truncate">
+                    <div className="flex flex-col gap-1 flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground line-clamp-1">
                         {product.name}
                       </p>
-                      {product.strength && (
-                        <p className="text-xs text-muted-foreground">
-                          {product.strength}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Prix */}
-                    <div className="flex-shrink-0">
-                      <span className="text-primary font-bold text-sm">
+                      <p className="text-xs font-bold text-primary">
                         {currencySymbol}{product.price.toFixed(2)}
-                      </span>
+                      </p>
                     </div>
                   </div>
                 );
               })}
-              
-              {/* Afficher tous les résultats */}
-              {filteredProducts.length > 0 && (
-                <button
-                  onClick={() => {
-                    onSearch(query);
-                    setShowResults(false);
-                  }}
-                  className="w-full p-3 text-center text-sm text-primary hover:bg-accent transition-colors font-medium"
-                >
-                  Voir tous les résultats ({filteredProducts.length})
-                </button>
-              )}
-            </div>
+            </>
           ) : (
-            <div className="p-4 text-center text-muted-foreground">
+            <div className="p-4 text-center text-muted-foreground text-sm">
               Aucun produit trouvé
             </div>
           )}
