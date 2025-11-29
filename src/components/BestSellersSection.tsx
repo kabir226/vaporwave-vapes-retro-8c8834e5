@@ -121,10 +121,10 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
                       onAddToCart(product);
                     }}
                     variant="outline"
-                    className="w-full rounded-full border-2 border-white bg-transparent text-white hover:bg-white hover:text-black font-semibold py-6 px-6 mt-3 text-base transition-all duration-300"
+                    className="w-full rounded-full border-2 border-white bg-transparent text-white hover:bg-white hover:text-black font-semibold py-3 px-4 mt-3 text-sm transition-all duration-300 inline-flex items-center justify-center gap-2"
                   >
-                    <ShoppingCart className="w-5 h-5 mr-2" />
-                    Ajouter au panier
+                    <ShoppingCart className="w-4 h-4" />
+                    <span>Ajouter au panier</span>
                   </Button>
                 </div>
               </CardContent>
