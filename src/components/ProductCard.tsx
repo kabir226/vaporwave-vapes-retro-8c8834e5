@@ -90,9 +90,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
         <Button
           onClick={handleAddToCart}
           variant="outline"
-          className="w-full rounded-full border-2 border-foreground hover:bg-foreground hover:text-background font-semibold"
+          className="w-full rounded-full border-2 border-white bg-transparent text-white hover:bg-white hover:text-black font-semibold py-6 px-6 text-base transition-all duration-300"
         >
-          <ShoppingCart className="w-4 h-4 mr-2" />
+          <ShoppingCart className="w-5 h-5 mr-2" />
           Ajouter au panier
         </Button>
       </CardContent>
