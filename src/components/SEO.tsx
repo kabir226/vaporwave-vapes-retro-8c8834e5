@@ -12,7 +12,7 @@ interface SEOProps {
 const SEO: React.FC<SEOProps> = ({
   title,
   description,
-  image = 'https://your-domain.com/og-image.jpg', // Remplacer par votre image par défaut
+  image = 'https://snuspedia-bf.com/og-image.png', // Image Open Graph par défaut
   url,
   type = 'website',
   structuredData

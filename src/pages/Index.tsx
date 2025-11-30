@@ -83,7 +83,7 @@ const Index = () => {
     "@type": "Store",
     "name": "Vaporwave",
     "description": "Le n°1 du Snus et des sachets de nicotine à Ouagadougou. Livraison rapide au Burkina Faso.",
-    "url": typeof window !== 'undefined' ? window.location.origin : '',
+    "url": typeof window !== 'undefined' ? window.location.origin : 'https://snuspedia-bf.com',
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "BF",

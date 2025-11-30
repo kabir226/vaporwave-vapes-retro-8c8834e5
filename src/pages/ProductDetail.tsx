@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -508,27 +508,29 @@ const ProductDetail = () => {
                 const relatedCurrencySymbol = relatedCurrency?.symbol || '€';
                 
                 return (
-                <Card 
+                <Link 
                   key={relatedProduct.id}
-                  className="group cursor-pointer hover:shadow-lg transition-shadow"
-                  onClick={() => navigate(`/product/${relatedProduct.slug}`)}
+                  to={`/product/${relatedProduct.slug}`}
+                  className="block"
                 >
-                  <CardContent className="p-4">
-                    <div className="bg-muted rounded-lg mb-3 overflow-hidden flex items-center justify-center h-32">
-                      {relatedProduct.images && relatedProduct.images.length > 0 ? (
-                        <img 
-                          src={relatedProduct.images[0]} 
-                          alt={relatedProduct.name}
-                          className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform"
-                        />
-                      ) : (
-                        <span className="text-4xl">📦</span>
-                      )}
-                    </div>
-                    <h3 className="font-semibold text-sm mb-1 line-clamp-2">{relatedProduct.name}</h3>
-                    <p className="font-bold text-primary">{relatedCurrencySymbol}{relatedProduct.price.toFixed(2)}</p>
-                  </CardContent>
-                </Card>
+                  <Card className="group cursor-pointer hover:shadow-lg transition-shadow h-full">
+                    <CardContent className="p-4">
+                      <div className="bg-muted rounded-lg mb-3 overflow-hidden flex items-center justify-center h-32">
+                        {relatedProduct.images && relatedProduct.images.length > 0 ? (
+                          <img 
+                            src={relatedProduct.images[0]} 
+                            alt={relatedProduct.name}
+                            className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform"
+                          />
+                        ) : (
+                          <span className="text-4xl">📦</span>
+                        )}
+                      </div>
+                      <h3 className="font-semibold text-sm mb-1 line-clamp-2">{relatedProduct.name}</h3>
+                      <p className="font-bold text-primary">{relatedCurrencySymbol}{relatedProduct.price.toFixed(2)}</p>
+                    </CardContent>
+                  </Card>
+                </Link>
                 );
               })}
             </div>
