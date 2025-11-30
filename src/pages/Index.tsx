@@ -20,6 +20,7 @@ import MixMatchSection from '@/components/MixMatchSection';
 import BuySNUSSection from '@/components/BuySNUSSection';
 import TrendingProducts from '@/components/TrendingProducts';
 import BenefitsSection from '@/components/BenefitsSection';
+import SEO from '@/components/SEO';
 import { useCart } from '@/hooks/useCart';
 import { useAgeVerification } from '@/hooks/useAgeVerification';
 import { useProducts } from '@/hooks/useProducts';
@@ -75,7 +76,28 @@ const Index = () => {
   if (!isAgeVerified || showAgeModal) {
     return <AgeVerificationModal onConfirm={confirmAge} onDeny={denyAge} />;
   }
+  
+  // Données structurées pour la page d'accueil (Schema.org)
+  const homeStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Vaporwave",
+    "description": "Le n°1 du Snus et des sachets de nicotine à Ouagadougou. Livraison rapide au Burkina Faso.",
+    "url": typeof window !== 'undefined' ? window.location.origin : '',
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "BF",
+      "addressLocality": "Ouagadougou"
+    }
+  };
+  
   return <div className="min-h-screen bg-background text-foreground">
+      <SEO 
+        title="Vaporwave - Snus & Nicotine au Burkina"
+        description="Le n°1 du Snus et des sachets de nicotine à Ouagadougou. Livraison rapide. Large gamme de produits pour une alternative sans fumée."
+        type="website"
+        structuredData={homeStructuredData}
+      />
       <ParticleBackground />
       
       {/* Trust Banner - Very Top */}

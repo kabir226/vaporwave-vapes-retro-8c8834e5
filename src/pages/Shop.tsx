@@ -7,6 +7,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import CartSummary from '@/components/CartSummary';
+import SEO from '@/components/SEO';
 import { Filter, Grid, List } from 'lucide-react';
 import { useProducts } from '@/hooks/useProducts';
 import { useCategories } from '@/hooks/useCategories';
@@ -87,6 +88,11 @@ const Shop = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="Boutique - Tous nos Snus et Puffs"
+        description="Explorez notre large gamme de snus et sachets de nicotine. Livraison rapide à Ouagadougou. Prix compétitifs et produits de qualité."
+        type="website"
+      />
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
       
       <div className="pt-20 px-4 max-w-7xl mx-auto">
