@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -212,8 +213,38 @@ const ProductDetail = () => {
     ? product.images[selectedImage] 
     : '/placeholder.svg';
 
+  // Tronquer la description à 160 caractères pour le SEO
+  const truncatedDescription = product.description 
+    ? product.description.substring(0, 160) + (product.description.length > 160 ? '...' : '')
+    : `Découvrez ${product.name} sur Vaporwave - Votre boutique de snus et nicotine au Burkina Faso`;
+
+  // Données structurées pour le produit (Schema.org Product)
+  const productStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "description": product.description || `${product.name} - Snus et sachets de nicotine`,
+    "image": mainImage,
+    "offers": {
+      "@type": "Offer",
+      "price": product.price,
+      "priceCurrency": currencyCode || "XOF",
+      "availability": product.in_stock 
+        ? "https://schema.org/InStock" 
+        : "https://schema.org/OutOfStock",
+      "url": typeof window !== 'undefined' ? window.location.href : ''
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={`${product.name} | Vaporwave`}
+        description={truncatedDescription}
+        image={mainImage}
+        type="product"
+        structuredData={productStructuredData}
+      />
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
       
       <main className="container mx-auto px-4 py-8 mt-20">
