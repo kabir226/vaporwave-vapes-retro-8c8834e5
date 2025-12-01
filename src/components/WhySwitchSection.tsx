@@ -5,6 +5,7 @@ import BenefitPreviewDialog from './BenefitPreviewDialog';
 import VideoPreviewDialog from './VideoPreviewDialog';
 import whySwitchBg from '@/assets/why-switch-background.jpg';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
+import OptimizedImage from '@/components/ui/optimized-image';
 
 interface Benefit {
   icon: React.ReactNode;
@@ -81,10 +82,12 @@ const WhySwitchSection: React.FC = () => {
 
           <div className="relative rounded-2xl overflow-hidden aspect-[4/3] mb-8">
             {/* Background Image */}
-            <img 
+            <OptimizedImage 
               src={mainSettings?.image_url || whySwitchBg} 
               alt="Why Switch Background" 
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full"
+              containerClassName="absolute inset-0 w-full h-full"
+              objectFit="cover"
             />
             {/* Dark overlay for better text visibility */}
             <div className="absolute inset-0 bg-black/40" />

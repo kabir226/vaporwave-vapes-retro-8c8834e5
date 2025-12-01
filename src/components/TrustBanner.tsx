@@ -1,6 +1,7 @@
 import React from 'react';
 import { Star, Shield, Award } from 'lucide-react';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
+import OptimizedImage from '@/components/ui/optimized-image';
 
 const TrustBanner: React.FC = () => {
   const { getSetting } = useHomepageSettings('trust_banner');
@@ -13,10 +14,12 @@ const TrustBanner: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {settings.image_url && (
           <div className="mb-6 rounded-2xl overflow-hidden">
-            <img 
+            <OptimizedImage 
               src={settings.image_url} 
               alt={settings.title || 'Trust Banner'} 
-              className="w-full aspect-[16/9] md:aspect-[21/9] object-cover"
+              className="w-full aspect-[16/9] md:aspect-[21/9]"
+              containerClassName="w-full aspect-[16/9] md:aspect-[21/9]"
+              objectFit="cover"
             />
           </div>
         )}

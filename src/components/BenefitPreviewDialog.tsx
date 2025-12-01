@@ -1,6 +1,8 @@
 import React from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { X } from 'lucide-react';
+import OptimizedImage from '@/components/ui/optimized-image';
+
 interface BenefitPreviewDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -25,7 +27,7 @@ const BenefitPreviewDialog: React.FC<BenefitPreviewDialogProps> = ({
         
         <div className="relative">
           <div className="aspect-[3/4] bg-muted flex items-center justify-center overflow-hidden">
-            {imageUrl ? <img src={imageUrl} alt={title} className="w-full h-full object-cover" /> : imagePlaceholder ? <p className="text-muted-foreground text-center px-8">{imagePlaceholder}</p> : <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20" />}
+            {imageUrl ? <OptimizedImage src={imageUrl} alt={title} className="w-full h-full" containerClassName="w-full h-full" objectFit="cover" /> : imagePlaceholder ? <p className="text-muted-foreground text-center px-8">{imagePlaceholder}</p> : <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20" />}
           </div>
           
           <div className="p-8">

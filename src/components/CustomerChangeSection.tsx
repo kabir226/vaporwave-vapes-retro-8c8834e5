@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import OptimizedImage from '@/components/ui/optimized-image';
+
 const CustomerChangeSection: React.FC = () => {
   const {
     getSetting,
@@ -51,10 +53,12 @@ const CustomerChangeSection: React.FC = () => {
                           playsInline
                         />
                       ) : (
-                        <img
+                        <OptimizedImage
                           src={testimonial.image_url}
                           alt={`${testimonial.author} testimonial`}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full"
+                          containerClassName="w-full h-full"
+                          objectFit="cover"
                         />
                       )
                     ) : (

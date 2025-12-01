@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { useCurrencies } from '@/hooks/useCurrencies';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import OptimizedImage from '@/components/ui/optimized-image';
+
 interface TrendingProduct {
   id: string | number;
   name: string;
@@ -39,7 +41,7 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({
   return <section className="py-16 px-4 bg-card/10">
       <div className="max-w-7xl mx-auto">
         {settings?.image_url && <div className="mb-8 rounded-2xl overflow-hidden">
-            <img src={settings.image_url} alt={settings.title || 'Trending'} className="w-full aspect-[16/9] object-cover" />
+            <OptimizedImage src={settings.image_url} alt={settings.title || 'Trending'} className="w-full aspect-[16/9]" containerClassName="w-full aspect-[16/9]" objectFit="cover" />
           </div>}
         
         <div className="text-center mb-12">
@@ -67,7 +69,7 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({
                       className="relative h-32 mb-3 flex items-center justify-center cursor-pointer"
                       onClick={() => product.slug && navigate(`/product/${product.slug}`)}
                     >
-                      {typeof product.image === 'string' && product.image.startsWith('http') ? <img src={product.image} alt={product.name} className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300" /> : <span className="text-5xl scale-110 group-hover:scale-125 transition-transform duration-300">
+                      {typeof product.image === 'string' && product.image.startsWith('http') ? <OptimizedImage src={product.image} alt={product.name} className="w-full h-full scale-110 group-hover:scale-125 transition-transform duration-300" containerClassName="w-full h-full" objectFit="contain" /> : <span className="text-5xl scale-110 group-hover:scale-125 transition-transform duration-300">
                           {product.image || '📦'}
                         </span>}
                     </div>
