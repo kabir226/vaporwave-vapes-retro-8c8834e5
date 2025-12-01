@@ -14,6 +14,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useCurrencies } from "@/hooks/useCurrencies";
 import CartModal from "@/components/CartModal";
 import { trackPurchase } from "@/lib/metaPixel";
+import OptimizedImage from "@/components/ui/optimized-image";
 
 interface Product {
   id: string;
@@ -256,10 +257,13 @@ const ProductDetail = () => {
               className="relative bg-muted rounded-lg overflow-hidden group cursor-pointer flex items-center justify-center h-[420px]"
               onClick={() => setZoomOpen(true)}
             >
-              <img
+              <OptimizedImage
                 src={mainImage}
                 alt={product.name}
-                className="max-h-full max-w-full object-contain"
+                className="max-h-full max-w-full"
+                containerClassName="w-full h-full flex items-center justify-center"
+                objectFit="contain"
+                priority
               />
               <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                 <ZoomIn className="w-5 h-5" />
@@ -279,10 +283,12 @@ const ProductDetail = () => {
                         : 'border-transparent hover:border-muted-foreground/20'
                     }`}
                   >
-                    <img
+                    <OptimizedImage
                       src={image}
                       alt={`${product.name} ${index + 1}`}
-                      className="max-h-full max-w-full object-contain"
+                      className="max-h-full max-w-full"
+                      containerClassName="w-full h-full flex items-center justify-center"
+                      objectFit="contain"
                     />
                   </div>
                 ))}
@@ -517,10 +523,12 @@ const ProductDetail = () => {
                     <CardContent className="p-4">
                       <div className="bg-muted rounded-lg mb-3 overflow-hidden flex items-center justify-center h-32">
                         {relatedProduct.images && relatedProduct.images.length > 0 ? (
-                          <img 
+                          <OptimizedImage 
                             src={relatedProduct.images[0]} 
                             alt={relatedProduct.name}
-                            className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform"
+                            className="max-h-full max-w-full group-hover:scale-105 transition-transform"
+                            containerClassName="w-full h-full flex items-center justify-center"
+                            objectFit="contain"
                           />
                         ) : (
                           <span className="text-4xl">📦</span>
@@ -546,6 +554,7 @@ const ProductDetail = () => {
             src={mainImage} 
             alt={product.name}
             className="w-full h-auto"
+            loading="lazy"
           />
         </DialogContent>
       </Dialog>

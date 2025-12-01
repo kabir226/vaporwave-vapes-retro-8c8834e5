@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart3, Smile, Droplet, Ban, Cigarette, Clock } from 'lucide-react';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
+import OptimizedImage from '@/components/ui/optimized-image';
 
 interface Benefit {
   icon: React.ElementType;
@@ -106,11 +107,13 @@ const BenefitsComparisonSection: React.FC = () => {
           {/* Top: Main Image */}
           <div className="relative w-full aspect-[16/9] overflow-hidden">
             {activeBenefit?.imageUrl ? (
-              <img 
+              <OptimizedImage 
                 key={activeIndex}
                 src={activeBenefit.imageUrl} 
                 alt={activeBenefit.previewTitle} 
-                className="w-full h-full object-cover animate-fade-in"
+                className="w-full h-full animate-fade-in"
+                containerClassName="w-full h-full"
+                objectFit="cover"
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center animate-fade-in">

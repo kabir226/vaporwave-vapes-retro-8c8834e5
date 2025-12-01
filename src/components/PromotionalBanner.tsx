@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
+import OptimizedImage from '@/components/ui/optimized-image';
 
 const PromotionalBanner: React.FC = () => {
   const { getSetting } = useHomepageSettings('promotional_banner');
@@ -13,10 +14,12 @@ const PromotionalBanner: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {settings.image_url ? (
           <div className="rounded-xl overflow-hidden mb-3">
-            <img 
+            <OptimizedImage 
               src={settings.image_url} 
               alt={settings.title || 'Promotion'} 
-              className="w-full aspect-[21/9] object-cover"
+              className="w-full aspect-[21/9]"
+              containerClassName="w-full aspect-[21/9]"
+              objectFit="cover"
             />
           </div>
         ) : null}

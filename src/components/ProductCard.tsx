@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useCurrencies } from '@/hooks/useCurrencies';
 import { ShoppingCart } from 'lucide-react';
+import OptimizedImage from '@/components/ui/optimized-image';
 
 interface Product {
   id: string | number;
@@ -60,10 +61,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
                 playsInline
               />
             ) : (
-              <img 
+              <OptimizedImage 
                 src={product.images[0]} 
                 alt={product.name}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                className="w-full h-full group-hover:scale-110 transition-transform duration-300"
+                containerClassName="w-full h-full"
+                objectFit="cover"
               />
             )
           ) : (

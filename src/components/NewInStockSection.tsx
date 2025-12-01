@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
 import { Link } from 'react-router-dom';
+import OptimizedImage from '@/components/ui/optimized-image';
+
 const NewInStockSection: React.FC = () => {
   const {
     getSetting
@@ -59,10 +61,12 @@ const NewInStockSection: React.FC = () => {
                               playsInline
                             />
                           ) : (
-                            <img 
+                            <OptimizedImage 
                               src={product.image_url} 
                               alt={product.name || 'Nouveau produit'} 
-                              className="w-full h-full object-cover" 
+                              className="w-full h-full"
+                              containerClassName="w-full h-full"
+                              objectFit="cover"
                             />
                           )
                         ) : (

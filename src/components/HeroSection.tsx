@@ -4,6 +4,7 @@ import { ArrowRight, ChevronLeft, ChevronRight, PlayCircle } from 'lucide-react'
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 import useEmblaCarousel from 'embla-carousel-react';
 import VideoPreviewDialog from '@/components/VideoPreviewDialog';
+import OptimizedImage from '@/components/ui/optimized-image';
 
 interface HeroSectionProps {
   onDiscoverProducts: () => void;
@@ -60,10 +61,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 {slides.map((slide: any, index: number) => (
                   <div key={index} className="flex-[0_0_100%] min-w-0">
                     <div className="relative aspect-[4/3] md:aspect-[16/9]">
-                      <img 
+                      <OptimizedImage 
                         src={slide.image_url} 
                         alt={`Slide ${index + 1}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full"
+                        containerClassName="w-full h-full"
+                        priority={index === 0}
+                        objectFit="cover"
                       />
                       {slide.buttons && slide.buttons.length > 0 && (
                         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-4 flex-wrap justify-center">
@@ -131,10 +135,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="relative w-full mb-6 rounded-2xl overflow-hidden">
             <div className="aspect-[4/3] md:aspect-[16/9] bg-gradient-to-br from-primary/20 via-card to-accent/10 flex items-center justify-center">
               {heroSettings?.image_url ? (
-                <img 
+                <OptimizedImage 
                   src={heroSettings.image_url} 
                   alt={heroSettings.title || "Hero"}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full"
+                  containerClassName="w-full h-full"
+                  priority
+                  objectFit="cover"
                 />
               ) : (
                 <div className="relative w-full h-full bg-gradient-to-br from-primary/10 to-accent/5">

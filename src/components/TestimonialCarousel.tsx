@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Star, Quote, User } from 'lucide-react';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 import Autoplay from "embla-carousel-autoplay";
+import OptimizedImage from '@/components/ui/optimized-image';
 import {
   Carousel,
   CarouselContent,
@@ -36,10 +37,12 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testimonials 
       <div className="max-w-6xl mx-auto">
         {settings?.image_url && (
           <div className="mb-8 rounded-2xl overflow-hidden">
-            <img 
+            <OptimizedImage 
               src={settings.image_url} 
               alt={settings.title || 'Testimonials'} 
-              className="w-full aspect-[16/9] object-cover"
+              className="w-full aspect-[16/9]"
+              containerClassName="w-full aspect-[16/9]"
+              objectFit="cover"
             />
           </div>
         )}

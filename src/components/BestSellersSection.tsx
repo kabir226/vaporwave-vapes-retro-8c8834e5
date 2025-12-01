@@ -6,6 +6,7 @@ import { ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCurrencies } from '@/hooks/useCurrencies';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
+import OptimizedImage from '@/components/ui/optimized-image';
 
 interface Product {
   id: string | number;
@@ -37,10 +38,12 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
       <div className="max-w-7xl mx-auto">
         {settings?.image_url && (
           <div className="mb-8 rounded-2xl overflow-hidden">
-            <img 
+            <OptimizedImage 
               src={settings.image_url} 
               alt={settings.title || 'Produits Tendance'} 
-              className="w-full aspect-[16/9] object-cover"
+              className="w-full aspect-[16/9]"
+              containerClassName="w-full aspect-[16/9]"
+              objectFit="cover"
             />
           </div>
         )}
@@ -77,24 +80,26 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
                   className="relative h-32 mb-3 flex items-center justify-center cursor-pointer"
                   onClick={() => product.slug && navigate(`/product/${product.slug}`)}
                 >
-                  {typeof product.image === 'string' && product.image.startsWith('http') ? (
-                    product.image.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                      <video 
-                        src={product.image} 
-                        className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                      />
+                    {typeof product.image === 'string' && product.image.startsWith('http') ? (
+                      product.image.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                        <video 
+                          src={product.image} 
+                          className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                        />
+                      ) : (
+                        <OptimizedImage 
+                          src={product.image} 
+                          alt={product.name}
+                          className="w-full h-full scale-110 group-hover:scale-125 transition-transform duration-300"
+                          containerClassName="w-full h-full"
+                          objectFit="contain"
+                        />
+                      )
                     ) : (
-                      <img 
-                        src={product.image} 
-                        alt={product.name}
-                        className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-transform duration-300"
-                      />
-                    )
-                  ) : (
                     <span className="text-5xl scale-110 group-hover:scale-125 transition-transform duration-300">
                       {product.image || '📦'}
                     </span>
