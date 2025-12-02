@@ -51,14 +51,14 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories, title }
               delay: 4000,
               stopOnMouseEnter: true,
               stopOnInteraction: true,
-            }),
+            }) as any,
           ]}
           className="w-full"
           onMouseEnter={() => {
-            api?.plugins()?.autoplay?.stop();
+            (api?.plugins()?.autoplay as any)?.stop?.();
           }}
           onMouseLeave={() => {
-            api?.plugins()?.autoplay?.play();
+            (api?.plugins()?.autoplay as any)?.play?.();
           }}
         >
           <CarouselContent className="-ml-2 md:-ml-4">
