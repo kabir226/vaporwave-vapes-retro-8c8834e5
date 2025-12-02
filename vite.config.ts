@@ -27,15 +27,8 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    // Enable tree-shaking
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info'],
-      },
-    },
+    // Enable tree-shaking with esbuild (built-in, faster than terser)
+    minify: 'esbuild',
     rollupOptions: {
       output: {
         manualChunks: {
