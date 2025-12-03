@@ -39,10 +39,6 @@ export default defineConfig(({ mode }) => ({
           'vendor-carousel': ['embla-carousel-react', 'embla-carousel-autoplay'],
         },
       },
-      treeshake: {
-        moduleSideEffects: false,
-        propertyReadSideEffects: false,
-      },
     },
     chunkSizeWarningLimit: 500,
     sourcemap: false,
