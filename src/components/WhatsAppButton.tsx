@@ -8,12 +8,14 @@ const WhatsAppButton = () => {
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 left-6 z-50"
+      aria-label="Contacter sur WhatsApp"
     >
       <Button
         size="icon"
         className="h-14 w-14 rounded-full bg-[#25D366] hover:bg-[#20BA5A] shadow-lg transition-transform hover:scale-110"
+        aria-label="Ouvrir WhatsApp"
       >
-        <MessageCircle className="h-7 w-7 text-white" />
+        <MessageCircle className="h-7 w-7 text-white" aria-hidden="true" />
       </Button>
     </a>
   );
