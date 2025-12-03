@@ -177,7 +177,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                     size="lg" 
                     className="bg-foreground hover:bg-foreground/90 text-background font-bold px-12 py-6 text-base group rounded-full w-full md:w-auto"
                   >
-                    {heroSettings?.button_text || "ACHETER NICOTINE SANS FUMÉE"}
+                    {heroSettings?.button_text || "ACHETER"}
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </a>
