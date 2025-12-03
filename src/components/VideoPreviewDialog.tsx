@@ -30,6 +30,8 @@ const VideoPreviewDialog: React.FC<VideoPreviewDialogProps> = ({
           src={videoUrl} 
           controls 
           autoPlay
+          preload="metadata"
+          playsInline
           className="rounded-xl max-h-[85vh] w-auto object-contain"
         >
           Votre navigateur ne supporte pas la lecture de vidéos.
