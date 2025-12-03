@@ -26,7 +26,7 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onConfirm, 
         <div className="flex gap-4 justify-center items-center max-w-md mx-auto">
           <Button 
             onClick={onConfirm}
-            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-base py-7 rounded-full shadow-lg shadow-primary/20 transition-all hover:shadow-primary/40"
+            className="flex-1 bg-[#cc0029] hover:bg-[#b30024] text-white font-bold text-base py-7 rounded-full shadow-lg shadow-primary/20 transition-all hover:shadow-primary/40"
           >
             oui, j'ai 18+ ✓
           </Button>
@@ -40,7 +40,7 @@ const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({ onConfirm, 
         </div>
 
         {/* Disclaimer discret */}
-        <p className="text-gray-700 text-xs mt-16">
+        <p className="text-gray-400 text-xs mt-16">
           Vente interdite aux mineurs - Produits pouvant contenir de la nicotine
         </p>
       </div>
