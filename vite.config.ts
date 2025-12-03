@@ -37,6 +37,7 @@ export default defineConfig(({ mode }) => ({
           'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tooltip', '@radix-ui/react-popover'],
           'vendor-query': ['@tanstack/react-query'],
           'vendor-carousel': ['embla-carousel-react', 'embla-carousel-autoplay'],
+          'vendor-icons': ['lucide-react'],
         },
       },
     },

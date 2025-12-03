@@ -51,7 +51,10 @@ class ErrorBoundary extends Component<{ children: ReactNode }, ErrorBoundaryStat
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('App Error:', error, errorInfo);
+    // Silent error handling - no console output for production
+    if (import.meta.env.DEV) {
+      console.error('App Error:', error, errorInfo);
+    }
   }
 
   render() {
