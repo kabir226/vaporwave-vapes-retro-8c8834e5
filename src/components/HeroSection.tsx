@@ -175,9 +175,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 <a href="/shop">
                   <Button 
                     size="lg" 
-                    className="bg-foreground hover:bg-foreground/90 text-background font-bold px-12 py-6 text-base group rounded-full w-full md:w-auto"
+                    className="bg-foreground hover:bg-foreground/90 text-background font-bold px-8 py-6 text-base group rounded-full w-full md:min-w-[280px]"
                   >
-                    {heroSettings?.button_text || "ACHETER"}
+                    {heroSettings?.button_text || "ACHETER MAINTENANT"}
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </a>
@@ -186,7 +186,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                   size="lg"
                   variant="outline"
                   onClick={() => setIsVideoDialogOpen(true)}
-                  className="border-2 border-foreground/80 text-foreground hover:bg-foreground/10 hover:border-foreground font-bold px-8 py-6 text-base group rounded-full w-full md:w-auto"
+                  className="border-2 border-foreground/80 text-foreground hover:bg-foreground/10 hover:border-foreground font-bold px-8 py-6 text-base group rounded-full w-full md:min-w-[280px]"
                 >
                   <PlayCircle className="w-5 h-5 mr-2" />
                   Comment ça marche ?
