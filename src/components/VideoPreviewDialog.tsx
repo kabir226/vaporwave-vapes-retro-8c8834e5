@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { X, Loader2 } from 'lucide-react';
 
@@ -16,12 +16,34 @@ const VideoPreviewDialog: React.FC<VideoPreviewDialogProps> = ({
   title
 }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Only load video when dialog opens
+  useEffect(() => {
+    if (isOpen) {
+      setShouldLoadVideo(true);
+    }
+  }, [isOpen]);
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setIsLoading(true);
+      // Pause and reset video when closing
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
+      // Delay unloading to allow for smooth close animation
+      setTimeout(() => {
+        setShouldLoadVideo(false);
+      }, 300);
     }
     onClose();
+  };
+
+  const handleVideoReady = () => {
+    setIsLoading(false);
   };
 
   return (
@@ -36,24 +58,28 @@ const VideoPreviewDialog: React.FC<VideoPreviewDialogProps> = ({
         </button>
         
         {/* Loading spinner */}
-        {isLoading && (
+        {isLoading && shouldLoadVideo && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/80 rounded-xl">
             <Loader2 className="w-12 h-12 text-primary animate-spin" />
           </div>
         )}
         
-        <video 
-          src={videoUrl} 
-          controls 
-          autoPlay
-          preload="auto"
-          playsInline
-          onCanPlay={() => setIsLoading(false)}
-          onLoadedData={() => setIsLoading(false)}
-          className={`rounded-xl max-h-[85vh] w-auto object-contain transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
-        >
-          Votre navigateur ne supporte pas la lecture de vidéos.
-        </video>
+        {/* Video - only render when dialog is open */}
+        {shouldLoadVideo && (
+          <video 
+            ref={videoRef}
+            src={videoUrl} 
+            controls 
+            autoPlay
+            preload="auto"
+            playsInline
+            onCanPlay={handleVideoReady}
+            onLoadedData={handleVideoReady}
+            className={`rounded-xl max-h-[85vh] w-auto object-contain transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+          >
+            Votre navigateur ne supporte pas la lecture de vidéos.
+          </video>
+        )}
       </DialogContent>
     </Dialog>
   );

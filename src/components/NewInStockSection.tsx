@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
 import { Link } from 'react-router-dom';
 import OptimizedImage from '@/components/ui/optimized-image';
+import LazyVideo from '@/components/ui/lazy-video';
 
 const NewInStockSection: React.FC = () => {
   const {
@@ -52,13 +53,12 @@ const NewInStockSection: React.FC = () => {
                       <div className="bg-muted rounded-2xl overflow-hidden w-full aspect-square flex items-center justify-center">
                         {product.image_url ? (
                           product.image_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                            <video 
+                            <LazyVideo 
                               src={product.image_url} 
-                              className="w-full h-full object-cover"
+                              className="w-full h-full"
                               autoPlay
                               loop
                               muted
-                              playsInline
                             />
                           ) : (
                             <OptimizedImage 
