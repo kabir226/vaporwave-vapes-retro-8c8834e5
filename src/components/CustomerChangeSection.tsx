@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import OptimizedImage from '@/components/ui/optimized-image';
+import LazyVideo from '@/components/ui/lazy-video';
 
 const CustomerChangeSection: React.FC = () => {
   const {
@@ -46,11 +46,11 @@ const CustomerChangeSection: React.FC = () => {
                   <div className="rounded-2xl overflow-hidden aspect-[4/3] bg-muted flex items-center justify-center">
                     {testimonial.image_url ? (
                       testimonial.image_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                        <video
+                        <LazyVideo
                           src={testimonial.image_url}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full"
                           controls
-                          playsInline
+                          muted={false}
                         />
                       ) : (
                         <OptimizedImage
