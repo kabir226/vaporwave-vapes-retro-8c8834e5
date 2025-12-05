@@ -34,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({
 
   const isActive = (path: string) => location.pathname === path;
   return <>
-    <header className="sticky top-0 w-full z-50 bg-background/95 backdrop-blur-xl border-b border-border">
+    <header className="sticky top-0 w-full z-50 bg-background/95 backdrop-blur-xl border-b border-border" role="banner">
       <div className="container mx-auto px-4 max-w-full">
         <div className="h-16 flex items-center justify-between max-w-full">
           {/* Left: Menu Button */}
@@ -81,7 +81,7 @@ const Header: React.FC<HeaderProps> = ({
         <SheetHeader>
           <SheetTitle className="text-left">Menu</SheetTitle>
         </SheetHeader>
-        <nav className="flex flex-col gap-2 mt-6">
+        <nav className="flex flex-col gap-2 mt-6" role="navigation" aria-label="Menu principal">
           <Link 
             to="/" 
             className={`block py-3 px-4 rounded-lg text-base font-medium transition-colors ${
