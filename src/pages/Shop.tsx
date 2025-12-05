@@ -86,57 +86,104 @@ const Shop = () => {
     setCart(prev => prev.filter(item => item.id !== id));
   };
 
+  // Données structurées pour la boutique
+  const shopStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Boutique Snuspedia - Snus et Sachets de Nicotine",
+    "description": "Explorez notre large gamme de snus et sachets de nicotine. Livraison rapide à Ouagadougou.",
+    "url": "https://snuspedia-bf.com/shop",
+    "mainEntity": {
+      "@type": "ItemList",
+      "numberOfItems": filteredProducts.length,
+      "itemListElement": filteredProducts.slice(0, 10).map((product, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "Product",
+          "name": product.name,
+          "url": `https://snuspedia-bf.com/product/${product.slug}`
+        }
+      }))
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Boutique - Tous nos Snus et Puffs"
-        description="Explorez notre large gamme de snus et sachets de nicotine. Livraison rapide à Ouagadougou. Prix compétitifs et produits de qualité."
+        title="Boutique Snus & Nicotine - Tous nos Produits | Snuspedia"
+        description="Explorez notre large gamme de snus et sachets de nicotine au Burkina Faso. Livraison rapide à Ouagadougou. Prix compétitifs et produits de qualité premium."
+        url="https://snuspedia-bf.com/shop"
         type="website"
+        structuredData={shopStructuredData}
       />
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
       
-      <div className="pt-20 px-4 max-w-7xl mx-auto">
+      <main className="pt-20 px-4 max-w-7xl mx-auto">
+        {/* Page Title - H1 pour SEO */}
+        <header className="text-center py-8">
+          <h1 className="text-3xl md:text-4xl font-black text-cyber mb-2">
+            Notre Boutique Snus & Nicotine
+          </h1>
+          <p className="text-muted-foreground">
+            Découvrez notre sélection de sachets de nicotine premium
+          </p>
+        </header>
+
         {/* Toolbar */}
         <div className="flex justify-between items-center py-6 mb-8">
           <button
             onClick={() => setShowFilters(true)}
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Ouvrir les filtres"
           >
             <Filter className="w-4 h-4" />
-            <span>Filter and sort</span>
+            <span>Filtrer et trier</span>
           </button>
-          <p className="text-sm text-muted-foreground">
-            {filteredProducts.length} products
+          <p className="text-sm text-muted-foreground" aria-live="polite">
+            {filteredProducts.length} produit{filteredProducts.length > 1 ? 's' : ''}
           </p>
         </div>
 
         {/* Products Grid */}
-        {loading ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">Chargement des produits...</p>
-          </div>
-        ) : filteredProducts.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">Aucun produit trouvé</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 pb-12">
-            {filteredProducts.map((product, index) => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                onAddToCart={addToCart}
-                delay={index * 0.1}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+        <section aria-label="Liste des produits">
+          {loading ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">Chargement des produits...</p>
+            </div>
+          ) : filteredProducts.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">Aucun produit trouvé</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 pb-12">
+              {filteredProducts.map((product, index) => (
+                <article key={product.id}>
+                  <ProductCard 
+                    product={product} 
+                    onAddToCart={addToCart}
+                    delay={index * 0.1}
+                  />
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+      </main>
 
       {/* Filter Sheet */}
       {showFilters && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50" onClick={() => setShowFilters(false)}>
-          <div className="fixed inset-y-0 left-0 w-80 bg-background border-r border-border shadow-lg" onClick={(e) => e.stopPropagation()}>
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50" 
+          onClick={() => setShowFilters(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Filtres de produits"
+        >
+          <aside 
+            className="fixed inset-y-0 left-0 w-80 bg-background border-r border-border shadow-lg" 
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-bold">Filtres</h3>
@@ -144,12 +191,13 @@ const Shop = () => {
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowFilters(false)}
+                  aria-label="Fermer les filtres"
                 >
                   ✕
                 </Button>
               </div>
               
-              <div className="space-y-4">
+              <nav className="space-y-4" aria-label="Filtres par catégorie">
                 <div>
                   <h4 className="font-semibold mb-3">Catégories</h4>
                   <div className="space-y-2">
@@ -165,6 +213,7 @@ const Shop = () => {
                             ? 'bg-primary text-primary-foreground' 
                             : 'hover:bg-muted'
                         }`}
+                        aria-pressed={selectedCategory === category.id}
                       >
                         <span className="text-sm">{category.name}</span>
                         <Badge variant="outline" className="text-xs">
@@ -174,21 +223,27 @@ const Shop = () => {
                     ))}
                   </div>
                 </div>
-              </div>
+              </nav>
             </div>
-          </div>
+          </aside>
         </div>
       )}
 
       {/* Cart Modal */}
       {showCart && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Panier"
+        >
           <div className="relative">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setShowCart(false)}
               className="absolute -top-2 -right-2 z-10 bg-background border"
+              aria-label="Fermer le panier"
             >
               ✕
             </Button>

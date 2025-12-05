@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const Footer: React.FC = () => {
   const legalLinks = ['Mentions légales', 'Conditions générales', 'Politique de confidentialité', 'Conformité Tobacco 18', 'Contact'];
   const warnings = ["Les substituts nicotiniques sont strictement interdits aux personnes de moins de 18 ans", "Nos produits contiennent de la nicotine, une substance hautement addictive", "Évitez-les si vous n'êtes pas fumeur"];
-  return <footer className="bg-card/80 backdrop-blur-xl border-t border-border py-16 px-4">
+  return <footer className="bg-card/80 backdrop-blur-xl border-t border-border py-16 px-4" role="contentinfo">
       <div className="max-w-6xl mx-auto">
         {/* Brand Section */}
         
