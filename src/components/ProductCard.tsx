@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useCurrencies } from '@/hooks/useCurrencies';
 import { ShoppingCart } from 'lucide-react';
 import OptimizedImage from '@/components/ui/optimized-image';
@@ -29,7 +29,6 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay = 0 }) => {
-  const navigate = useNavigate();
   const { getCurrencyByCode } = useCurrencies();
   
   const currency = getCurrencyByCode((product as any).currency_code || 'EUR');
@@ -37,8 +36,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     onAddToCart(product);
   };
+
+  const productUrl = product.slug ? `/product/${product.slug}` : '#';
 
   return (
     <Card 
@@ -46,10 +48,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
       style={{ animationDelay: `${delay}s` }}
     >
       <CardContent className="p-6 flex flex-col items-center">
-        {/* Image ronde */}
-        <div 
-          className="relative w-36 h-36 mb-4 rounded-full overflow-hidden bg-muted flex items-center justify-center cursor-pointer"
-          onClick={() => product.slug && navigate(`/product/${product.slug}`)}
+        {/* Image ronde avec lien */}
+        <Link 
+          to={productUrl}
+          className="relative w-36 h-36 mb-4 rounded-full overflow-hidden bg-muted flex items-center justify-center"
         >
           {product.images && product.images.length > 0 ? (
             product.images[0].match(/\.(mp4|webm|ogg|mov)$/i) ? (
@@ -74,15 +76,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
               📦
             </span>
           )}
-        </div>
+        </Link>
         
-        {/* Titre */}
-        <h3 
-          className="text-white text-base font-medium text-center mb-2 line-clamp-2 cursor-pointer"
-          onClick={() => product.slug && navigate(`/product/${product.slug}`)}
+        {/* Titre avec lien */}
+        <Link 
+          to={productUrl}
+          className="text-white text-base font-medium text-center mb-2 line-clamp-2 hover:text-primary transition-colors"
         >
           {product.name}
-        </h3>
+        </Link>
         
         {/* Prix */}
         <div className="text-xl font-bold text-primary mb-4">
