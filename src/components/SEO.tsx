@@ -1,35 +1,35 @@
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
 interface SEOProps {
   title: string;
   description: string;
   image?: string;
   url?: string;
-  type?: 'website' | 'product';
+  type?: "website" | "product";
   structuredData?: object;
 }
 
 const SEO: React.FC<SEOProps> = ({
   title,
   description,
-  image = 'https://snuspedia-bf.com/og-image.png', // Image Open Graph par défaut
+  image = "https://snuspedia-bf.com/og-image.png", // Image Open Graph par défaut
   url,
-  type = 'website',
-  structuredData
+  type = "website",
+  structuredData,
 }) => {
-  const siteName = 'Vaporwave';
+  const siteName = "Snuspedia";
   const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
-  const currentUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
-  
+  const currentUrl = url || (typeof window !== "undefined" ? window.location.href : "");
+
   return (
     <Helmet>
       {/* Balises de base */}
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
-      
+
       {/* Canonical URL - Crucial pour éviter le contenu dupliqué */}
       {currentUrl && <link rel="canonical" href={currentUrl} />}
-      
+
       {/* Open Graph (Facebook, WhatsApp, LinkedIn) */}
       <meta property="og:type" content={type} />
       <meta property="og:title" content={fullTitle} />
@@ -37,19 +37,15 @@ const SEO: React.FC<SEOProps> = ({
       <meta property="og:image" content={image} />
       {currentUrl && <meta property="og:url" content={currentUrl} />}
       <meta property="og:site_name" content={siteName} />
-      
+
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
-      
+
       {/* Données structurées JSON-LD (Schema.org) pour GEO */}
-      {structuredData && (
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
-        </script>
-      )}
+      {structuredData && <script type="application/ld+json">{JSON.stringify(structuredData)}</script>}
     </Helmet>
   );
 };
