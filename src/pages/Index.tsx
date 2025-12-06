@@ -81,29 +81,32 @@ const Index = () => {
     return <AgeVerificationModal onConfirm={confirmAge} onDeny={denyAge} />;
   }
   
-  // Données structurées enrichies (Schema.org Organization + Store)
+  // Données structurées enrichies (Schema.org Organization + Store + LocalBusiness)
   const homeStructuredData = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Organization",
         "@id": "https://snuspedia-bf.com/#organization",
-        "name": "Snuspedia",
-        "alternateName": "SNUSPEDIA",
+        "name": "Snuspedia Ouagadougou",
+        "alternateName": ["SNUSPEDIA", "Snuspedia Ouaga", "Snus Ouaga"],
         "url": "https://snuspedia-bf.com",
         "logo": {
           "@type": "ImageObject",
           "url": "https://snuspedia-bf.com/og-image.png"
         },
-        "description": "Snuspedia est le leader de la vente de snus et sachets de nicotine au Burkina Faso. Alternative sans fumée aux produits du tabac.",
+        "description": "Snuspedia est le n°1 de la vente de snus et sachets de nicotine à Ouagadougou, Burkina Faso. Alternative sans fumée aux produits du tabac avec livraison rapide.",
         "address": {
           "@type": "PostalAddress",
+          "streetAddress": "Ouagadougou",
           "addressLocality": "Ouagadougou",
+          "addressRegion": "Centre",
           "addressCountry": "BF"
         },
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "customer service",
+          "telephone": "+22605145905",
           "url": "https://wa.me/message/VU57PC3IDGREF1",
           "availableLanguage": ["French"]
         },
@@ -112,10 +115,74 @@ const Index = () => {
         ]
       },
       {
+        "@type": "LocalBusiness",
+        "@id": "https://snuspedia-bf.com/#localbusiness",
+        "name": "Snuspedia Ouagadougou",
+        "alternateName": "Snus Ouaga",
+        "description": "Boutique de snus et sachets de nicotine à Ouagadougou. Le leader du snus au Burkina Faso avec livraison rapide dans toute la ville.",
+        "url": "https://snuspedia-bf.com",
+        "telephone": "+22605145905",
+        "priceRange": "$$",
+        "currenciesAccepted": "XOF",
+        "paymentAccepted": ["Cash", "Mobile Money", "Orange Money", "Moov Money"],
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Ouagadougou",
+          "addressLocality": "Ouagadougou",
+          "addressRegion": "Centre",
+          "postalCode": "01",
+          "addressCountry": "BF"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "12.3714",
+          "longitude": "-1.5197"
+        },
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Ouagadougou",
+            "containedInPlace": {
+              "@type": "Country",
+              "name": "Burkina Faso"
+            }
+          },
+          {
+            "@type": "Country",
+            "name": "Burkina Faso"
+          }
+        ],
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "08:00",
+          "closes": "22:00"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Catalogue Snus et Nicotine",
+          "itemListElement": [
+            {
+              "@type": "OfferCatalog",
+              "name": "Snus Pablo"
+            },
+            {
+              "@type": "OfferCatalog",
+              "name": "Snus Velo"
+            },
+            {
+              "@type": "OfferCatalog",
+              "name": "Sachets de Nicotine"
+            }
+          ]
+        }
+      },
+      {
         "@type": "WebSite",
         "@id": "https://snuspedia-bf.com/#website",
         "url": "https://snuspedia-bf.com",
-        "name": "Snuspedia",
+        "name": "Snuspedia - Snus Ouagadougou",
+        "alternateName": "Snus Ouaga",
         "publisher": {
           "@id": "https://snuspedia-bf.com/#organization"
         },
@@ -131,16 +198,23 @@ const Index = () => {
       {
         "@type": "Store",
         "@id": "https://snuspedia-bf.com/#store",
-        "name": "Snuspedia",
-        "description": "Le n°1 du Snus et des sachets de nicotine à Ouagadougou. Livraison rapide au Burkina Faso.",
+        "name": "Snuspedia Ouagadougou",
+        "description": "Le n°1 du Snus et des sachets de nicotine à Ouagadougou. Livraison rapide au Burkina Faso. Achetez snus ouaga en ligne.",
         "url": "https://snuspedia-bf.com",
         "priceRange": "$$",
         "currenciesAccepted": "XOF",
         "paymentAccepted": "Cash, Mobile Money",
         "address": {
           "@type": "PostalAddress",
+          "streetAddress": "Ouagadougou",
           "addressLocality": "Ouagadougou",
+          "addressRegion": "Centre",
           "addressCountry": "BF"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "12.3714",
+          "longitude": "-1.5197"
         },
         "areaServed": {
           "@type": "Country",
@@ -153,10 +227,11 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SEO 
-        title="Snuspedia - Snus & Sachets de Nicotine au Burkina Faso"
-        description="Le n°1 du Snus et des sachets de nicotine à Ouagadougou. Livraison rapide. Large gamme de produits premium pour une alternative sans fumée au tabac."
+        title="Snus Ouagadougou - Sachets de Nicotine Burkina Faso | Snuspedia"
+        description="Achetez du snus à Ouagadougou ! Snuspedia, le n°1 du snus et sachets de nicotine au Burkina Faso. Pablo, Velo, Zyn. Livraison rapide Ouaga. Alternative sans fumée."
         url="https://snuspedia-bf.com"
         type="website"
+        keywords="snus ouaga, snus ouagadougou, nicotine burkina faso, pablo snus, velo nicotine, sachets nicotine ouaga, acheter snus burkina, snus livraison ouagadougou"
         structuredData={homeStructuredData}
       />
       <ParticleBackground />
