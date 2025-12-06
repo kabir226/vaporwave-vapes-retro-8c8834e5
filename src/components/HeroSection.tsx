@@ -161,11 +161,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Content Below Image/Carousel */}
         <div className="text-center max-w-4xl mx-auto space-y-6 mt-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground leading-tight">
-            {heroSettings?.title || "No Smoke, No Odour, No Limits"}
+            {heroSettings?.title || "Snus & Nicotine à Ouagadougou"}
           </h1>
           
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            {heroSettings?.subtitle || "Profitez de la satisfaction de la nicotine sans les effets nocifs du tabagisme."}
+            {heroSettings?.subtitle || "Le n°1 du snus au Burkina Faso. Livraison rapide à Ouagadougou. No Smoke, No Odour, No Limits."}
           </p>
 
           {/* Primary CTA Buttons */}

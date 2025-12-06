@@ -90,9 +90,14 @@ const Shop = () => {
   const shopStructuredData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "Boutique Snuspedia - Snus et Sachets de Nicotine",
-    "description": "Explorez notre large gamme de snus et sachets de nicotine. Livraison rapide à Ouagadougou.",
+    "name": "Boutique Snus Ouagadougou - Sachets de Nicotine Burkina Faso",
+    "description": "Achetez du snus à Ouagadougou. Large gamme de sachets de nicotine Pablo, Velo, Zyn. Livraison rapide au Burkina Faso.",
     "url": "https://snuspedia-bf.com/shop",
+    "about": {
+      "@type": "Thing",
+      "name": "Snus et Sachets de Nicotine",
+      "description": "Alternative sans fumée au tabac disponible à Ouagadougou"
+    },
     "mainEntity": {
       "@type": "ItemList",
       "numberOfItems": filteredProducts.length,
@@ -111,10 +116,11 @@ const Shop = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Boutique Snus & Nicotine - Tous nos Produits | Snuspedia"
-        description="Explorez notre large gamme de snus et sachets de nicotine au Burkina Faso. Livraison rapide à Ouagadougou. Prix compétitifs et produits de qualité premium."
+        title="Acheter Snus Ouagadougou - Boutique Nicotine Burkina | Snuspedia"
+        description="Achetez du snus à Ouagadougou ! Large gamme de sachets nicotine Pablo, Velo, Zyn au Burkina Faso. Livraison rapide Ouaga. Prix compétitifs."
         url="https://snuspedia-bf.com/shop"
         type="website"
+        keywords="acheter snus ouagadougou, boutique snus ouaga, nicotine burkina faso, pablo snus ouaga, velo nicotine burkina, snus livraison ouaga"
         structuredData={shopStructuredData}
       />
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
@@ -123,10 +129,10 @@ const Shop = () => {
         {/* Page Title - H1 pour SEO */}
         <header className="text-center py-8">
           <h1 className="text-3xl md:text-4xl font-black text-cyber mb-2">
-            Notre Boutique Snus & Nicotine
+            Acheter Snus à Ouagadougou - Boutique Nicotine
           </h1>
           <p className="text-muted-foreground">
-            Découvrez notre sélection de sachets de nicotine premium
+            Le n°1 du snus au Burkina Faso. Livraison rapide à Ouaga.
           </p>
         </header>
 

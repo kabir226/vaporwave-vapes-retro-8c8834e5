@@ -217,15 +217,20 @@ const ProductDetail = () => {
   // Tronquer la description à 160 caractères pour le SEO
   const truncatedDescription = product.description 
     ? product.description.substring(0, 160) + (product.description.length > 160 ? '...' : '')
-    : `Découvrez ${product.name} sur Vaporwave - Votre boutique de snus et nicotine au Burkina Faso`;
+    : `Achetez ${product.name} à Ouagadougou. Snus et sachets de nicotine au Burkina Faso. Livraison rapide. Snuspedia, le n°1 du snus ouaga.`;
 
   // Données structurées pour le produit (Schema.org Product)
   const productStructuredData = {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": product.name,
-    "description": product.description || `${product.name} - Snus et sachets de nicotine`,
+    "description": product.description || `${product.name} - Snus et sachets de nicotine disponible à Ouagadougou, Burkina Faso`,
     "image": mainImage,
+    "brand": {
+      "@type": "Brand",
+      "name": product.name.split(' ')[0] // Première partie du nom comme marque (Pablo, Velo, etc.)
+    },
+    "sku": product.slug,
     "offers": {
       "@type": "Offer",
       "price": product.price,
@@ -233,18 +238,43 @@ const ProductDetail = () => {
       "availability": product.in_stock 
         ? "https://schema.org/InStock" 
         : "https://schema.org/OutOfStock",
-      "url": typeof window !== 'undefined' ? window.location.href : ''
+      "url": `https://snuspedia-bf.com/product/${product.slug}`,
+      "seller": {
+        "@type": "Organization",
+        "name": "Snuspedia Ouagadougou"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Burkina Faso"
+      },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingDestination": {
+          "@type": "DefinedRegion",
+          "addressCountry": "BF"
+        }
+      }
     }
   };
+
+  // Breadcrumbs pour navigation
+  const breadcrumbs = [
+    { name: "Accueil", url: "https://snuspedia-bf.com" },
+    { name: "Boutique", url: "https://snuspedia-bf.com/shop" },
+    { name: product.name, url: `https://snuspedia-bf.com/product/${product.slug}` }
+  ];
 
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title={`${product.name} | Vaporwave`}
+        title={`${product.name} - Snus Ouagadougou | Snuspedia`}
         description={truncatedDescription}
         image={mainImage}
+        url={`https://snuspedia-bf.com/product/${product.slug}`}
         type="product"
+        keywords={`${product.name}, snus ouaga, acheter ${product.name} ouagadougou, nicotine burkina faso, ${product.name.split(' ')[0]} snus`}
         structuredData={productStructuredData}
+        breadcrumbs={breadcrumbs}
       />
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
       
