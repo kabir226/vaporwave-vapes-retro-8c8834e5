@@ -14,7 +14,7 @@ interface SEOProps {
 const SEO: React.FC<SEOProps> = ({
   title,
   description,
-  image = "https://snuspedia-bf.com/og-image.png",
+  image = "https://storage.googleapis.com/gpt-engineer-file-uploads/zG19D7YpwvOt7oYotsDvSBnnmPI3/social-images/social-1764502523718-i4c60mxg.png",
   url,
   type = "website",
   structuredData,

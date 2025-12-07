@@ -49,10 +49,15 @@ const About = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="À propos de Snuspedia - Notre Mission Sans Fumée"
-        description="Découvrez Snuspedia, le leader du snus au Burkina Faso. Notre mission : créer un avenir sans fumée avec des alternatives de qualité premium."
+        title="À propos de Snuspedia - Snus Ouagadougou Burkina Faso"
+        description="Découvrez Snuspedia, le leader du snus au Burkina Faso. Notre mission : créer un avenir sans fumée avec des alternatives de qualité premium à Ouagadougou."
         url="https://snuspedia-bf.com/about"
+        keywords="snuspedia, snus ouagadougou, nicotine burkina faso, à propos snuspedia, mission snus ouaga"
         structuredData={aboutStructuredData}
+        breadcrumbs={[
+          { name: "Accueil", url: "https://snuspedia-bf.com/" },
+          { name: "À propos", url: "https://snuspedia-bf.com/about" }
+        ]}
       />
       <Header cart={[]} onToggleCart={() => {}} />
       

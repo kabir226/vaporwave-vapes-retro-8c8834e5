@@ -122,6 +122,10 @@ const Shop = () => {
         type="website"
         keywords="acheter snus ouagadougou, boutique snus ouaga, nicotine burkina faso, pablo snus ouaga, velo nicotine burkina, snus livraison ouaga"
         structuredData={shopStructuredData}
+        breadcrumbs={[
+          { name: "Accueil", url: "https://snuspedia-bf.com/" },
+          { name: "Boutique", url: "https://snuspedia-bf.com/shop" }
+        ]}
       />
       <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
       
