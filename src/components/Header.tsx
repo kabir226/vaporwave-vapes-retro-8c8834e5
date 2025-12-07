@@ -113,7 +113,7 @@ const Header: React.FC<HeaderProps> = ({
                   {categories.map(category => (
                     <Link
                       key={category.id}
-                      to={`/shop?category=${category.slug}`}
+                      to={`/shop/${category.slug}`}
                       className="block py-2 px-4 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
@@ -133,6 +133,16 @@ const Header: React.FC<HeaderProps> = ({
             onClick={() => setIsMenuOpen(false)}
           >
             À propos
+          </Link>
+          
+          <Link 
+            to="/faq" 
+            className={`block py-3 px-4 rounded-lg text-base font-medium transition-colors ${
+              isActive('/faq') ? 'text-primary bg-primary/10' : 'text-foreground hover:bg-muted'
+            }`} 
+            onClick={() => setIsMenuOpen(false)}
+          >
+            FAQ
           </Link>
         </nav>
       </SheetContent>
