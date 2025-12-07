@@ -129,10 +129,10 @@ const Shop = () => {
         {/* Page Title - H1 pour SEO */}
         <header className="text-center py-8">
           <h1 className="text-3xl md:text-4xl font-black text-cyber mb-2">
-            Acheter Snus à Ouagadougou - Boutique Nicotine
+            Notre Boutique
           </h1>
           <p className="text-muted-foreground">
-            Le n°1 du snus au Burkina Faso. Livraison rapide à Ouaga.
+            Découvrez notre sélection de produits
           </p>
         </header>
 
