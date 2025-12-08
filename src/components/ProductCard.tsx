@@ -95,10 +95,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
         <Button
           onClick={handleAddToCart}
           variant="outline"
-          className="w-full rounded-full border-2 border-white bg-transparent text-white hover:bg-white hover:text-black font-semibold py-3 px-4 text-sm transition-all duration-300 inline-flex items-center justify-center gap-2"
+          className="w-full rounded-full border-2 border-white bg-transparent text-white hover:bg-white hover:text-black font-medium py-2 px-3 text-xs transition-all duration-300 inline-flex items-center justify-center gap-1.5"
         >
-          <ShoppingCart className="w-4 h-4" />
-          <span>Ajouter au panier</span>
+          <ShoppingCart className="w-3.5 h-3.5 flex-shrink-0" />
+          <span className="truncate">Ajouter au panier</span>
         </Button>
       </CardContent>
     </Card>
