@@ -77,9 +77,7 @@ const Index = () => {
     setShowCartAnimation(false);
   };
   
-  if (!isAgeVerified || showAgeModal) {
-    return <AgeVerificationModal onConfirm={confirmAge} onDeny={denyAge} />;
-  }
+  // Ne plus bloquer le rendu - le modal sera affiché en overlay
   
   // Données structurées enrichies (Schema.org Organization + Store + LocalBusiness)
   const homeStructuredData = {
@@ -297,6 +295,11 @@ const Index = () => {
         onUpdateQuantity={updateQuantity} 
         onRemoveItem={removeItem} 
       />
+
+      {/* Age Verification Modal - Overlay au-dessus du contenu (SEO-friendly) */}
+      {(!isAgeVerified || showAgeModal) && (
+        <AgeVerificationModal onConfirm={confirmAge} onDeny={denyAge} />
+      )}
     </div>
   );
 };
