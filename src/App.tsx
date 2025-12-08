@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import WhatsAppButton from "./components/WhatsAppButton";
+import PageLoader from "@/components/ui/page-loader";
 
 // Lazy load pages for code splitting
 const Index = lazy(() => import("./pages/Index"));
@@ -19,22 +20,6 @@ const OrderConfirmation = lazy(() => import("./pages/OrderConfirmation"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
-
-// Simple inline loader - no external dependencies
-const SimpleLoader = () => (
-  <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '100vh',
-    backgroundColor: '#0a0a0a',
-    color: '#ffffff',
-    fontSize: '1.25rem',
-    fontFamily: 'system-ui, sans-serif'
-  }}>
-    Chargement...
-  </div>
-);
 
 // Error Boundary to catch rendering errors
 interface ErrorBoundaryState {
@@ -108,7 +93,7 @@ const AppContent = () => {
 
   return (
     <>
-      <Suspense fallback={<SimpleLoader />}>
+      <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/shop" element={<Shop />} />
