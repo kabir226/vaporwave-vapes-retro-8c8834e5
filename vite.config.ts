@@ -29,6 +29,9 @@ export default defineConfig(({ mode }) => ({
   build: {
     // Enable tree-shaking with esbuild (built-in, faster than terser)
     minify: 'esbuild',
+    // Preserve head meta tags for SEO
+    cssCodeSplit: true,
+    assetsInlineLimit: 0,
     rollupOptions: {
       output: {
         manualChunks: {
