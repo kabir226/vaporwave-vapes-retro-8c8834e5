@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AgeVerificationModal from '@/components/AgeVerificationModal';
+import { videoCache, preloadCriticalVideo } from '@/lib/videoCache';
 import ParticleBackground from '@/components/ParticleBackground';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -50,6 +51,19 @@ const Index = () => {
   const [showCart, setShowCart] = useState(false);
   const [showCartAnimation, setShowCartAnimation] = useState(false);
   const [lastAddedProduct, setLastAddedProduct] = useState(null);
+
+  // Preload all product videos on mount for instant playback
+  useEffect(() => {
+    if (products.length > 0) {
+      const videoUrls = videoCache.extractVideoUrls(products);
+      
+      // Preload first 2 videos immediately (above-the-fold)
+      videoUrls.slice(0, 2).forEach(preloadCriticalVideo);
+      
+      // Cache all videos in background
+      videoCache.preloadVideos(videoUrls);
+    }
+  }, [products]);
 
   // Trouver la catégorie "Meilleures ventes"
   const bestSellersCategory = categories.find(c => c.slug === 'best-sellers');
