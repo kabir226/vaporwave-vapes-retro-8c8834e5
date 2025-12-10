@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Loader2, Play } from 'lucide-react';
+import { getPosterUrlFromVideo } from '@/lib/videoPosterGenerator';
 
 interface LazyVideoProps {
   src: string;
@@ -32,8 +33,12 @@ const LazyVideo: React.FC<LazyVideoProps> = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [generatedPoster, setGeneratedPoster] = useState<string | null>(null);
+  const [staticPosterLoaded, setStaticPosterLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Try to load static WebP poster first (uploaded alongside video)
+  const staticPosterUrl = getPosterUrlFromVideo(src);
 
   // Generate poster from first video frame if no poster provided
   const generatePosterFromVideo = useCallback(async () => {
@@ -75,12 +80,26 @@ const LazyVideo: React.FC<LazyVideoProps> = ({
     }
   }, [src, poster]);
 
-  // Generate poster on mount
+  // Try static poster first, fallback to generated poster
   useEffect(() => {
-    if (!poster && src) {
+    if (poster) return; // Custom poster provided
+    
+    // Try to load static WebP poster
+    if (staticPosterUrl) {
+      const img = new Image();
+      img.onload = () => {
+        setStaticPosterLoaded(true);
+      };
+      img.onerror = () => {
+        // Static poster not found, generate from video
+        generatePosterFromVideo();
+      };
+      img.src = staticPosterUrl;
+    } else {
+      // No static poster URL, generate from video
       generatePosterFromVideo();
     }
-  }, [generatePosterFromVideo, poster, src]);
+  }, [poster, src, staticPosterUrl, generatePosterFromVideo]);
 
   // Intersection Observer for lazy loading (with aggressive rootMargin)
   useEffect(() => {
@@ -121,7 +140,8 @@ const LazyVideo: React.FC<LazyVideoProps> = ({
     setIsLoaded(true);
   };
 
-  const effectivePoster = poster || generatedPoster || undefined;
+  // Priority: custom poster > static WebP poster > generated poster
+  const effectivePoster = poster || (staticPosterLoaded ? staticPosterUrl : null) || generatedPoster || undefined;
 
   return (
     <div 
