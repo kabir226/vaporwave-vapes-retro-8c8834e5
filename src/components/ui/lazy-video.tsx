@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Loader2, Play } from 'lucide-react';
 
 interface LazyVideoProps {
@@ -11,6 +11,8 @@ interface LazyVideoProps {
   playsInline?: boolean;
   poster?: string;
   onClick?: () => void;
+  eager?: boolean; // Load immediately without lazy loading
+  rootMargin?: string; // Custom intersection margin
 }
 
 const LazyVideo: React.FC<LazyVideoProps> = ({
@@ -22,16 +24,71 @@ const LazyVideo: React.FC<LazyVideoProps> = ({
   controls = false,
   playsInline = true,
   poster,
-  onClick
+  onClick,
+  eager = false,
+  rootMargin = '500px' // Aggressive preloading - start loading 500px before viewport
 }) => {
-  const [isInView, setIsInView] = useState(false);
+  const [isInView, setIsInView] = useState(eager);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [generatedPoster, setGeneratedPoster] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Intersection Observer for lazy loading
+  // Generate poster from first video frame if no poster provided
+  const generatePosterFromVideo = useCallback(async () => {
+    if (poster || !src) return;
+    
+    try {
+      const video = document.createElement('video');
+      video.crossOrigin = 'anonymous';
+      video.muted = true;
+      video.preload = 'metadata';
+      
+      await new Promise<void>((resolve, reject) => {
+        video.onloadeddata = () => resolve();
+        video.onerror = () => reject();
+        video.src = src;
+        // Seek to 0.1s for first meaningful frame
+        video.currentTime = 0.1;
+      });
+
+      await new Promise<void>((resolve) => {
+        video.onseeked = () => resolve();
+      });
+
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth || 640;
+      canvas.height = video.videoHeight || 360;
+      
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+        setGeneratedPoster(dataUrl);
+      }
+      
+      video.remove();
+      canvas.remove();
+    } catch {
+      // Silent fail - video will load without poster
+    }
+  }, [src, poster]);
+
+  // Generate poster on mount
   useEffect(() => {
+    if (!poster && src) {
+      generatePosterFromVideo();
+    }
+  }, [generatePosterFromVideo, poster, src]);
+
+  // Intersection Observer for lazy loading (with aggressive rootMargin)
+  useEffect(() => {
+    if (eager) {
+      setIsInView(true);
+      return;
+    }
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -45,15 +102,15 @@ const LazyVideo: React.FC<LazyVideoProps> = ({
         });
       },
       {
-        rootMargin: '100px', // Start loading 100px before entering viewport
-        threshold: 0.1
+        rootMargin, // Start loading well before entering viewport
+        threshold: 0
       }
     );
 
     observer.observe(container);
 
     return () => observer.disconnect();
-  }, []);
+  }, [eager, rootMargin]);
 
   const handleLoadedData = () => {
     setIsLoaded(true);
@@ -64,16 +121,34 @@ const LazyVideo: React.FC<LazyVideoProps> = ({
     setIsLoaded(true);
   };
 
+  const effectivePoster = poster || generatedPoster || undefined;
+
   return (
     <div 
       ref={containerRef} 
       className={`relative ${className}`}
       onClick={onClick}
     >
-      {/* Loading skeleton */}
-      {!isLoaded && !hasError && (
+      {/* Poster/thumbnail shown immediately while video loads */}
+      {effectivePoster && !isLoaded && !hasError && (
+        <img 
+          src={effectivePoster} 
+          alt="Video thumbnail"
+          className="absolute inset-0 w-full h-full object-cover rounded-xl"
+        />
+      )}
+
+      {/* Loading indicator (only if no poster) */}
+      {!isLoaded && !hasError && !effectivePoster && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted animate-pulse rounded-xl">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
+        </div>
+      )}
+
+      {/* Loading spinner overlay on poster */}
+      {!isLoaded && !hasError && effectivePoster && isInView && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-xl">
+          <Loader2 className="w-6 h-6 text-white animate-spin" />
         </div>
       )}
 
@@ -84,7 +159,7 @@ const LazyVideo: React.FC<LazyVideoProps> = ({
         </div>
       )}
 
-      {/* Video element - only render when in view */}
+      {/* Video element - render when in view, preload aggressively */}
       {isInView && !hasError && (
         <video
           ref={videoRef}
@@ -95,8 +170,8 @@ const LazyVideo: React.FC<LazyVideoProps> = ({
           muted={muted}
           controls={controls}
           playsInline={playsInline}
-          poster={poster}
-          preload="metadata"
+          poster={effectivePoster}
+          preload="auto" // Aggressive preloading
           onLoadedData={handleLoadedData}
           onCanPlay={handleLoadedData}
           onError={handleError}
