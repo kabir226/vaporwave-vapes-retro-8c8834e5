@@ -4,6 +4,7 @@ import { X, Upload, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import ImageCropDialog from "./ImageCropDialog";
+import { generateVideoPoster } from "@/lib/videoPosterGenerator";
 
 interface ImageUploadProps {
   images: string[];
@@ -118,16 +119,31 @@ const ImageUpload = ({ images, onImagesChange, productId }: ImageUploadProps) =>
       return;
     }
 
-    // Si c'est une vidéo, upload direct sans recadrage
+    // Si c'est une vidéo, upload avec génération de poster WebP
     if (file.type.startsWith("video/")) {
       setUploading(true);
       try {
-        const imageUrl = await uploadImage(file, file.name);
-        onImagesChange([...images, imageUrl]);
-        toast({
-          title: "Succès",
-          description: "Vidéo uploadée avec succès",
-        });
+        // Upload video
+        const videoUrl = await uploadImage(file, file.name);
+        
+        // Generate and upload WebP poster
+        try {
+          const posterBlob = await generateVideoPoster(file);
+          const posterFileName = file.name.replace(/\.(mp4|webm|ogg|mov)$/i, '_poster.webp');
+          await uploadImage(posterBlob, posterFileName);
+          toast({
+            title: "Succès",
+            description: "Vidéo et poster WebP uploadés",
+          });
+        } catch (posterError) {
+          console.warn('Poster generation failed, video still uploaded:', posterError);
+          toast({
+            title: "Succès",
+            description: "Vidéo uploadée (poster non généré)",
+          });
+        }
+        
+        onImagesChange([...images, videoUrl]);
       } catch (error: any) {
         toast({
           title: "Erreur",
