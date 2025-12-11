@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -7,21 +7,29 @@ import { ShoppingCart, Menu, Search, X } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 import SearchBar from './SearchBar';
+import CartSheet from './CartSheet';
 import { useCategories } from '@/hooks/useCategories';
 
 interface HeaderProps {
   cart: any[];
   onToggleCart: () => void;
+  onUpdateQuantity?: (id: number, quantity: number) => void;
+  onRemoveItem?: (id: number) => void;
 }
+
 const Header: React.FC<HeaderProps> = ({
   cart,
-  onToggleCart
+  onToggleCart,
+  onUpdateQuantity,
+  onRemoveItem
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const { categories } = useCategories();
   
@@ -32,7 +40,37 @@ const Header: React.FC<HeaderProps> = ({
     }
   };
 
+  // Global keyboard shortcut (Cmd/Ctrl + K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(prev => !prev);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const handleCartClick = () => {
+    setIsCartOpen(true);
+  };
+
+  const handleUpdateQuantity = useCallback((id: number, quantity: number) => {
+    if (onUpdateQuantity) {
+      onUpdateQuantity(id, quantity);
+    }
+  }, [onUpdateQuantity]);
+
+  const handleRemoveItem = useCallback((id: number) => {
+    if (onRemoveItem) {
+      onRemoveItem(id);
+    }
+  }, [onRemoveItem]);
+
   const isActive = (path: string) => location.pathname === path;
+
   return <>
     <header className="sticky top-0 w-full z-50 bg-background/95 backdrop-blur-xl border-b border-border" role="banner">
       <div className="container mx-auto px-4 max-w-full">
@@ -54,11 +92,13 @@ const Header: React.FC<HeaderProps> = ({
             <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(!isSearchOpen)}>
               {isSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
             </Button>
-            <Button variant="ghost" size="icon" className="relative" onClick={onToggleCart}>
+            <Button variant="ghost" size="icon" className="relative" onClick={handleCartClick}>
               <ShoppingCart className="w-5 h-5" />
-              {cartItemsCount > 0 && <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs">
+              {cartItemsCount > 0 && (
+                <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs">
                   {cartItemsCount}
-                </Badge>}
+                </Badge>
+              )}
             </Button>
           </div>
         </div>
@@ -69,6 +109,7 @@ const Header: React.FC<HeaderProps> = ({
             <SearchBar 
               onSearch={handleSearch} 
               placeholder="Rechercher des produits..." 
+              autoFocus
             />
           </div>
         )}
@@ -147,6 +188,16 @@ const Header: React.FC<HeaderProps> = ({
         </nav>
       </SheetContent>
     </Sheet>
+
+    {/* Cart Sheet */}
+    <CartSheet
+      isOpen={isCartOpen}
+      onClose={() => setIsCartOpen(false)}
+      cart={cart}
+      onUpdateQuantity={handleUpdateQuantity}
+      onRemoveItem={handleRemoveItem}
+    />
   </>;
 };
+
 export default Header;

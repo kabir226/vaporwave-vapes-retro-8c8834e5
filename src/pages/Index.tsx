@@ -4,9 +4,7 @@ import { videoCache, preloadCriticalVideo } from '@/lib/videoCache';
 import ParticleBackground from '@/components/ParticleBackground';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import CartModal from '@/components/CartModal';
 import HeroSection from '@/components/HeroSection';
-import CartAnimation from '@/components/CartAnimation';
 import AgeWarningBanner from '@/components/AgeWarningBanner';
 import TrustBanner from '@/components/TrustBanner';
 import PromotionalBanner from '@/components/PromotionalBanner';
@@ -49,8 +47,6 @@ const Index = () => {
     denyAge
   } = useAgeVerification();
   const [showCart, setShowCart] = useState(false);
-  const [showCartAnimation, setShowCartAnimation] = useState(false);
-  const [lastAddedProduct, setLastAddedProduct] = useState(null);
 
   // Preload all product videos on mount for instant playback
   useEffect(() => {
@@ -80,15 +76,7 @@ const Index = () => {
   const bestSellersProducts = bestSellersCategory ? transformedProducts.filter(p => p.category_id === bestSellersCategory.id) : transformedProducts.slice(0, 8);
   
   const handleAddToCart = (product: any) => {
-    setLastAddedProduct(product);
-    setShowCartAnimation(true);
-    setTimeout(() => {
-      addToCart(product);
-    }, 800);
-  };
-  
-  const handleCartAnimationComplete = () => {
-    setShowCartAnimation(false);
+    addToCart(product);
   };
   
   // Ne plus bloquer le rendu - le modal sera affiché en overlay
@@ -249,7 +237,12 @@ const Index = () => {
       <ParticleBackground />
       
       {/* Header */}
-      <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
+      <Header 
+        cart={cart} 
+        onToggleCart={() => setShowCart(!showCart)} 
+        onUpdateQuantity={updateQuantity}
+        onRemoveItem={removeItem}
+      />
 
       {/* Age Warning Banner */}
       <AgeWarningBanner />
@@ -295,20 +288,7 @@ const Index = () => {
       {/* Footer */}
       <Footer />
 
-      {/* Modals & Animations */}
-      <CartAnimation 
-        isVisible={showCartAnimation} 
-        onComplete={handleCartAnimationComplete} 
-        productName={lastAddedProduct?.name || ''} 
-      />
-
-      <CartModal 
-        isVisible={showCart} 
-        cart={cart} 
-        onClose={() => setShowCart(false)} 
-        onUpdateQuantity={updateQuantity} 
-        onRemoveItem={removeItem} 
-      />
+      {/* Cart is now handled in Header via CartSheet */}
 
       {/* Age Verification Modal - Overlay au-dessus du contenu (SEO-friendly) */}
       {(!isAgeVerified || showAgeModal) && (
