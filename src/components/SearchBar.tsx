@@ -21,7 +21,7 @@ const highlightTerms = (text: string, terms: string[]): string => {
   terms.forEach(term => {
     const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(`(${escapedTerm})`, 'gi');
-    result = result.replace(regex, '<span class="bg-primary/20 text-primary font-semibold rounded px-0.5">$1</span>');
+    result = result.replace(regex, '<mark class="bg-primary/30 text-foreground rounded px-0.5">$1</mark>');
   });
   return result;
 };
