@@ -47,7 +47,7 @@ const CartSheet: React.FC<CartSheetProps> = ({
 
     const message = `🛒 *Nouvelle commande Snuspedia*\n\n${itemsList}\n\n📦 Sous-total: ${subtotal.toLocaleString()} FCFA\n🚚 Livraison: ${shippingCost === 0 ? 'GRATUITE' : `${shippingCost.toLocaleString()} FCFA`}\n💰 *Total: ${total.toLocaleString()} FCFA*`;
 
-    window.open(`whatsapp://send?phone=22670000000&text=${encodeURIComponent(message)}`, '_blank');
+    window.open(`whatsapp://send?phone=22605145905&text=${encodeURIComponent(message)}`, '_blank');
   };
 
   const handleProductClick = (slug?: string) => {
