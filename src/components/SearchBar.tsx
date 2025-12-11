@@ -95,7 +95,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         return searchTerms.every(term => searchableText.includes(term));
       });
       
-      setFilteredProducts(results.slice(0, 8));
+      setFilteredProducts(results.slice(0, 3));
       setShowResults(true);
       setIsLoading(false);
       setSelectedIndex(-1);
