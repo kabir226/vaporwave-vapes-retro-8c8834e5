@@ -11,12 +11,13 @@ import SEO from '@/components/SEO';
 import { Filter, Grid, List } from 'lucide-react';
 import { useProducts } from '@/hooks/useProducts';
 import { useCategories } from '@/hooks/useCategories';
+import { useCart } from '@/hooks/useCart';
 
 const Shop = () => {
   const [searchParams] = useSearchParams();
   const { products: dbProducts, loading } = useProducts();
   const { categories: dbCategories } = useCategories();
-  const [cart, setCart] = useState([]);
+  const { cart, addToCart, updateQuantity, removeItem } = useCart();
   const [showCart, setShowCart] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -60,31 +61,6 @@ const Shop = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const addToCart = (product) => {
-    setCart(prev => {
-      const existing = prev.find(item => item.id === product.id);
-      if (existing) {
-        return prev.map(item => 
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-  };
-
-  const updateQuantity = (id, quantity) => {
-    if (quantity === 0) {
-      setCart(prev => prev.filter(item => item.id !== id));
-    } else {
-      setCart(prev => prev.map(item => 
-        item.id === id ? { ...item, quantity } : item
-      ));
-    }
-  };
-
-  const removeItem = (id) => {
-    setCart(prev => prev.filter(item => item.id !== id));
-  };
 
   // Données structurées pour la boutique
   const shopStructuredData = {
