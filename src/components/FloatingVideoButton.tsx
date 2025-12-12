@@ -35,7 +35,7 @@ const FloatingVideoButton = () => {
           className="fixed bottom-6 left-6 z-50 animate-scale-in cursor-pointer"
           onClick={handleExpand}
         >
-          <div className="relative w-16 h-16 rounded-full overflow-hidden shadow-2xl border-2 border-primary/50 bg-black hover:scale-110 transition-transform">
+          <div className="relative w-20 h-20 rounded-full overflow-hidden shadow-2xl border-2 border-primary/50 bg-black hover:scale-110 transition-transform">
             <video
               ref={videoRef}
               autoPlay
