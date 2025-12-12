@@ -182,15 +182,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                   </Button>
                 </a>
                 
-                <Button 
-                  size="lg"
-                  variant="outline"
-                  onClick={() => setIsVideoDialogOpen(true)}
-                  className="border-2 border-foreground/80 text-foreground hover:bg-foreground/10 hover:border-foreground font-bold px-8 py-6 text-base group rounded-full w-full md:min-w-[280px]"
-                >
-                  <PlayCircle className="w-5 h-5 mr-2" />
-                  Comment ça marche ?
-                </Button>
               </div>
 
               {/* Feature Benefits */}

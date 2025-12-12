@@ -20,6 +20,8 @@ import BuySNUSSection from '@/components/BuySNUSSection';
 import TrendingProducts from '@/components/TrendingProducts';
 import BenefitsSection from '@/components/BenefitsSection';
 import SEO from '@/components/SEO';
+import WhatsAppButton from '@/components/WhatsAppButton';
+import FloatingVideoButton from '@/components/FloatingVideoButton';
 import { useCart } from '@/hooks/useCart';
 import { useAgeVerification } from '@/hooks/useAgeVerification';
 import { useProducts } from '@/hooks/useProducts';
@@ -289,6 +291,10 @@ const Index = () => {
       <Footer />
 
       {/* Cart is now handled in Header via CartSheet */}
+
+      {/* Floating Buttons */}
+      <FloatingVideoButton />
+      <WhatsAppButton />
 
       {/* Age Verification Modal - Overlay au-dessus du contenu (SEO-friendly) */}
       {(!isAgeVerified || showAgeModal) && (
