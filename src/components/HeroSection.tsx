@@ -50,6 +50,23 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   // Fallback si pas de slides configurés
   const hasSlides = slides.length > 0 && slides.some((s: any) => s.image_url);
 
+  // Ne pas afficher de contenu avant que les données ne soient chargées
+  if (loading) {
+    return (
+      <section className="relative w-full px-4 pt-4 pb-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="relative w-full mb-6 rounded-2xl overflow-hidden">
+            <div className="aspect-[4/3] md:aspect-[16/9] bg-gradient-to-br from-primary/20 via-card to-accent/10 animate-pulse" />
+          </div>
+          <div className="text-center max-w-4xl mx-auto space-y-6 mt-6">
+            <div className="h-12 md:h-16 bg-muted/30 rounded-lg animate-pulse mx-auto max-w-xl" />
+            <div className="h-6 bg-muted/20 rounded animate-pulse mx-auto max-w-md" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="relative w-full px-4 pt-4 pb-8">
       <div className="max-w-7xl mx-auto">
