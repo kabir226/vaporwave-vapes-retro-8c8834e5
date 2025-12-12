@@ -7,7 +7,7 @@ const WhatsAppButton = () => {
       href="whatsapp://send?phone=22605145905"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 left-6 z-50"
+      className="fixed bottom-6 right-6 z-50"
       aria-label="Contacter sur WhatsApp"
     >
       <Button
