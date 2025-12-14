@@ -103,7 +103,12 @@ const Shop = () => {
           { name: "Boutique", url: "https://snuspedia-bf.com/shop" }
         ]}
       />
-      <Header cart={cart} onToggleCart={() => setShowCart(!showCart)} />
+      <Header 
+        cart={cart} 
+        onToggleCart={() => setShowCart(!showCart)}
+        onUpdateQuantity={updateQuantity}
+        onRemoveItem={removeItem}
+      />
       
       <main className="pt-20 px-4 max-w-7xl mx-auto">
         {/* Page Title - H1 pour SEO */}
