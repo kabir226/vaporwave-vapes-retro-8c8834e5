@@ -59,8 +59,8 @@ const FloatingVideoButton = () => {
 
       {/* Fullscreen Video Dialog */}
       <Dialog open={isFullscreen} onOpenChange={setIsFullscreen}>
-        <DialogContent className="max-w-4xl p-0 border-none bg-transparent shadow-none">
-          <div className="relative rounded-xl overflow-hidden">
+        <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 border-none bg-transparent shadow-none [&>button]:hidden">
+          <div className="relative rounded-xl overflow-hidden bg-black">
             <video
               autoPlay
               loop
@@ -72,7 +72,7 @@ const FloatingVideoButton = () => {
             <Button
               size="icon"
               onClick={() => setIsFullscreen(false)}
-              className="absolute top-3 right-3 h-10 w-10 rounded-full bg-black/60 hover:bg-black/80 text-white"
+              className="absolute top-3 right-3 h-10 w-10 rounded-full bg-black/80 hover:bg-primary text-white z-10"
             >
               <X className="h-5 w-5" />
             </Button>
