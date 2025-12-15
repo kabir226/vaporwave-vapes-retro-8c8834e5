@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCurrencies } from '@/hooks/useCurrencies';
 import { useHomepageSettings } from '@/hooks/useHomepageSettings';
@@ -32,6 +32,15 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
   const { getCurrencyByCode } = useCurrencies();
   const { getSetting } = useHomepageSettings('bestsellers');
   const settings = getSetting('bestsellers');
+  const [addingProducts, setAddingProducts] = useState<Record<string | number, boolean>>({});
+
+  const handleAddToCart = (product: Product) => {
+    setAddingProducts(prev => ({ ...prev, [product.id]: true }));
+    onAddToCart(product);
+    setTimeout(() => {
+      setAddingProducts(prev => ({ ...prev, [product.id]: false }));
+    }, 1500);
+  };
 
   return (
     <section className="w-full py-12 px-4 bg-black">
@@ -119,17 +128,31 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({ products, onAdd
                     {currencySymbol}{product.price.toFixed(2)}
                   </div>
 
-                  {/* Bouton Ajouter au panier */}
+                  {/* Bouton Ajouter au panier avec animation */}
                   <Button
                     onClick={(e) => {
                       e.stopPropagation();
-                      onAddToCart(product);
+                      handleAddToCart(product);
                     }}
                     variant="outline"
-                    className="w-full rounded-full border-2 border-white bg-transparent text-white hover:bg-white hover:text-black font-semibold py-3 px-4 mt-3 text-sm transition-all duration-300 inline-flex items-center justify-center gap-2"
+                    disabled={addingProducts[product.id]}
+                    className={`w-full rounded-full border-2 font-semibold py-3 px-4 mt-3 text-sm transition-all duration-300 inline-flex items-center justify-center gap-2 ${
+                      addingProducts[product.id]
+                        ? 'border-green-500 bg-green-500 text-white scale-105'
+                        : 'border-white bg-transparent text-white hover:bg-white hover:text-black'
+                    }`}
                   >
-                    <ShoppingCart className="w-4 h-4" />
-                    <span>Ajouter au panier</span>
+                    {addingProducts[product.id] ? (
+                      <>
+                        <Check className="w-4 h-4 animate-bounce" />
+                        <span>Ajouté !</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingCart className="w-4 h-4" />
+                        <span>Ajouter au panier</span>
+                      </>
+                    )}
                   </Button>
                 </div>
               </CardContent>
