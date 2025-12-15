@@ -454,7 +454,7 @@ const ProductDetail = () => {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground whitespace-pre-line leading-relaxed">
                     {product.description || "Aucune description disponible."}
                   </p>
                 </AccordionContent>
