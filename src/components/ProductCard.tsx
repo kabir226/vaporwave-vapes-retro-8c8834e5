@@ -88,7 +88,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, delay =
         {/* Titre avec lien */}
         <Link 
           to={productUrl}
-          className="text-white text-base font-medium text-center mb-2 line-clamp-2 hover:text-primary transition-colors"
+          className="text-white text-base font-medium text-center mb-2 line-clamp-2 hover:text-primary transition-colors h-12 flex items-center justify-center"
         >
           {product.name}
         </Link>
